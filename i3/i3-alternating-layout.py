@@ -8,7 +8,7 @@ from i3ipc import Connection, Event
 
 def find_parent(i3, window_id):
     """
-       	Find the parent of a given window id
+        Find the parent of a given window id
     """
 
     def finder(con, parent):
@@ -25,9 +25,9 @@ def find_parent(i3, window_id):
 
 def set_layout(i3, e):
     """
-       	Set the layout/split for the currently
-       	focused window to either vertical or
-       	horizontal, depending on its width/height
+        Set the layout/split for the currently
+        focused window to either vertical or
+        horizontal, depending on its width/height
     """
     win = i3.get_tree().find_focused()
     parent = find_parent(i3, win.id)
@@ -54,8 +54,8 @@ def print_help():
 def main():
     """
     Main function - listen for window focus
-       	changes and call set_layout when focus
-       	changes
+        changes and call set_layout when focus
+        changes
     """
     opt_list, _ = getopt.getopt(sys.argv[1:], 'hp:')
     pid_file = None
