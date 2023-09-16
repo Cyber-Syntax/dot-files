@@ -13,6 +13,6 @@ sudo dnf update -y --refresh --allowerasing
 printf "\033[1m\033[7mUpdating Flatpak\033[0m"
 
 # Update Flatpak
-flatpak update -y --refresh
+flatpak update -y
 
 printf "\033[1m\033[7mUpdate completed\033[0m"
