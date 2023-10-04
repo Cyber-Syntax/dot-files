@@ -1,48 +1,59 @@
-
-
-# My changings
+					#### INFO ####
 	#exec: command will not run when restarting i3
 	#exec_always: command will run when restarting i3
+					### ./INFO ###
 
-# Picom (transparent alacritty)
-	exec --no-startup-id picom -b
-# Redshift
-	exec --no-startup-id redshift -m randr -l 48:28 -t 6500:3000
+					## SCRIPTS ##
 # https://github.com/olemartinorg/i3-alternating-layout
 	exec_always --no-startup-id ~/.config/i3/i3-alternating-layout.py
 # Background image script
 	exec --no-startup-id ~/Documents/repository/WallpaperChanger/main.py
-# NetworkManager
-	exec --no-startup-id nm-applet
-# Polybar
-	exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# XRANDR
+	exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh	
+# Swapping workspaces, Source: https://i3wm.org/docs/user-contributed/swapping-workspaces.html
+	exec --no-startup-id ~/.config/i3/i3-display-swap.sh
+# NVIDIA AUTO FAN for propriety driver (Not work for now)
+#	exec_always --no-startup-id ~/Documents/nvidia/nfancurve/temp.sh					
+					## ./SCRIPTS ##							
+
+					## GNOME ##
+# lxpolkit for password ask e.g fedora media writer, backintime
+	exec --no-startup-id lxpolkit
+# THEME GNOME
+	exec --no-startup-id /usr/libexec/gsd-xsettings
+					## ./GNOME ##
+
+					## Keyboard ##
 # Keyboard loyout
 	exec --no-startup-id setxkbmap tr
 # Numclok
 	exec --no-startup-id numlockx on
-# THEME GNOME
-	exec --no-startup-id /usr/libexec/gsd-xsettings
-# XRANDR
-	exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh
-# NVIDIA AUTO FAN for propriety driver
-######################## ERROR at the moment ##########################
-#	exec_always --no-startup-id ~/Documents/nvidia/nfancurve/temp.sh
+					## ./Keyboard ##
 
-# Swapping workspaces
-	# Source: https://i3wm.org/docs/user-contributed/swapping-workspaces.html
-	exec --no-startup-id ~/.config/i3/i3-display-swap.sh
-# lxpolkit for password ask e.g fedora media writer, backintime
-	exec --no-startup-id lxpolkit
+					## Other ##
+# Picom (transparent alacritty)
+	exec --no-startup-id picom -b
+# Redshift
+	exec --no-startup-id redshift -m randr -l 48:28 -t 6300:3000
+# NetworkManager
+	exec --no-startup-id nm-applet
+# Polybar
+	exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+					## ./Other ##
+					
+					## PulseAudio-pipewire ##
+# pipewire
+	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)					
+					## ./PulseAudio-pipewire ##					
+
 # use Mouse+Mod4 to drag floating windows to their wanted position
 	floating_modifier Mod4
-# pipewire
-	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
-# APPS
+											## APPS ##
 	# start a terminal
 		bindsym Mod4+Return exec alacritty
 	# Firefox, less = '<'
@@ -55,8 +66,8 @@ tiling_drag modifier titlebar
 		bindsym Mod4+shift+s exec gnome-control-center
 	# Discord
 		bindsym Mod4+x exec dbus-launch flatpak run com.github.Eloston.UngoogledChromium --user-data-dir=.config/discord-dir --app=https://discord.com
-	# VSCodium
-		bindsym Mod4+v exec flatpak run com.vscodium.codium
+	# VSCode
+		bindsym Mod4+v exec flatpak run com.visualstudio.code
 	# Beekeper
 		bindsym Mod4+b exec flatpak run io.beekeeperstudio.Studio
 	# Tutanota
@@ -65,18 +76,22 @@ tiling_drag modifier titlebar
 		bindsym Mod4+s exec ~/Documents/appimages/siyuan.AppImage
 	# superProductivity autostart
 		exec ~/Documents/appimages/super-productivity.AppImage
+		bindsym mod4+c exec ~/Documents/appimages/super-productivity.AppImage
 	# Sycthing
 		exec /usr/bin/syncthing serve --no-browser --no-restart --logflags=0
 	# Keepassxc
 		exec flatpak run org.keepassxc.KeePassXC
+	# nuclear
+		bindsym Mod4+n exec flatpak run org.js.nuclear.Nuclear
+	# ROFI
+	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
+	bindsym Mod4+r $executeRofi		
+
+											## ./APPS ##
 	
 # USEFUL SHORTCUTS
 	# kill focused window
 		bindsym Mod4+q kill
-
-# ROFI
-	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
-	bindsym Mod4+r $executeRofi
 
 # FOCUS MONITORS
 	bindsym Mod4+a focus left
@@ -90,24 +105,48 @@ tiling_drag modifier titlebar
 # enter fullscreen mode for the focused container
 	bindsym Mod4+f fullscreen toggle
 
+ 											## WORKSPACES ##
 # Workspace Monitor
-	workspace 1 output DP-0 DP-1
-	workspace 2 output primary DP-2
-	workspace 3 output HDMI-0 HDMI-1
+	workspace $ws1 output DP-0 DP-1
+	workspace $ws4 output DP-0 DP-1
+	workspace $ws6 output DP-0 DP-1
+
+	workspace $ws2 output DP-2
+	workspace $ws5 output DP-2
+
+	workspace $ws3 output HDMI-0 HDMI-1
+
 
 # SPECIFIC APPS START SPECIFIC WORKSPACE
-	assign [class="superProductivity"] $ws3
+	assign [class="VSCode"] "1: Code"
+
+	assign [class="firefox"] "2: Web"
+	assign [class="Chromium"] "2: Web"
+
+	assign [class="superProductivity"] "3: Todo"
+	
+	assign [class="SiYuan"] "4: Notes"
+
+	assign [class="Nautilus"] "6: Files"
+	assign [class="nuclear"] "6: Files"
+
+# Focus apps after boot i3
+	for_window [urgent=latest class="firefox"] focus
+
+	# try to add instance
+	for_window [urgent=latest class="superProductivity" instance="superproductivity"] focus output HDMI-0 HDMI-1
+
 # SEND APPS LEFT TO RIGHT ETC.
 	bindsym Mod4+e exec i3-msg move window to output right
 	bindsym Mod4+w exec i3-msg move window to output left
 
 # Set workspace names
-	set $ws1 "1"
-	set $ws2 "2"
-	set $ws3 "3"
-	set $ws4 "4" 
-	set $ws5 "5" 
-	set $ws6 "6" 
+	set $ws1 "1: Code"
+	set $ws2 "2: Web"
+	set $ws3 "3: Todo"
+	set $ws4 "4: Notes" 
+	set $ws5 "5: Chat" 
+	set $ws6 "6: Files" 
 
 # switch to workspace
 	bindsym Mod4+1 workspace number $ws1
@@ -123,9 +162,13 @@ tiling_drag modifier titlebar
 	bindsym Mod4+Shift+3 move container to workspace number $ws3
 	bindsym Mod4+Shift+4 move container to workspace number $ws4
 	bindsym Mod4+Shift+5 move container to workspace number $ws5
+	bindsym Mod4+Shift+6 move container to workspace number $ws6
+
+											## ./WORKSPACES ##
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-	bindsym Mod4+Shift+r restart
+	bindsym F1 restart
+	#bindsym Mod4+Shift+r restart
 # exit i3 (logs you out of your X session)
 	set $executeExit exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 	bindsym Mod4+Shift+e $executeExit 
@@ -145,22 +188,23 @@ bindsym Mod4+minus scratchpad show
 	## Clipboard Screenshots
 	bindsym Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
 
-# titlebar, border colors
-	# class                 border  backgr. text    indicator child_border
-	client.focused          #0dfc05 #0dfc05 #000000 #0dfc05   #0dfc05
-	client.focused_inactive #f7ff05 #f7ff05 #000000 #f7ff05   #f7ff05
-	client.unfocused        #fc9935 #fc9935 #000000 #fc9935   #fc9935
-	client.urgent           #ff2e2e #ff2e2e #ffffff #ff2e2e   #ff2e2e
-	client.placeholder      #fc9935 #0c0c0c #ffffff #000000   #0c0c0c
-	client.background       #ffffff
+# Titlebar, border colors
+# class                 border  backgr. text    indicator child_border
+client.focused          #0066ff #0066ff #ffffff #0066ff   #0066ff
+client.focused_inactive #333333 #333333 #ffffff #333333   #333333
+client.unfocused        #666666 #666666 #ffffff #666666   #666666
+client.urgent           #ff0000 #ff0000 #ffffff #ff0000   #ff0000
+client.placeholder      #666666 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #f0f0f0
 
+											## Multimedia ##
 
 # Use pactl to adjust volume in PulseAudio.
 	set $refresh_i3status killall -SIGUSR1 i3status
 	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 	bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status	
 
 # Multimedia Keys
 	bindsym XF86AudioPlay exec playerctl play-pause
@@ -170,6 +214,10 @@ bindsym Mod4+minus scratchpad show
 	bindsym XF86AudioNext exec playerctl next
 
 	bindsym XF86AudioPrev exec playerctl previous
+
+	bindsym XF86AudioStop exec playerctl stop
+	
+											## ./Multimedia ##											
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -224,6 +272,7 @@ bindsym Mod4+ctrl+r mode "resize"
 	bindsym Mod4+Shift+Down move down
 	bindsym Mod4+Shift+Up move up
 	bindsym Mod4+Shift+Right move right
+
 # title bar
 for_window [class="^.*"] border pixel 3
 
@@ -244,9 +293,11 @@ gaps outer 10
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-	exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -t 3600
+	#exec --no-startup-id xss-lock  --transfer-sleep-lock -- i3lock --nofork -t 3600
+	exec_always --no-startup-id xset dpms 0 0 600 &
+	exec_always --no-startup-id xss-lock -- i3lock --nofork -t 3600
 
-## UNUSED
+											## UNUSED ##
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym Mod4+p layout stacking
@@ -264,3 +315,4 @@ bindsym Mod4+y layout tabbed
 
 # focus the parent container
 #bindsym Mod4+p focus parent
+
