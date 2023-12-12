@@ -7,7 +7,7 @@ def dnf_update():
     # find how much update available for dnf
     update = subprocess.check_output(["dnf", "updateinfo","-q", "--list"], stderr=subprocess.STDOUT)
 
-    # count
+    # count the number of lines
     update_count = int(update.decode("utf-8").count("\n"))
 
     return update_count
@@ -57,6 +57,7 @@ def main():
         print("Error: dnf or flatpak not installed")
     except Exception as exception:
         print("Error:", exception)
+
 
 if __name__ == "__main__":
     main()
