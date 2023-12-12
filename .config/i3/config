@@ -108,12 +108,12 @@ tiling_drag modifier titlebar
  											## WORKSPACES ##
 # Workspace Monitor
 	workspace $ws1 output DP-0 DP-1
-	workspace $ws4 output DP-0 DP-1
-	workspace $ws6 output DP-0 DP-1
-
+#	workspace $ws4 output DP-0 DP-1
+#	workspace $ws6 output DP-0 DP-1
+#
 	workspace $ws2 output DP-2
-	workspace $ws5 output DP-2
-
+#	workspace $ws5 output DP-2
+#
 	workspace $ws3 output HDMI-0 HDMI-1
 
 
@@ -131,8 +131,7 @@ tiling_drag modifier titlebar
 	assign [class="nuclear"] "6: Files"
 
 # Focus apps after boot i3
-	for_window [urgent=latest class="firefox"] focus
-
+	for_window [urgent=latest class="firefox"] focus output DP-2
 	# try to add instance
 	for_window [urgent=latest class="superProductivity" instance="superproductivity"] focus output HDMI-0 HDMI-1
 
