@@ -29,15 +29,15 @@ def print_update(update_count, update_count_flatpak):
     """Print the update count"""
     # Check if both are up to date
     if update_count == 0 and update_count_flatpak == 0:
-        print("System is up to date")
+        print("")
 
-    # dnf
+    # dnf check
     if update_count > 0:
-        print(f"Updates available: {update_count}")
+        print(f" {update_count}")
     else:
         print("DNF: Up to date")
 
-    # flatpak
+    # flatpak check
     if update_count_flatpak > 0:
         print(f"Flatpak Updates available: {update_count_flatpak}")
     else:

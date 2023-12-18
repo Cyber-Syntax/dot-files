@@ -46,6 +46,7 @@
 	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)					
 					## ./PulseAudio-pipewire ##					
 
+
 # use Mouse+Mod4 to drag floating windows to their wanted position
 	floating_modifier Mod4
 
@@ -65,7 +66,7 @@ tiling_drag modifier titlebar
 	# Gnome setings
 		bindsym Mod4+shift+s exec gnome-control-center
 	# Discord
-		bindsym Mod4+x exec dbus-launch flatpak run com.github.Eloston.UngoogledChromium --user-data-dir=.config/discord-dir --app=https://discord.com
+		#bindsym Mod4+x exec dbus-launch flatpak run com.github.Eloston.UngoogledChromium --user-data-dir=.config/discord-dir --app=https://discord.com
 	# VSCode
 		bindsym Mod4+v exec flatpak run com.visualstudio.code
 	# Beekeper
@@ -80,13 +81,16 @@ tiling_drag modifier titlebar
 	# Sycthing
 		exec /usr/bin/syncthing serve --no-browser --no-restart --logflags=0
 	# Keepassxc
-		exec flatpak run org.keepassxc.KeePassXC
+		exec keepassxc
 	# nuclear
 		bindsym Mod4+n exec flatpak run org.js.nuclear.Nuclear
 	# ROFI
-	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
-	bindsym Mod4+r $executeRofi		
+#	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
+#	bindsym Mod4+r $executeRofi		
+#	set $mod Mod4
 
+	bindsym Mod4+r exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
+	bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-3/powermenu.sh
 											## ./APPS ##
 	
 # USEFUL SHORTCUTS
