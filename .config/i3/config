@@ -41,10 +41,7 @@
 	exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 					## ./Other ##
 					
-					## PulseAudio-pipewire ##
-# pipewire
-	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)					
-					## ./PulseAudio-pipewire ##					
+		
 
 
 # use Mouse+Mod4 to drag floating windows to their wanted position
@@ -90,7 +87,11 @@ tiling_drag modifier titlebar
 #	set $mod Mod4
 
 	bindsym Mod4+r exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
-	bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-3/powermenu.sh
+	bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-6/powermenu.sh
+						## PulseAudio-pipewire ##
+# pipewire
+	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)					
+					## ./PulseAudio-pipewire ##			
 											## ./APPS ##
 	
 # USEFUL SHORTCUTS
