@@ -1,0 +1,35 @@
+[
+    {
+        "output": "HDMI-A-1",
+        "include": [
+            "~/.config/waybar/default-modules.json"
+        ],
+        "layer": "top",
+        "modules-left": [],
+        "modules-center": ["clock"],
+        "modules-right": ["pulseaudio"]
+    },    
+    {
+        "output": "DP-1",
+        "include": [
+            "~/.config/waybar/default-modules.json"
+        ],
+        "layer": "top",
+        "spacing": 4,
+        "modules-left": ["hyprland/workspaces"],
+        "modules-center": ["hyprland/window", "clock", "tray", "custom/dnf-update-status"],
+        "modules-right": ["disk#d2", "disk", "cpu", "memory","pulseaudio"]
+    },
+    {
+        "output": "DP-2",
+        "include": [
+            "~/.config/waybar/default-modules.json"
+        ],
+        "layer": "top", 
+        "position": "top",
+        "spacing": 4,
+        "modules-left": ["hyprland/workspaces"],
+        "modules-center": ["custom/media", "hyprland/window", "clock", "tray", "custom/dnf-update-status" ],
+        "modules-right": [ "custom/sink-status", "pulseaudio"]
+    }
+]
