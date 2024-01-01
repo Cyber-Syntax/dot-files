@@ -24,22 +24,22 @@ return {
   },
   -- List of apps to start once on start-up
   run_on_start_up = {
-    'sleep 3 && ~/Documents/screenloyout/xrandr.sh',
-    'sleep 3 && ~/Documents/repository/WallpaperChanger/main.py',
+    --'sleep 3 && ~/Documents/screenloyout/xrandr.sh', -- It's setting in xorg.conf now
+    '~/Documents/repository/WallpaperChanger/main.py',
     '$HOME/Documents/appimages/super-productivity.AppImage',
-    --'/usr/libexec/gsd-xsettings',
     'numlockx on', -- enable numlock
     'keepassxc',
     'lxpolkit',
-    'picom --config ' .. filesystem.get_configuration_dir() .. '/configuration/picom.conf',
     'nm-applet', 
     'eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)', -- credential manager
     'flameshot',
+    --'/usr/libexec/gsd-xsettings',
+    --'picom --config ' .. filesystem.get_configuration_dir() .. '/configuration/picom.conf',
     --'pnmixer', -- shows an audiocontrol applet in systray when installed.
     --'blueberry-tray', -- Bluetooth tray icon
     --'/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & 
     -- 'synology-drive -minimized',
-   
+    --
     -- Add applications that need to be killed between reloads
     -- to avoid multipled instances, inside the awspawn script
     --'~/.config/awesome/configuration/awspawn' -- Spawn "dirty" apps that can linger between sessions

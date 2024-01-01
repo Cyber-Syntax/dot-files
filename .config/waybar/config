@@ -1,6 +1,7 @@
 [
     {
         "output": "HDMI-A-1",
+        "height": 22,
         "include": [
             "~/.config/waybar/default-modules.json"
         ],

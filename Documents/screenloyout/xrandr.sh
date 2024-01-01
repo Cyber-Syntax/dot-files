@@ -2,10 +2,14 @@
 set -x # Enable verbose output for debugging
 
 # Check if the current DISPLAY is ":0" or not
+# Check if the current DISPLAY is ":0" or not
 if [[ $DISPLAY == ":0" ]]; then
     export DISPLAY=:0
-else
+elif [[ $DISPLAY == ":1" ]]; then
     export DISPLAY=:1
+else 
+    echo "DISPLAY is not set to :0 or :1. Exiting..."
+    exit 1
 fi
 
 monitor_left="DP-0"

@@ -34,7 +34,7 @@ local globalKeys =
     end,
     {description = 'launcher', group = 'rofi'}
   ),
-  -- Sink Selection
+  -- Sink Selection 
   awful.key(
     {modkey},
     'm',
@@ -55,7 +55,7 @@ local globalKeys =
   -- Focus for screen
   awful.key(
     {modkey},
-    'a',
+    'd',
     function()
       awful.screen.focus_relative(1)
     end,
@@ -63,7 +63,7 @@ local globalKeys =
   ),
   awful.key(
     {modkey},
-    'd',
+    'a',
     function()
       awful.screen.focus_relative(-1)
     end,

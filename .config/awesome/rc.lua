@@ -69,4 +69,32 @@ _G.client.connect_signal(
   end
 )
 
+
+-- Set the garbage collector to incremental mode with a pause of 150 and a step multiplier of 600
+collectgarbage("incremental", 150, 600)
+
+-- Run the garbage collector every 60 seconds
+gears.timer {
+  timeout = 60,
+  autostart = true,
+  callback = function() collectgarbage() end
+}
+
+-- collectgarbage("incremental", 150, 600, 0)
+
+-- gears.timer.start_new(60, function()
+--   -- just let it do a full collection
+--   collectgarbage()
+--   -- or else set a step size
+--   -- collectgarbage("step", 30000)
+--   return true
+-- end)
+
+-- --arch wiki
+-- -- Run garbage collector regularly to prevent memory leaks
+-- gears.timer {
+--   timeout = 30,
+--   autostart = true,
+--   callback = function() collectgarbage() end
+-- }
 -- }}}

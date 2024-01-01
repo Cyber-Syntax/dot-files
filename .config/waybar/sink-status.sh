@@ -11,6 +11,6 @@ elif [ "$name" = "alsa_output.pci-0000_26_00.1.hdmi-stereo-extra1" ]; then
     echo "DP-1"
 elif [ "$name" = "alsa_output.pci-0000_26_00.1.hdmi-stereo-extra2" ]; then
     echo "DP-2"
-else:
+else
     echo "Sink"
 fi
