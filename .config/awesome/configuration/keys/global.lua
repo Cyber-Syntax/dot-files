@@ -34,7 +34,7 @@ local globalKeys =
     end,
     {description = 'launcher', group = 'rofi'}
   ),
-  -- Sink Selection 
+  -- Sink Selection
   awful.key(
     {modkey},
     'm',
@@ -55,7 +55,7 @@ local globalKeys =
   -- Focus for screen
   awful.key(
     {modkey},
-    'd',
+    'a',
     function()
       awful.screen.focus_relative(1)
     end,
@@ -63,7 +63,7 @@ local globalKeys =
   ),
   awful.key(
     {modkey},
-    'a',
+    'd',
     function()
       awful.screen.focus_relative(-1)
     end,
@@ -135,31 +135,7 @@ local globalKeys =
     end,
     {description = 'stop', group = 'hotkeys'}
   ),
-  -- Default client focus
-  -- awful.key(
-  --   {modkey},
-  --   'd',
-  --   function()
-  --     awful.client.focus.byidx(1)
-  --   end,
-  --   {description = 'Focus next by index', group = 'client'}
-  -- ),
-  -- awful.key(
-  --   {modkey},
-  --   'a',
-  --   function()
-  --     awful.client.focus.byidx(-1)
-  --   end,
-  --   {description = 'Focus previous by index', group = 'client'}
-  -- ),
-  -- awful.key(
-  --   {modkey},
-  --   'r',
-  --   function()
-  --     awful.spawn('rofi -combi-modi window,drun -show combi -modi combi')
-  --   end,
-  --   {description = 'Main menu', group = 'awesome'}
-  -- ),
+
   awful.key(
     {altkey},
     'space',
@@ -168,30 +144,30 @@ local globalKeys =
     end,
     {description = 'Show main menu', group = 'awesome'}
   ),
-  awful.key(
-    {modkey, 'Shift'},
-    'r',
-    function()
-      awful.spawn('reboot')
-    end,
-    {description = 'Reboot Computer', group = 'awesome'}
-  ),
-  awful.key(
-    {modkey, 'Shift'},
-    's',
-    function()
-      awful.spawn('shutdown now')
-    end,
-    {description = 'Shutdown Computer', group = 'awesome'}
-  ),
-  awful.key(
-    {modkey, 'Shift'},
-    'l',
-    function()
-      _G.exit_screen_show()
-    end,
-    {description = 'Log Out Screen', group = 'awesome'}
-  ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'r',
+  --   function()
+  --     awful.spawn('reboot')
+  --   end,
+  --   {description = 'Reboot Computer', group = 'awesome'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   's',
+  --   function()
+  --     awful.spawn('shutdown now')
+  --   end,
+  --   {description = 'Shutdown Computer', group = 'awesome'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'l',
+  --   function()
+  --     _G.exit_screen_show()
+  --   end,
+  --   {description = 'Log Out Screen', group = 'awesome'}
+  -- ),
   awful.key({modkey}, 'u', awful.client.urgent.jumpto, {description = 'jump to urgent client', group = 'client'}),
   awful.key(
     {altkey},
@@ -218,38 +194,7 @@ local globalKeys =
     {description = 'Switch to previous window', group = 'client'}
   ),
   -- Programms
-  awful.key(
-    {modkey},
-    'l',
-    function()
-      awful.spawn(apps.default.lock)
-    end,
-    {description = 'Lock the screen', group = 'awesome'}
-  ),
-  awful.key(
-    {modkey},
-    'Print',
-    function()
-      awful.util.spawn_with_shell(apps.default.delayed_screenshot)
-    end,
-    {description = 'Mark an area and screenshot it 10 seconds later (clipboard)', group = 'screenshots (clipboard)'}
-  ),
-  awful.key(
-    {modkey},
-    'p',
-    function()
-      awful.util.spawn_with_shell(apps.default.screenshot)
-    end,
-    {description = 'Take a screenshot of your active monitor and copy it to clipboard', group = 'screenshots (clipboard)'}
-  ),
-  awful.key(
-    {altkey, 'Shift'},
-    'p',
-    function()
-      awful.util.spawn_with_shell(apps.default.region_screenshot)
-    end,
-    {description = 'Mark an area and screenshot it to your clipboard', group = 'screenshots (clipboard)'}
-  ),
+
   awful.key(
     {modkey},
     'v',
@@ -370,6 +315,39 @@ local globalKeys =
     end,
     {description = 'restore minimized', group = 'client'}
   ),
+  -- Others
+  awful.key(
+    {modkey},
+    'l',
+    function()
+      awful.spawn(apps.default.lock)
+    end,
+    {description = 'Lock the screen', group = 'awesome'}
+  ),
+  awful.key(
+    {modkey},
+    'Print',
+    function()
+      awful.util.spawn_with_shell(apps.default.delayed_screenshot)
+    end,
+    {description = 'Mark an area and screenshot it 10 seconds later (clipboard)', group = 'screenshots (clipboard)'}
+  ),
+  awful.key(
+    {modkey},
+    'p',
+    function()
+      awful.util.spawn_with_shell(apps.default.screenshot)
+    end,
+    {description = 'Take a screenshot of your active monitor and copy it to clipboard', group = 'screenshots (clipboard)'}
+  ),
+  awful.key(
+    {altkey, 'Shift'},
+    'p',
+    function()
+      awful.util.spawn_with_shell(apps.default.region_screenshot)
+    end,
+    {description = 'Mark an area and screenshot it to your clipboard', group = 'screenshots (clipboard)'}
+  ),
   -- Dropdown application
   -- awful.key(
   --   {modkey},
@@ -453,6 +431,34 @@ local globalKeys =
     awful.client.movetoscreen,
     {description = 'move window to next screen', group = 'client'}
   ),
+  awful.key(
+    {modkey},
+    'e',
+    function()
+        local ns = client.focus.screen.index - 1
+        awful.client.movetoscreen(c, ns)
+    end,
+    {description = "move to screen on the left", group = "client"}
+  ),
+  ---- Same with `awful.client.movetoscreen` but saved here for reference
+  -- awful.key(
+  --   {modkey},
+  --   'w',
+  --   function()
+  --       local ns = client.focus.screen.index + 1
+  --       awful.client.movetoscreen(c, ns)
+  --   end,
+  --   {description = "move to screen on the right", group = "client"}
+  -- ),
+  ---- move to previous screen (not working)
+  -- awful.key(
+  --   {modkey},
+  --   'e',
+  --   function()
+  --     awful.client.movetoscreen(_G.client.focus.index - 1)
+  --   end,
+  --   {description = 'move window to previous screen', group = 'client'}
+  -- ),
   -- Open default program for tag
   awful.key(
     {modkey},
@@ -558,6 +564,31 @@ for i = 1, 9 do
       end,
       descr_toggle_focus
     )
+    ---- Default client focus
+    -- awful.key(
+    --   {modkey},
+    --   'd',
+    --   function()
+    --     awful.client.focus.byidx(1)
+    --   end,
+    --   {description = 'Focus next by index', group = 'client'}
+    -- ),
+    -- awful.key(
+    --   {modkey},
+    --   'a',
+    --   function()
+    --     awful.client.focus.byidx(-1)
+    --   end,
+    --   {description = 'Focus previous by index', group = 'client'}
+    -- ),
+    -- awful.key(
+    --   {modkey},
+    --   'r',
+    --   function()
+    --     awful.spawn('rofi -combi-modi window,drun -show combi -modi combi')
+    --   end,
+    --   {description = 'Main menu', group = 'awesome'}
+    -- ),
   )
 end
 

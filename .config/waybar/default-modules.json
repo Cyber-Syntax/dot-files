@@ -4,14 +4,15 @@
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "6": "",
-            "7": "",
-            "8": "",
+            "1": "1:",
+            "2": "2:",
+            "3": "3:",
+            "4": "4:",
+            "5": "5:",
+            "6": "6:",
+            "7": "7:",
+            "8": "8:",
+            "9": "9:",
             "active": "",
             "default": "",
             "urgent": "",
@@ -19,9 +20,9 @@
             "special": ""
         },
         "persistent-workspaces": {
-                "DP-1": [1,4,7],
-                "DP-2": [2,5,8],
-                "HDMI-A-1": 3
+            "DP-1": [1,2,3,4],
+            "DP-2": [5,6,7,8],
+            "HDMI-A-1": [9]
         }
     },
     "hyprland/window": {
@@ -53,7 +54,7 @@
     },
     "disk": {
         "interval": 30,
-        "format": " {percentage_used}%",
+        "format": " {percentage_used}%",
         "path": "/home"
     },
     "disk#d2": {
@@ -122,10 +123,10 @@
         "max-length": 40,
         "on-click": "playerctl play-pause",
         "on-click-right": "playerctl stop",
-        "smooth-scrolling-threshold": 5, 
+        "smooth-scrolling-threshold": 5,
         "on-scroll-up": "playerctl next",
         "on-scroll-down": "playerctl previous",
-        "exec": "~/.config/waybar/mediaplayer.py" 
+        "exec": "~/.config/waybar/mediaplayer.py"
     },
     "custom/dnf-update-status": {
         "format": "{icon} {}",
@@ -136,7 +137,7 @@
         "escape": true,
         "return-type": "text",
         "max-length": 40,
-        "on-click": "alacritty -e bash -c '~/.config/waybar/update-dnf-flatpak.sh; exec bash'",
+        "on-click": "gnome-terminal -- bash -c '~/.config/waybar/update-dnf-flatpak.sh; exec bash'",
         "exec": "~/.config/waybar/dnf-update-status.py",
         "interval": 3600
     },
@@ -149,8 +150,26 @@
         "escape": true,
         "return-type": "text",
         "max-length": 40,
-        "on-click": "~/.config/waybar/sink-change.sh",
-        "exec": "~/.config/waybar/sink-status.sh",
-        "interval": 3600
+        "on-click": "~/.config/waybar/sink-change.sh --change",
+        "exec": "~/.config/waybar/sink-change.sh --status",
+        "interval": 30
+    },
+    "custom/icon1": {
+        "format": "|| {}   ",
+        "tooltip": false,
+        "on-click": "firefox",
+        "on-click-right": "flatpak run com.visualstudio.code"
+    },
+    "custom/icon2": {
+        "format": "{}   ",
+        "tooltip": false,
+        "on-click": "nautilus",
+        "on-click-right": "gnome-terminal"
+    },
+    "custom/icon3": {
+        "format": "{}   ",
+        "tooltip": false,
+        "on-click": "flatpak run org.telegram.desktop",
+        "on-click-right": "~/Documents/appimages/siyuan.AppImage"
     }
 }

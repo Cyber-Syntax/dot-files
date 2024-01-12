@@ -1,7 +1,7 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 window#waybar {
@@ -14,6 +14,10 @@ window#waybar {
 
 window#waybar.hidden {
     opacity: 0.2;
+}
+
+#custom-icon {
+    background-color: rgb(71, 160, 255);
 }
 
 /*

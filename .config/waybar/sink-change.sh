@@ -1,45 +1,71 @@
 # #!/bin/bash
 
 # Get active sink name
-name=$(pactl list sinks short | grep "RUNNING" | cut -f 2)
+running_sink=$(pactl list sinks short | grep "RUNNING" | cut -f 2)
 
-# Define sink names
+# Define sink available_sinks
 headset='alsa_output.pci-0000_28_00.3.analog-surround-51'
 DP_1='alsa_output.pci-0000_26_00.1.hdmi-stereo-extra1'
 DP_2='alsa_output.pci-0000_26_00.1.hdmi-stereo-extra2'
 
-# Get available sink names
-names=$(pactl list sinks short | cut -f 2)
+# Get available sink available_sinks
+available_sinks=$(pactl list sinks short | cut -f 2)
 
-# Change sink to next available sink, if current sink is not available
-if [ $name = $headset ]; then
-    if [[ $names == *$DP_1* ]]; then
-        pactl set-default-sink $DP_1
-    elif [[ $names == *$DP_2* ]]; then
-        pactl set-default-sink $DP_2
+# Function to print current active sink name
+print_sink() {
+    if [ "$running_sink" = "$headset" ]; then
+        echo "Headset"
+    elif [ "$running_sink" = "$DP_1" ]; then
+        echo "DP-1"
+    elif [ "$running_sink" = "$DP_2" ]; then
+        echo "DP-2"
     else
-        echo "No available sinks"
+        echo "No Active Sink"
     fi
-elif [ $name = $DP_1 ]; then
-    if [[ $names == *$DP_2* ]]; then
-        pactl set-default-sink $DP_2
-    elif [[ $names == *$headset* ]]; then
+}
+
+# Function to change sink
+change_sink() {
+    if [ "$running_sink" = "$headset" ]; then
+        if [[ $available_sinks == *"$DP_1"* ]]; then
+            pactl set-default-sink $DP_1
+            echo "DP-1"
+        elif [[ $available_sinks == *"$DP_2"* ]]; then
+            pactl set-default-sink $DP_2
+            echo "DP-2"
+        else
+            pactl set-default-sink $headset
+        fi
+    elif [ "$running_sink" = "$DP_1" ]; then
+        if [[ $available_sinks == *"$DP_2"* ]]; then
+            pactl set-default-sink $DP_2
+            echo "DP-2"
+        elif [[ $available_sinks == *"$headset"* ]]; then
+            pactl set-default-sink $headset
+            echo "Headset"
+        else
+            pactl set-default-sink $DP_1
+        fi
+    elif [ "$running_sink" = "$DP_2" ]; then
+        if [[ $available_sinks == *"$headset"* ]]; then
+            pactl set-default-sink $headset
+            echo "Headset"
+        elif [[ $available_sinks == *"$DP_1"* ]]; then
+            pactl set-default-sink $DP_1
+            echo "DP-1"
+        else
+            pactl set-default-sink $DP_2
+        fi
+    else
         pactl set-default-sink $headset
-    else
-        echo "No available sinks"
     fi
-elif [ $name = $DP_2 ]; then
-    if [[ $names == *$headset* ]]; then
-        pactl set-default-sink $headset
-    elif [[ $names == *$DP_1* ]]; then
-        pactl set-default-sink $DP_1
-    else
-        echo "No available sinks"
-    fi
+}
+
+# Check command line arguments and call functions
+if [ "$1" = "--status" ]; then
+    print_sink
+elif [ "$1" = "--change" ]; then
+    change_sink
 else
-    echo "Unknown"
+    echo "Invalid argument"
 fi
-
-
-
-
