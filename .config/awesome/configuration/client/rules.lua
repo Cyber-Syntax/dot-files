@@ -6,11 +6,12 @@ local client_buttons = require('configuration.client.buttons')
 -- Rules
 awful.rules.rules = {
   {
-    rule_any = { class = {"xdg-desktop-portal-gtk"}, name = {"Open Folder"} },
-    properties = { 
-      ontop = true,
+    rule_any = {type = {'dialog'}, class = {'xdg-desktop-portal-gtk'}, name = {'Open Folder'} },
+    properties = {
+      ontop = false,
       placement = awful.placement.centered,
-      floating = true 
+      floating = true,
+      skip_decoration = true
     }
   },
   {
@@ -31,10 +32,6 @@ awful.rules.rules = {
       maximized_horizontal = false,
       maximized_vertical = false
     }
-  },
-  {
-    rule_any = {name = {'QuakeTerminal'}},
-    properties = {skip_decoration = true}
   },
   -- --Titlebars
   -- {

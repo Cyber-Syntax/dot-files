@@ -9,7 +9,7 @@ return {
   -- List of apps to start by default on some actions
   default = {
     terminal = 'gnome-terminal',
-    files = 'nautilus',
+    files = 'pcmanfm', -- old: nautilus
     music = 'flatpak run org.js.nuclear.Nuclear',
     lock = 'i3lock',
     browser = 'firefox',
@@ -30,14 +30,15 @@ return {
     'numlockx on', -- enable numlock
     'keepassxc',
     'lxpolkit',
-    'nm-applet', 
+    'nm-applet',
     'eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)', -- credential manager
     'flameshot',
+    'gammastep',
     --'/usr/libexec/gsd-xsettings',
     --'picom --config ' .. filesystem.get_configuration_dir() .. '/configuration/picom.conf',
     --'pnmixer', -- shows an audiocontrol applet in systray when installed.
     --'blueberry-tray', -- Bluetooth tray icon
-    --'/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & 
+    --'/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
     -- 'synology-drive -minimized',
     --
     -- Add applications that need to be killed between reloads

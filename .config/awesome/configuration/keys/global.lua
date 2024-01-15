@@ -94,9 +94,29 @@ local globalKeys =
     end,
     {description = 'toggle mute', group = 'hotkeys'}
   ),
+  -- mic
+  -- raise
   awful.key(
-    {},
-    'XF86AudioMicMute',
+    {altkey},
+    'XF86AudioRaiseVolume',
+    function()
+      awful.spawn('pactl set-source-volume @DEFAULT_SOURCE@ +5%')
+    end,
+    {description = 'volume up', group = 'hotkeys'}
+  ),
+  -- lower
+  awful.key(
+    {altkey},
+    'XF86AudioLowerVolume',
+    function()
+      awful.spawn('pactl set-source-volume @DEFAULT_SOURCE@ -5%')
+    end,
+    {description = 'volume down', group = 'hotkeys'}
+  ),
+  -- mute
+  awful.key(
+    {altkey},
+    'XF86AudioMute',
     function()
       awful.spawn('pactl set-source-mute @DEFAULT_SOURCE@ toggle')
     end,
@@ -348,82 +368,7 @@ local globalKeys =
     end,
     {description = 'Mark an area and screenshot it to your clipboard', group = 'screenshots (clipboard)'}
   ),
-  -- Dropdown application
-  -- awful.key(
-  --   {modkey},
-  --   'z',
-  --   function()
-  --     _G.toggle_quake()
-  --   end,
-  --   {description = 'dropdown application', group = 'launcher'}
-  -- ),
 
-  -- -- Brightness
-  -- awful.key(
-  --   {},
-  --   'XF86MonBrightnessUp',
-  --   function()
-  --     awful.spawn('xbacklight -inc 10')
-  --   end,
-  --   {description = '+10%', group = 'hotkeys'}
-  -- ),
-  -- awful.key(
-  --   {},
-  --   'XF86MonBrightnessDown',
-  --   function()
-  --     awful.spawn('xbacklight -dec 10')
-  --   end,
-  --   {description = '-10%', group = 'hotkeys'}
-  -- ),
-  -- ALSA volume control
-  awful.key(
-    {},
-    'XF86AudioRaiseVolume',
-    function()
-      awful.spawn('amixer -D pulse sset Master 5%+')
-    end,
-    {description = 'volume up', group = 'hotkeys'}
-  ),
-  awful.key(
-    {},
-    'XF86AudioLowerVolume',
-    function()
-      awful.spawn('amixer -D pulse sset Master 5%-')
-    end,
-    {description = 'volume down', group = 'hotkeys'}
-  ),
-  awful.key(
-    {},
-    'XF86AudioMute',
-    function()
-      awful.spawn('amixer -D pulse set Master 1+ toggle')
-    end,
-    {description = 'toggle mute', group = 'hotkeys'}
-  ),
-  awful.key(
-    {},
-    'XF86AudioNext',
-    function()
-      --
-    end,
-    {description = 'toggle mute', group = 'hotkeys'}
-  ),
-  awful.key(
-    {},
-    'XF86PowerDown',
-    function()
-      --
-    end,
-    {description = 'toggle mute', group = 'hotkeys'}
-  ),
-  awful.key(
-    {},
-    'XF86PowerOff',
-    function()
-      _G.exit_screen_show()
-    end,
-    {description = 'toggle mute', group = 'hotkeys'}
-  ),
   -- Screen management
   awful.key(
     {modkey},
@@ -440,6 +385,15 @@ local globalKeys =
     end,
     {description = "move to screen on the left", group = "client"}
   ),
+  awful.key(
+    {modkey},
+    'j',
+  function ()
+      awful.client.focus.bydirection("left")
+  end
+  ),
+
+
   ---- Same with `awful.client.movetoscreen` but saved here for reference
   -- awful.key(
   --   {modkey},
@@ -450,15 +404,7 @@ local globalKeys =
   --   end,
   --   {description = "move to screen on the right", group = "client"}
   -- ),
-  ---- move to previous screen (not working)
-  -- awful.key(
-  --   {modkey},
-  --   'e',
-  --   function()
-  --     awful.client.movetoscreen(_G.client.focus.index - 1)
-  --   end,
-  --   {description = 'move window to previous screen', group = 'client'}
-  -- ),
+
   -- Open default program for tag
   awful.key(
     {modkey},
@@ -588,6 +534,34 @@ for i = 1, 9 do
     --     awful.spawn('rofi -combi-modi window,drun -show combi -modi combi')
     --   end,
     --   {description = 'Main menu', group = 'awesome'}
+    -- ),
+
+    -- Dropdown application
+    -- awful.key(
+    --   {modkey},
+    --   'z',
+    --   function()
+    --     _G.toggle_quake()
+    --   end,
+    --   {description = 'dropdown application', group = 'launcher'}
+    -- ),
+
+    -- -- Brightness
+    -- awful.key(
+    --   {},
+    --   'XF86MonBrightnessUp',
+    --   function()
+    --     awful.spawn('xbacklight -inc 10')
+    --   end,
+    --   {description = '+10%', group = 'hotkeys'}
+    -- ),
+    -- awful.key(
+    --   {},
+    --   'XF86MonBrightnessDown',
+    --   function()
+    --     awful.spawn('xbacklight -dec 10')
+    --   end,
+    --   {description = '-10%', group = 'hotkeys'}
     -- ),
   )
 end

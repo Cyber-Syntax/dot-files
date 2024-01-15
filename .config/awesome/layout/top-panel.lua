@@ -26,15 +26,15 @@ local clock_widget = wibox.container.margin(textclock, dpi(13), dpi(13), dpi(9),
 local month_calendar = awful.widget.calendar_popup.month({
   screen = s,
   start_sunday = false,
-  week_numbers = true
+  week_numbers = false
 })
 month_calendar:attach(textclock)
 
--- Update status widget
+-- Update status widget --
 local update_status_widget = wibox.widget.textbox()
 
 function update_status_widget_text()
-  local handle = io.popen('~/.config/awesome/updates-dnf.py')
+  local handle = io.popen('~/.config/awesome/dnf-update-status.py')
   local status = handle:read("*a")
   handle:close()
   update_status_widget.text = status
@@ -50,11 +50,52 @@ gears.timer.start_new(60, function() update_status_widget_text() return true end
 update_status_widget:buttons(
   awful.util.table.join(
     awful.button({}, 1, function()
-      awful.spawn('alacritty -e bash -c "~/.config/awesome/update_fedora.sh"')
+      awful.spawn('gnome-terminal -- bash -c "~/.config/awesome/update-dnf-flatpak.sh"')
+      -- Call the function again to update the text after the command has finished
+      update_status_widget_text()
     end)
   )
 )
--- ./updates-dnf.py
+-- ./update-dnf-flatpak.sh
+
+-- Volume widget for pipewire
+--local volume_widget = require('widget.volume-widget.volume')
+
+-- ./Volume widget for pipewire
+
+-- sink-change.sh script to see running sink and change when left mouse button clicked
+-- @param: --status = active sink
+-- @param: --change = change sink to next available
+
+-- Update status widget --
+local sink_status_widget = wibox.widget.textbox()
+
+function sink_status_widget_text()
+  local handle = io.popen('~/.config/awesome/sink-change.sh --status')
+  local status = handle:read("*a")
+  handle:close()
+
+  local sink, volume_level = status:match("(.-)\n(.*)")
+  status = sink .. " " .. volume_level
+
+  sink_status_widget.text = status
+end
+
+-- Call the function once to set the initial text
+sink_status_widget_text()
+
+-- Call the function periodically to update the text
+gears.timer.start_new(1, function() sink_status_widget_text() return true end)
+
+-- Add a left click event to the widget
+sink_status_widget:buttons(
+  awful.util.table.join(
+    awful.button({}, 1, function()
+      awful.spawn('gnome-terminal -- bash -c "~/.config/awesome/sink-change.sh --change"')
+    end)
+  )
+)
+-- ./sink-change.sh
 
 local add_button = mat_icon_button(mat_icon(icons.plus, dpi(24)))
 add_button:buttons(
@@ -116,7 +157,7 @@ local LayoutBox = function(s)
 end
 
 local TopPanel = function(s)
-  
+
     local panel =
     wibox(
     {
@@ -153,11 +194,17 @@ local TopPanel = function(s)
       nil,
       {
         layout = wibox.layout.fixed.horizontal,
-        update_status_widget,
-        wibox.container.margin(systray, dpi(3), dpi(3), dpi(6), dpi(3)),
         -- Layout box
         LayoutBox(s),
+        -- Sink Status
+        sink_status_widget,
+        wibox.container.margin(dpi(3), dpi(3), dpi(6), dpi(3)),
+        -- PipeWire Volume
         --volume_widget,
+        wibox.container.margin(dpi(3), dpi(3), dpi(6), dpi(3)),
+        -- DNF-FLATPAK Update Status
+        update_status_widget,
+        wibox.container.margin(systray, dpi(3), dpi(3), dpi(6), dpi(3)),
         -- Clock
         clock_widget,
 
