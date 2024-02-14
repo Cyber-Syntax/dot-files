@@ -2,6 +2,6 @@
 
 configuration {
   show-icons:         true;
-  icon-theme:         "Papirus-Dark";
+  icon-theme:         "Adwaita";
 }
 @import "$HOME/.config/awesome/theme/sidebar.rasi"

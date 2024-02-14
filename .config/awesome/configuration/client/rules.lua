@@ -5,15 +5,7 @@ local client_buttons = require('configuration.client.buttons')
 
 -- Rules
 awful.rules.rules = {
-  {
-    rule_any = {type = {'dialog'}, class = {'xdg-desktop-portal-gtk'}, name = {'Open Folder'} },
-    properties = {
-      ontop = false,
-      placement = awful.placement.centered,
-      floating = true,
-      skip_decoration = true
-    }
-  },
+
   {
     rule = {},
     properties = {
@@ -33,6 +25,22 @@ awful.rules.rules = {
       maximized_vertical = false
     }
   },
+
+  -- keepassxc floating and centered
+  {
+    rule = { class = "keepassxc" },
+    properties = {
+      floating = true,
+      placement = awful.placement.centered
+    }
+  },
+
+        -- Not working, need to find a way to make it work
+  -- -- rule for superproductivity to open on screen 3
+  --   { rule = { class = "superproductivity" },
+  --     properties = { screen = 3 }
+  --   },
+
   -- --Titlebars
   -- {
   --   rule_any = {type = {'dialog'}, class = {'Wicd-client.py', 'calendar.google.com'}},
@@ -49,4 +57,16 @@ awful.rules.rules = {
   --     skip_decoration = true
   --   }
   -- }
+
+    -- not working, need to find a way to make it work
+  -- {
+  --   rule_any = {type = {'dialog'}, class = {'xdg-desktop-portal-gtk'}, name = {'Open Folder'} },
+  --   properties = {
+  --     ontop = false,
+  --     placement = awful.placement.centered,
+  --     floating = true,
+  --     skip_decoration = true
+  --   }
+  -- },
+
 }

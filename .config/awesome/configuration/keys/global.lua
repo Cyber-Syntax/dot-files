@@ -1,22 +1,39 @@
 local awful = require('awful')
 require('awful.autofocus')
-local beautiful = require('beautiful')
-local hotkeys_popup = require('awful.hotkeys_popup').widget
+--local beautiful = require('beautiful')
+--local hotkeys_popup = require('awful.hotkeys_popup').widget
 
 local modkey = require('configuration.keys.mod').modKey
 local altkey = require('configuration.keys.mod').altKey
 local apps = require('configuration.apps')
+local xrandr = require('xrandr')
+
 -- Key bindings
 local globalKeys =
   awful.util.table.join(
-  -- Hotkeys
-  awful.key({modkey}, 'F1', hotkeys_popup.show_help, {description = 'Show help', group = 'awesome'}),
-  -- Tag browsing
-  --awful.key({modkey}, 'w', awful.tag.viewprev, {description = 'view previous', group = 'tag'}),
-  --awful.key({modkey}, 's', awful.tag.viewnext, {description = 'view next', group = 'tag'}),
-  --awful.key({altkey, 'Control'}, 'Up', awful.tag.viewprev, {description = 'view previous', group = 'tag'}),
-  --awful.key({altkey, 'Control'}, 'Down', awful.tag.viewnext, {description = 'view next', group = 'tag'}),
-  awful.key({modkey}, 'Escape', awful.tag.history.restore, {description = 'go back', group = 'tag'}),
+
+  -- xrandr
+  -- If the key is not pressed again within four seconds, the configuration described in the current popup is applied.
+  awful.key({}, "F1", function() xrandr.xrandr() end),
+
+  -- Use them with default rc.lua
+
+  -- Kill focused client
+  awful.key({ modkey}, "q",      function () if client.focus then client.focus:kill() end end,
+  {description = "close", group = "client"}),
+  -- Fullscreen window keybinding
+  awful.key({ modkey,           }, "f",
+  function ()
+    local c = client.focus
+    if c then
+        c.fullscreen = not c.fullscreen
+        c:raise()
+    end
+  end,
+  {description = "toggle fullscreen", group = "client"}),
+
+  -- default rc.lua
+
   -- rofi
   awful.key(
     {modkey},
@@ -53,9 +70,10 @@ local globalKeys =
     {description = 'siyuan', group = 'awesome'}
   ),
   -- Focus for screen
+
   awful.key(
     {modkey},
-    'a',
+    'd',
     function()
       awful.screen.focus_relative(1)
     end,
@@ -63,7 +81,7 @@ local globalKeys =
   ),
   awful.key(
     {modkey},
-    'd',
+    'a',
     function()
       awful.screen.focus_relative(-1)
     end,
@@ -156,41 +174,46 @@ local globalKeys =
     {description = 'stop', group = 'hotkeys'}
   ),
 
-  awful.key(
-    {altkey},
-    'space',
-    function()
-      awful.spawn('rofi -combi-modi window,drun -show combi -modi combi')
-    end,
-    {description = 'Show main menu', group = 'awesome'}
-  ),
-  -- awful.key(
-  --   {modkey, 'Shift'},
-  --   'r',
-  --   function()
-  --     awful.spawn('reboot')
-  --   end,
-  --   {description = 'Reboot Computer', group = 'awesome'}
-  -- ),
-  -- awful.key(
-  --   {modkey, 'Shift'},
-  --   's',
-  --   function()
-  --     awful.spawn('shutdown now')
-  --   end,
-  --   {description = 'Shutdown Computer', group = 'awesome'}
-  -- ),
-  -- awful.key(
-  --   {modkey, 'Shift'},
-  --   'l',
-  --   function()
-  --     _G.exit_screen_show()
-  --   end,
-  --   {description = 'Log Out Screen', group = 'awesome'}
-  -- ),
   awful.key({modkey}, 'u', awful.client.urgent.jumpto, {description = 'jump to urgent client', group = 'client'}),
+
+  -- Layout Changing (Max, Floating, Tiling)
   awful.key(
     {altkey},
+    'Tab',
+    function()
+      awful.layout.inc(1)
+    end,
+    {description = 'Select next', group = 'layout'}
+  ),
+
+  -- Screen management
+  awful.key(
+    {modkey},
+    'e',
+    -- use instead c:move_to_screen(s) because awful.client.movetoscreen is deprecated
+    function()
+      local c = _G.client.focus
+      local s = _G.client.focus.screen.index + 1
+      c:move_to_screen(s)
+    end,
+    {description = 'move window to next screen', group = 'client'}
+  ),
+  awful.key(
+    {modkey},
+    'w',
+    function()
+        local c = client.focus
+        local ns = client.focus.screen.index - 1
+        if client.focus then
+          c:move_to_screen(ns) -- awful.client.movetoscreen(client.focus, ns) -> deprecated
+        end
+    end,
+    {description = "move to screen on the left", group = "client"}
+  ),
+
+  -- Focus other windows while layout max
+  awful.key(
+    {modkey},
     'Tab',
     function()
       --awful.client.focus.history.previous()
@@ -214,7 +237,6 @@ local globalKeys =
     {description = 'Switch to previous window', group = 'client'}
   ),
   -- Programms
-
   awful.key(
     {modkey},
     'v',
@@ -231,195 +253,6 @@ local globalKeys =
     end,
     {description = 'Open a browser', group = 'launcher'}
   ),
-  -- Standard program
-  awful.key(
-    {modkey},
-    'Return',
-    function()
-      awful.spawn(apps.default.terminal)
-    end,
-    {description = 'Open a terminal', group = 'launcher'}
-  ),
-  awful.key({modkey, 'Control'}, 'r', _G.awesome.restart, {description = 'reload awesome', group = 'awesome'}),
-  awful.key({modkey, 'Control'}, 'q', _G.awesome.quit, {description = 'quit awesome', group = 'awesome'}),
-  awful.key(
-    {altkey, 'Shift'},
-    'Right',
-    function()
-      awful.tag.incmwfact(0.05)
-    end,
-    {description = 'Increase master width factor', group = 'layout'}
-  ),
-  awful.key(
-    {altkey, 'Shift'},
-    'Left',
-    function()
-      awful.tag.incmwfact(-0.05)
-    end,
-    {description = 'Decrease master width factor', group = 'layout'}
-  ),
-  awful.key(
-    {altkey, 'Shift'},
-    'Down',
-    function()
-      awful.client.incwfact(0.05)
-    end,
-    {description = 'Decrease master height factor', group = 'layout'}
-  ),
-  awful.key(
-    {altkey, 'Shift'},
-    'Up',
-    function()
-      awful.client.incwfact(-0.05)
-    end,
-    {description = 'Increase master height factor', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Shift'},
-    'Left',
-    function()
-      awful.tag.incnmaster(1, nil, true)
-    end,
-    {description = 'Increase the number of master clients', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Shift'},
-    'Right',
-    function()
-      awful.tag.incnmaster(-1, nil, true)
-    end,
-    {description = 'Decrease the number of master clients', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Control'},
-    'Left',
-    function()
-      awful.tag.incncol(1, nil, true)
-    end,
-    {description = 'Increase the number of columns', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Control'},
-    'Right',
-    function()
-      awful.tag.incncol(-1, nil, true)
-    end,
-    {description = 'Decrease the number of columns', group = 'layout'}
-  ),
-  awful.key(
-    {modkey},
-    'Tab',
-    function()
-      awful.layout.inc(1)
-    end,
-    {description = 'Select next', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Shift'},
-    'space',
-    function()
-      awful.layout.inc(-1)
-    end,
-    {description = 'Select previous', group = 'layout'}
-  ),
-  awful.key(
-    {modkey, 'Control'},
-    'n',
-    function()
-      local c = awful.client.restore()
-      -- Focus restored client
-      if c then
-        _G.client.focus = c
-        c:raise()
-      end
-    end,
-    {description = 'restore minimized', group = 'client'}
-  ),
-  -- Others
-  awful.key(
-    {modkey},
-    'l',
-    function()
-      awful.spawn(apps.default.lock)
-    end,
-    {description = 'Lock the screen', group = 'awesome'}
-  ),
-  awful.key(
-    {modkey},
-    'Print',
-    function()
-      awful.util.spawn_with_shell(apps.default.delayed_screenshot)
-    end,
-    {description = 'Mark an area and screenshot it 10 seconds later (clipboard)', group = 'screenshots (clipboard)'}
-  ),
-  awful.key(
-    {modkey},
-    'p',
-    function()
-      awful.util.spawn_with_shell(apps.default.screenshot)
-    end,
-    {description = 'Take a screenshot of your active monitor and copy it to clipboard', group = 'screenshots (clipboard)'}
-  ),
-  awful.key(
-    {altkey, 'Shift'},
-    'p',
-    function()
-      awful.util.spawn_with_shell(apps.default.region_screenshot)
-    end,
-    {description = 'Mark an area and screenshot it to your clipboard', group = 'screenshots (clipboard)'}
-  ),
-
-  -- Screen management
-  awful.key(
-    {modkey},
-    'w',
-    awful.client.movetoscreen,
-    {description = 'move window to next screen', group = 'client'}
-  ),
-  awful.key(
-    {modkey},
-    'e',
-    function()
-        local ns = client.focus.screen.index - 1
-        awful.client.movetoscreen(c, ns)
-    end,
-    {description = "move to screen on the left", group = "client"}
-  ),
-  awful.key(
-    {modkey},
-    'j',
-  function ()
-      awful.client.focus.bydirection("left")
-  end
-  ),
-
-
-  ---- Same with `awful.client.movetoscreen` but saved here for reference
-  -- awful.key(
-  --   {modkey},
-  --   'w',
-  --   function()
-  --       local ns = client.focus.screen.index + 1
-  --       awful.client.movetoscreen(c, ns)
-  --   end,
-  --   {description = "move to screen on the right", group = "client"}
-  -- ),
-
-  -- Open default program for tag
-  awful.key(
-    {modkey},
-    't',
-    function()
-      awful.spawn(
-          awful.screen.focused().selected_tag.defaultApp,
-          {
-            tag = _G.mouse.screen.selected_tag,
-            placement = awful.placement.bottom_right
-          }
-        )
-    end,
-    {description = 'Open default program for tag/workspace', group = 'tag'}
-  ),
 
   -- File Manager
   awful.key(
@@ -430,14 +263,38 @@ local globalKeys =
     end,
     {description = 'filebrowser', group = 'hotkeys'}
   ),
-  -- Emoji Picker
+
+  -- Standard program
   awful.key(
     {modkey},
-    'o',
+    'Return',
     function()
-      awful.util.spawn_with_shell('ibus emoji')
+      awful.spawn(apps.default.terminal)
     end,
-    {description = 'Open the ibus emoji picker to copy an emoji to your clipboard', group = 'hotkeys'}
+    {description = 'Open a terminal', group = 'launcher'}
+  ),
+  -- Awesome restart, quit
+  awful.key({modkey, 'Control'}, 'r', _G.awesome.restart, {description = 'reload awesome', group = 'awesome'}),
+  awful.key({modkey, 'Control'}, 'q', _G.awesome.quit, {description = 'quit awesome', group = 'awesome'}),
+
+  -- Lock screen
+  awful.key(
+    {modkey},
+    'l',
+    function()
+      awful.spawn(apps.default.lock)
+    end,
+    {description = 'Lock the screen', group = 'awesome'}
+  ),
+
+  -- Screenshot, flameshot
+  awful.key(
+    {},
+    'Print',
+    function()
+      awful.util.spawn_with_shell(apps.default.region_screenshot)
+    end,
+    {description = 'Mark an area and screenshot it to your clipboard', group = 'screenshots (clipboard)'}
   )
 )
 
@@ -510,6 +367,17 @@ for i = 1, 9 do
       end,
       descr_toggle_focus
     )
+  
+    --awful.key({modkey}, 'Escape', awful.tag.history.restore, {description = 'go back', group = 'tag'}),
+
+  -- Hotkeys
+  --awful.key({modkey}, 'F1', hotkeys_popup.show_help, {description = 'Show help', group = 'awesome'}),
+  -- Tag browsing
+  --awful.key({modkey}, 'w', awful.tag.viewprev, {description = 'view previous', group = 'tag'}),
+  --awful.key({modkey}, 's', awful.tag.viewnext, {description = 'view next', group = 'tag'}),
+  --awful.key({altkey, 'Control'}, 'Up', awful.tag.viewprev, {description = 'view previous', group = 'tag'}),
+  --awful.key({altkey, 'Control'}, 'Down', awful.tag.viewnext, {description = 'view next', group = 'tag'}),
+
     ---- Default client focus
     -- awful.key(
     --   {modkey},
@@ -563,6 +431,184 @@ for i = 1, 9 do
     --   end,
     --   {description = '-10%', group = 'hotkeys'}
     -- ),
+
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'r',
+  --   function()
+  --     awful.spawn('reboot')
+  --   end,
+  --   {description = 'Reboot Computer', group = 'awesome'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   's',
+  --   function()
+  --     awful.spawn('shutdown now')
+  --   end,
+  --   {description = 'Shutdown Computer', group = 'awesome'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'l',
+  --   function()
+  --     _G.exit_screen_show()
+  --   end,
+  --   {description = 'Log Out Screen', group = 'awesome'}
+  -- ),
+
+  -- awful.key(
+  --   {modkey},
+  --   'Print',
+  --   function()
+  --     awful.util.spawn_with_shell(apps.default.delayed_screenshot)
+  --   end,
+  --   {description = 'Mark an area and screenshot it 10 seconds later (clipboard)', group = 'screenshots (clipboard)'}
+  -- ),
+
+  -- awful.key(
+  --   {altkey, 'Shift'},
+  --   'Right',
+  --   function()
+  --     awful.tag.incmwfact(0.05)
+  --   end,
+  --   {description = 'Increase master width factor', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {altkey, 'Shift'},
+  --   'Left',
+  --   function()
+  --     awful.tag.incmwfact(-0.05)
+  --   end,
+  --   {description = 'Decrease master width factor', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {altkey, 'Shift'},
+  --   'Down',
+  --   function()
+  --     awful.client.incwfact(0.05)
+  --   end,
+  --   {description = 'Decrease master height factor', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {altkey, 'Shift'},
+  --   'Up',
+  --   function()
+  --     awful.client.incwfact(-0.05)
+  --   end,
+  --   {description = 'Increase master height factor', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'Left',
+  --   function()
+  --     awful.tag.incnmaster(1, nil, true)
+  --   end,
+  --   {description = 'Increase the number of master clients', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'Right',
+  --   function()
+  --     awful.tag.incnmaster(-1, nil, true)
+  --   end,
+  --   {description = 'Decrease the number of master clients', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Control'},
+  --   'Left',
+  --   function()
+  --     awful.tag.incncol(1, nil, true)
+  --   end,
+  --   {description = 'Increase the number of columns', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Control'},
+  --   'Right',
+  --   function()
+  --     awful.tag.incncol(-1, nil, true)
+  --   end,
+  --   {description = 'Decrease the number of columns', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Shift'},
+  --   'space',
+  --   function()
+  --     awful.layout.inc(-1)
+  --   end,
+  --   {description = 'Select previous', group = 'layout'}
+  -- ),
+  -- awful.key(
+  --   {modkey, 'Control'},
+  --   'n',
+  --   function()
+  --     local c = awful.client.restore()
+  --     -- Focus restored client
+  --     if c then
+  --       _G.client.focus = c
+  --       c:raise()
+  --     end
+  --   end,
+  --   {description = 'restore minimized', group = 'client'}
+  -- ),
+  -- Others
+
+  -- awful.key(
+  --   {modkey},
+  --   'p',
+  --   function()
+  --     awful.util.spawn_with_shell(apps.default.screenshot)
+  --   end,
+  --   {description = 'Take a screenshot of your active monitor and copy it to clipboard', group = 'screenshots (clipboard)'}
+  -- ),
+
+
+  -- awful.key(
+  --   {modkey},
+  --   'j',
+  -- function ()
+  --     awful.client.focus.bydirection("left")
+  -- end
+  -- ),
+
+  ---- Same with `awful.client.movetoscreen` but saved here for reference
+  -- awful.key(
+  --   {modkey},
+  --   'w',
+  --   function()
+  --       local ns = client.focus.screen.index + 1
+  --       awful.client.movetoscreen(c, ns)
+  --   end,
+  --   {description = "move to screen on the right", group = "client"}
+  -- ),
+
+  -- Open default program for tag
+  -- awful.key(
+  --   {modkey},
+  --   't',
+  --   function()
+  --     awful.spawn(
+  --         awful.screen.focused().selected_tag.defaultApp,
+  --         {
+  --           tag = _G.mouse.screen.selected_tag,
+  --           placement = awful.placement.bottom_right
+  --         }
+  --       )
+  --   end,
+  --   {description = 'Open default program for tag/workspace', group = 'tag'}
+  -- ),
+
+--   -- Emoji Picker
+--   awful.key(
+--     {modkey},
+--     'o',
+--     function()
+--       awful.util.spawn_with_shell('ibus emoji')
+--     end,
+--     {description = 'Open the ibus emoji picker to copy an emoji to your clipboard', group = 'hotkeys'}
+--   )
+-- )
+
   )
 end
 

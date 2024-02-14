@@ -58,7 +58,7 @@ local awesome_overrides =
     gears.shape.rounded_rect(cr, w, h, dpi(6))
   end
 
-  -- Layout
+  -- Layout (Tile, max, floating icons)
 
   theme.layout_max = theme.icons .. 'layouts/arrow-expand-all.png'
   theme.layout_tile = theme.icons .. 'layouts/view-quilt.png'

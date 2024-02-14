@@ -15,6 +15,7 @@ local systray = wibox.widget.systray()
   systray:set_horizontal(true)
   systray:set_base_size(20)
   systray.forced_height = 20
+-- ./Titus - Horizontal Tray
 
 -- Clock setup
 os.setlocale("tr_TR.UTF-8") -- Set the locale to Turkish
@@ -22,80 +23,87 @@ os.setlocale("tr_TR.UTF-8") -- Set the locale to Turkish
 local textclock = wibox.widget.textclock("%c") -- %c represents the date and time
 local clock_widget = wibox.container.margin(textclock, dpi(13), dpi(13), dpi(9), dpi(8))
 
--- Add a calendar (credits to kylekewley for the original code)
-local month_calendar = awful.widget.calendar_popup.month({
-  screen = s,
-  start_sunday = false,
-  week_numbers = false
-})
-month_calendar:attach(textclock)
+-- Open gnome calendar after clicking the clock_widget
+clock_widget:connect_signal("button::press", function(_, _, _, button)
+  if button == 1 then
+    awful.spawn("gnome-calendar")
+  end
+end)
+-- ./clock_widget
 
--- Update status widget --
-local update_status_widget = wibox.widget.textbox()
+-- pactl widget
 
-function update_status_widget_text()
-  local handle = io.popen('~/.config/awesome/dnf-update-status.py')
-  local status = handle:read("*a")
-  handle:close()
-  update_status_widget.text = status
-end
+local pactl_widget = require('widget.pactl-widget.volume')
 
--- Call the function once to set the initial text
-update_status_widget_text()
-
--- Call the function periodically to update the text
-gears.timer.start_new(60, function() update_status_widget_text() return true end)
-
--- Add a left click event to the widget
-update_status_widget:buttons(
-  awful.util.table.join(
-    awful.button({}, 1, function()
-      awful.spawn('gnome-terminal -- bash -c "~/.config/awesome/update-dnf-flatpak.sh"')
-      -- Call the function again to update the text after the command has finished
-      update_status_widget_text()
-    end)
-  )
-)
--- ./update-dnf-flatpak.sh
+-- ./pactl-widget
 
 -- Volume widget for pipewire
---local volume_widget = require('widget.volume-widget.volume')
+local volume_widget = require('widget.volume-widget.volume')
 
 -- ./Volume widget for pipewire
 
--- sink-change.sh script to see running sink and change when left mouse button clicked
--- @param: --status = active sink
--- @param: --change = change sink to next available
 
--- Update status widget --
-local sink_status_widget = wibox.widget.textbox()
+ -- Update status widget --
+ local update_status_widget = wibox.widget.textbox()
 
-function sink_status_widget_text()
-  local handle = io.popen('~/.config/awesome/sink-change.sh --status')
-  local status = handle:read("*a")
-  handle:close()
+ function update_status_widget_text()
+ local command = '~/.config/awesome/dnf-update-status.py'
+ awful.spawn.easy_async_with_shell(command, function(out)
+     update_status_widget.text = out
+ end)
+ end
 
-  local sink, volume_level = status:match("(.-)\n(.*)")
-  status = sink .. " " .. volume_level
+ -- Call the function once to set the initial text
+ update_status_widget_text()
 
-  sink_status_widget.text = status
-end
+ -- Call the function periodically to update the text
+ gears.timer.start_new(60, function() update_status_widget_text() return true end)
 
--- Call the function once to set the initial text
-sink_status_widget_text()
+ -- Add a left click event to the widget
+ update_status_widget:buttons(
+ awful.util.table.join(
+     awful.button({}, 1, function()
+     local command = 'gnome-terminal -- bash -c "~/.config/awesome/update-dnf-flatpak.sh"'
+     awful.spawn.easy_async_with_shell(command, function()
+         -- Call the function again to update the text after the command has finished
+         update_status_widget_text()
+     end)
+     end)
+ )
+ )
+ -- ./update-dnf-flatpak.sh
 
--- Call the function periodically to update the text
-gears.timer.start_new(1, function() sink_status_widget_text() return true end)
+ -- Sink Status widget
+ -- sink-change.sh script to see running sink and change when left mouse button clicked
+ -- @param: --status = active sink
+ -- @param: --change = change sink to next available
 
--- Add a left click event to the widget
-sink_status_widget:buttons(
-  awful.util.table.join(
-    awful.button({}, 1, function()
-      awful.spawn('gnome-terminal -- bash -c "~/.config/awesome/sink-change.sh --change"')
-    end)
-  )
-)
--- ./sink-change.sh
+ local sink_status_widget = wibox.widget.textbox()
+
+ function sink_status_widget_text()
+ local command = '~/.config/awesome/sink-change.sh --status'
+ awful.spawn.easy_async_with_shell(command, function(out)
+     local sink, volume_level = out:match("(.-)\n(.*)")
+     local status = sink .. " " .. volume_level
+     sink_status_widget.text = status
+ end)
+ end
+
+ -- Call the function once to set the initial text
+ sink_status_widget_text()
+
+ -- Call the function periodically to update the text
+ gears.timer.start_new(1, function() sink_status_widget_text() return true end)
+
+ -- Add a left click event to the widget
+ sink_status_widget:buttons(
+ awful.util.table.join(
+     awful.button({}, 1, function()
+     awful.spawn('gnome-terminal -- bash -c "~/.config/awesome/sink-change.sh --change"')
+     end)
+ )
+ )
+ -- ./sink-change.sh
 
 local add_button = mat_icon_button(mat_icon(icons.plus, dpi(24)))
 add_button:buttons(
@@ -185,29 +193,39 @@ local TopPanel = function(s)
     panel:setup {
       layout = wibox.layout.align.horizontal,
       {
+        -- Left widgets
         layout = wibox.layout.fixed.horizontal,
+
         -- Create a taglist widget
         TagList(s),
+
+        -- Create a tasklist widget
         TaskList(s),
-        add_button
+
+        -- add button for starting default application for that tag
+        --add_button
       },
       nil,
       {
+        -- Right widgets
         layout = wibox.layout.fixed.horizontal,
+
         -- Layout box
         LayoutBox(s),
+
         -- Sink Status
         sink_status_widget,
         wibox.container.margin(dpi(3), dpi(3), dpi(6), dpi(3)),
-        -- PipeWire Volume
-        --volume_widget,
-        wibox.container.margin(dpi(3), dpi(3), dpi(6), dpi(3)),
+
         -- DNF-FLATPAK Update Status
         update_status_widget,
         wibox.container.margin(systray, dpi(3), dpi(3), dpi(6), dpi(3)),
         -- Clock
         clock_widget,
 
+        -- PipeWire Volume
+        --volume_widget,
+        --pactl_widget,
       }
     }
 
@@ -215,3 +233,4 @@ local TopPanel = function(s)
 end
 
 return TopPanel
+

@@ -9,12 +9,12 @@
 # Background image script
 	exec --no-startup-id ~/Documents/repository/WallpaperChanger/main.py
 # XRANDR
-	exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh	
+	exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh
 # Swapping workspaces, Source: https://i3wm.org/docs/user-contributed/swapping-workspaces.html
 	exec --no-startup-id ~/.config/i3/i3-display-swap.sh
 # NVIDIA AUTO FAN for propriety driver (Not work for now)
-#	exec_always --no-startup-id ~/Documents/nvidia/nfancurve/temp.sh					
-					## ./SCRIPTS ##							
+	#exec_always --no-startup-id ~/Documents/nvidia/nfancurve/temp.sh
+					## ./SCRIPTS ##
 
 					## GNOME ##
 # lxpolkit for password ask e.g fedora media writer, backintime
@@ -32,16 +32,16 @@
 
 					## Other ##
 # Picom (transparent alacritty)
-	exec --no-startup-id picom -b
+	#exec --no-startup-id picom -b
 # Redshift
-	exec --no-startup-id redshift -m randr -l 48:28 -t 6300:3000
+	#exec --no-startup-id redshift -m randr -l 48:28 -t 6300:3000
+# gammastep
+	exec --no-startup-id gammastep -c ~/.config/gammastep/config.ini
 # NetworkManager
 	exec --no-startup-id nm-applet
 # Polybar
 	exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 					## ./Other ##
-					
-		
 
 
 # use Mouse+Mod4 to drag floating windows to their wanted position
@@ -53,11 +53,12 @@ tiling_drag modifier titlebar
 
 											## APPS ##
 	# start a terminal
-		bindsym Mod4+Return exec alacritty
+		bindsym Mod4+Return exec gnome-terminal
 	# Firefox, less = '<'
 		bindsym Mod4+less exec firefox
+
 		# autostart firefox
-		exec firefox
+			#exec firefox
 	# Files
 		bindsym Mod4+z exec nautilus
 	# Gnome setings
@@ -82,18 +83,20 @@ tiling_drag modifier titlebar
 	# nuclear
 		bindsym Mod4+n exec flatpak run org.js.nuclear.Nuclear
 	# ROFI
-#	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
-#	bindsym Mod4+r $executeRofi		
-#	set $mod Mod4
+		bindsym Mod4+r exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
+		bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-6/powermenu.sh
 
-	bindsym Mod4+r exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
-	bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-6/powermenu.sh
+		#	set $executeRofi exec --no-startup-id rofi -modi drun -show drun
+		#	bindsym Mod4+r $executeRofi
+		#	set $mod Mod4
+
+
 						## PulseAudio-pipewire ##
 # pipewire
-	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)					
-					## ./PulseAudio-pipewire ##			
+	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)
+					## ./PulseAudio-pipewire ##
 											## ./APPS ##
-	
+
 # USEFUL SHORTCUTS
 	# kill focused window
 		bindsym Mod4+q kill
@@ -107,50 +110,56 @@ tiling_drag modifier titlebar
 # toggle tiling / floating
 	bindsym Mod4+Shift+space floating toggle
 
+# change container layout (stacked, tabbed, toggle split)
+	# make tabbed layout default
+    	workspace_layout tabbed
+	# toggle between tabbed
+	bindsym Mod4+y layout tabbed
+
+#bindsym Mod4+p layout stacking
+#bindsym Mod4+y layout toggle split
+
 # enter fullscreen mode for the focused container
 	bindsym Mod4+f fullscreen toggle
 
  											## WORKSPACES ##
 # Workspace Monitor
-	workspace $ws1 output DP-0 DP-1
-#	workspace $ws4 output DP-0 DP-1
-#	workspace $ws6 output DP-0 DP-1
-#
+	workspace $ws1 output DP-0 DP-1x
 	workspace $ws2 output DP-2
-#	workspace $ws5 output DP-2
-#
 	workspace $ws3 output HDMI-0 HDMI-1
 
+#	workspace $ws4 output DP-0 DP-1
+#	workspace $ws6 output DP-0 DP-1
+#	workspace $ws5 output DP-2
 
-# SPECIFIC APPS START SPECIFIC WORKSPACE
-	assign [class="VSCode"] "1: Code"
-
-	assign [class="firefox"] "2: Web"
-	assign [class="Chromium"] "2: Web"
-
-	assign [class="superProductivity"] "3: Todo"
-	
-	assign [class="SiYuan"] "4: Notes"
-
-	assign [class="Nautilus"] "6: Files"
-	assign [class="nuclear"] "6: Files"
 
 # Focus apps after boot i3
-	for_window [urgent=latest class="firefox"] focus output DP-2
-	# try to add instance
-	for_window [urgent=latest class="superProductivity" instance="superproductivity"] focus output HDMI-0 HDMI-1
+	# Firefox focus
+		#for_window [urgent=latest class="firefox"] focus output DP-2
+	# superProductivity focus
+		for_window [urgent=latest class="superProductivity" instance="superproductivity"] focus workspace $ws3
 
 # SEND APPS LEFT TO RIGHT ETC.
 	bindsym Mod4+e exec i3-msg move window to output right
 	bindsym Mod4+w exec i3-msg move window to output left
 
+# SPECIFIC APPS START SPECIFIC WORKSPACE
+	assign [class="superProductivity"] "3"
+
+	# assign [class="VSCode"] "1: Code"
+
+	# assign [class="firefox"] "2: Web"
+	# assign [class="Chromium"] "2: Web"
+
+	# assign [class="SiYuan"] "4: Notes"
+
+	# assign [class="Nautilus"] "6: Files"
+	# assign [class="nuclear"] "6: Files"
+
 # Set workspace names
-	set $ws1 "1: Code"
-	set $ws2 "2: Web"
-	set $ws3 "3: Todo"
-	set $ws4 "4: Notes" 
-	set $ws5 "5: Chat" 
-	set $ws6 "6: Files" 
+	set $ws1 "1"
+	set $ws2 "2"
+	set $ws3 "3"
 
 # switch to workspace
 	bindsym Mod4+1 workspace number $ws1
@@ -172,10 +181,10 @@ tiling_drag modifier titlebar
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 	bindsym F1 restart
-	#bindsym Mod4+Shift+r restart
+	#bindsym Mod4+ctrl+r restart
 # exit i3 (logs you out of your X session)
 	set $executeExit exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-	bindsym Mod4+Shift+e $executeExit 
+	bindsym Mod4+Shift+e $executeExit
 
 # change focus between tiling / floating windows
 bindsym Mod4+space focus mode_toggle
@@ -193,13 +202,13 @@ bindsym Mod4+minus scratchpad show
 	bindsym Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
 
 # Titlebar, border colors
-# class                 border  backgr. text    indicator child_border
-client.focused          #0066ff #0066ff #ffffff #0066ff   #0066ff
-client.focused_inactive #333333 #333333 #ffffff #333333   #333333
-client.unfocused        #666666 #666666 #ffffff #666666   #666666
-client.urgent           #ff0000 #ff0000 #ffffff #ff0000   #ff0000
-client.placeholder      #666666 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #f0f0f0
+	# class                 border  backgr. text    indicator child_border
+	client.focused          #0066ff #0066ff #ffffff #0066ff   #0066ff
+	client.focused_inactive #333333 #333333 #ffffff #333333   #333333
+	client.unfocused        #666666 #666666 #ffffff #666666   #666666
+	client.urgent           #ff0000 #ff0000 #ffffff #ff0000   #ff0000
+	client.placeholder      #666666 #0c0c0c #ffffff #000000   #0c0c0c
+	client.background       #f0f0f0
 
 											## Multimedia ##
 
@@ -208,7 +217,7 @@ client.background       #f0f0f0
 	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 	bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status	
+	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Multimedia Keys
 	bindsym XF86AudioPlay exec playerctl play-pause
@@ -220,8 +229,8 @@ client.background       #f0f0f0
 	bindsym XF86AudioPrev exec playerctl previous
 
 	bindsym XF86AudioStop exec playerctl stop
-	
-											## ./Multimedia ##											
+
+											## ./Multimedia ##
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -247,8 +256,6 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym Mod4+ctrl+r mode "default"
 }
-
-bindsym Mod4+ctrl+r mode "resize"
 
 ## OTHER FOCUS
 
@@ -277,16 +284,37 @@ bindsym Mod4+ctrl+r mode "resize"
 	bindsym Mod4+Shift+Up move up
 	bindsym Mod4+Shift+Right move right
 
-# title bar
-for_window [class="^.*"] border pixel 3
+# title bar, rules
+	# floating rule for save as dialogs
+		# Evince and other who use same title
+			for_window [title="Save As"] floating enable border pixel 3 resize set 700 700 move position center
 
-gaps inner 15
-gaps outer 10
+	# Delete title bar
+		for_window [class="^.*"] border pixel 3
+
+	# enable window icons for all windows
+		for_window [all] title_window_icon on
+
+	# enable window icons for all windows with extra horizontal padding
+		for_window [all] title_window_icon padding 3px
+
+	# disable colored borders
+		smart_borders on
+
+	popup_during_fullscreen smart
+
+	force_display_urgency_hint 500 ms
+
+	focus_on_window_activation smart #smart|urgent|focus|none
+
+	# default border pixel width (gaps)
+		gaps inner 0
+		gaps outer 0
 
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-	font pango:DejaVu Sans Mono 8
+	font pango:Roboto Regular 11
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -303,11 +331,6 @@ gaps outer 10
 
 											## UNUSED ##
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym Mod4+p layout stacking
-bindsym Mod4+y layout tabbed
-#bindsym Mod4+y layout toggle split
-
 # focus the child container
 #bindsym Mod4+d focus child
 
@@ -319,4 +342,6 @@ bindsym Mod4+y layout tabbed
 
 # focus the parent container
 #bindsym Mod4+p focus parent
+
+#bindsym Mod4+ctrl+r mode "resize"
 
