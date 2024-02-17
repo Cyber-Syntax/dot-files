@@ -2,9 +2,9 @@
 # Then, you can use RGBA color codes to add transparency to the colors below.
 # For ex: colors = [["#282c34ee", "#282c34dd"], ...
 Dracula  = [
-    ["#282a36", "#282a36"], # bg
-    ["#f8f8f2", "#f8f8f2"], # fg
-    ["#000000", "#000000"], # color01
+    ["#282a36", "#282a36"], # bg      # dark-gray
+    ["#f8f8f2", "#f8f8f2"], # fg      # white
+    ["#000000", "#000000"], # color01 # black
     ["#ff5555", "#ff5555"], # color02 # red
     ["#50fa7b", "#50fa7b"], # color03 # green
     ["#f1fa8c", "#f1fa8c"], # color04 # yellow

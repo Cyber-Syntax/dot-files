@@ -1,16 +1,42 @@
+# Copyright (c) 2010 Aldo Cortesi
+# Copyright (c) 2010, 2014 dequis
+# Copyright (c) 2012 Randall Ma
+# Copyright (c) 2012-2014 Tycho Andersen
+# Copyright (c) 2012 Craig Barnes
+# Copyright (c) 2013 horsik
+# Copyright (c) 2013 Tao Sauvage
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import os
 import subprocess
-from libqtile import bar, extension, hook, layout, qtile, widget
+from libqtile import bar, extension, hook, layout, qtile
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
+# Import widget from qtile_extras instead of libqtile
 from qtile_extras import widget
+# Import colors
 import colors
-
 # Import the keybindings
-from keys import keys, mouse
-
-# Insert widget.py
-from widget import init_widgets_list
+from keys import *
+# Import widget.py
+from widget import *
 
 # Log location
 # ~/.local/share/qtile/qtile.log
@@ -23,9 +49,6 @@ groups = [
     Group("2", screen_affinity=0, layout="max"), # DP-2: primary monitor
     Group("3", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="max"), # HDMI-0: right monitor
 ]
-
-## Colors ##
-colors = colors.Dracula
 
 ## Layouts ##
 layout_theme = {"border_width": 2,
@@ -47,51 +70,6 @@ layouts = [
          margin = 0,
          ),
 ]
-
-## Widgets ##
-widget_defaults = dict(
-    font="Ubuntu Bold",
-    fontsize = 12,
-    padding = 0,
-    background=colors[0]
-)
-
-extension_defaults = widget_defaults.copy()
-
-## Widget definitions for per-screen widgets ##
-    # Primary screen will display everything
-    # systray can't be shown on all screens at the same time because qtiles doesn't support it
-def init_widgets_screen1():
-    widgets_screen1 = init_widgets_list()
-    return widgets_screen1
-
-# Secondary screen will display everything except the systray and spacer
-def init_widgets_screen2():
-    widgets_screen2 = init_widgets_list()
-    # Hide the systray and spacer
-    del widgets_screen2[22]
-    return widgets_screen2
-
-# Tertiary screen will display everything except the systray and spacer
-def init_widgets_screen3():
-    widgets_screen3 = init_widgets_list()
-    # Hide the systray and spacer
-    del widgets_screen3[22]
-    return widgets_screen3
-
-# Function to update the screens
-def init_screens():
-    return [Screen(top=bar.Bar(widgets=init_widgets_screen1(), size=30)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen2(), size=26)),
-            Screen(top=bar.Bar(widgets=init_widgets_screen3(), size=26))]
-
-# Update the screens
-if __name__ in ["config", "__main__"]:
-    screens = init_screens()
-    # @screen_num = 4 : I wanted to call else condition from "Visible groups per screen" section
-    widgets_list = init_widgets_list()
-    widgets_screen1 = init_widgets_screen1()
-    widgets_screen2 = init_widgets_screen3()
 
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
