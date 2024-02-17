@@ -12,7 +12,7 @@ widget_defaults = dict(
     fontsize=13,
     foreground=colors[7],
     background=colors[0],
-    padding=5,
+    padding=0,
 )
 
 extension_defaults = widget_defaults.copy()
@@ -85,6 +85,18 @@ screens = [
                     background = colors[0],
                     separator = ' | ',
                     selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                ),
+                widget.Mpris2(
+                fmt = '{}',
+                format = '{xesam:title} - {xesam:artist}',
+                foreground = colors[7],
+                paused_text = ' {track}',
+                playing_text = ' {track}',
+                scroll_fixed_width = False,
+                max_chars = 200,
+                separator = ', ',
+                stopped_text = '',
+                width=200,
                 ),
                 widget.Spacer(length = 8),
                 widget.CheckUpdates(
