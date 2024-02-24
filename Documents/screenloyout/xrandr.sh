@@ -1,13 +1,18 @@
 #!/bin/sh
 set -x # Enable verbose output for debugging
 
-systemctl --user import-environment DISPLAY XAUTHORITY
-
-if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-    dbus-update-activation-environment DISPLAY XAUTHORITY
+# systemctl --user import-environment DISPLAY XAUTHORITY
+#
+# if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+#     dbus-update-activation-environment DISPLAY XAUTHORITY
+# fi
+#
+# Check if the current DISPLAY is ":0" or not
+if [[ $DISPLAY == ":0" ]]; then
+    export DISPLAY=:0
+else
+    export DISPLAY=:1
 fi
-
-export DISPLAY=$(w -h $USER | awk '$2 ~ /:[0-9.]*/{print $2}')
 
 monitor_left="DP-0"
 monitor_center="DP-2"

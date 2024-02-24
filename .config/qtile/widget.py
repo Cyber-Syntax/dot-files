@@ -1,4 +1,4 @@
-from qtile_extras import widget
+#from qtile_extras import widget
 from libqtile import bar, extension, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
@@ -12,7 +12,7 @@ widget_defaults = dict(
     fontsize=13,
     foreground=colors[7],
     background=colors[0],
-    padding=0,
+    padding=1,
 )
 
 extension_defaults = widget_defaults.copy()
@@ -21,7 +21,7 @@ extension_defaults = widget_defaults.copy()
 pinned_apps = [
     ("", "flatpak run net.minetest.Minetest"),
     ("", "flatpak run org.telegram.desktop"),
-    ("", "chromium"),
+    ("", "flatpak run com.github.Eloston.UngoogledChromium"),
     ("", "flatpak run org.js.nuclear.Nuclear"),
     ("", "flatpak run com.tutanota.Tutanota"),
     ("", "nautilus"),
@@ -30,6 +30,8 @@ pinned_apps = [
     ("", "flatpak run io.freetubeapp.FreeTube"),
     ("", "firefox"),
     ("", "gnome-terminal"),
+    ("", "keepassxc"),
+    ("", "flameshot"),
 ]
 
 # Textbox widget to start pinned apps
@@ -43,6 +45,7 @@ app_widgets = [
     )
     for app_name, app_cmd in pinned_apps
 ]
+
 
 ## Screens ##
 screens = [
@@ -84,31 +87,31 @@ screens = [
                     foreground = colors[7],
                     background = colors[0],
                     separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
                 ),
-                widget.Mpris2(
-                fmt = '{}',
-                format = '{xesam:title} - {xesam:artist}',
-                foreground = colors[7],
-                paused_text = ' {track}',
-                playing_text = ' {track}',
-                scroll_fixed_width = False,
-                max_chars = 200,
-                separator = ', ',
-                stopped_text = '',
-                width=200,
-                ),
+                # widget.Mpris2(
+                # fmt = '{}',
+                # format = '{xesam:title} - {xesam:artist}',
+                # foreground = colors[7],
+                # paused_text = ' {track}',
+                # playing_text = ' {track}',
+                # scroll_fixed_width = False,
+                # max_chars = 200,
+                # separator = ', ',
+                # stopped_text = '',
+                # width=200,
+                # ),
                 widget.Spacer(length = 8),
                 widget.CheckUpdates(
                     fmt = '{}',
-                    distro = "Fedora",
+                    distro = "Arch_checkupdates",
                     update_interval = 60,
                     colour_have_updates = colors[6],
                     colour_no_updates = colors[7],
                     fontsize = 15,
                     display_format = ' {updates}',
                     no_update_string = '',
-                    execute = 'gnome-terminal -- bash -c "~/.config/qtile/scripts/update-dnf-flatpak.sh"',
+                    execute = 'kitty -- bash -c "~/.config/qtile/scripts/update-dnf-flatpak.sh"', # TODO: Make for Arch
                     #custom_command = "os.path.expanduser('~/.config/qtile/scripts/dnf-update-status.py')",
                 ),
                 widget.TextBox(
@@ -129,16 +132,32 @@ screens = [
                 widget.Spacer(length = 8),
                 widget.Volume(
                         foreground = colors[7],
-                        fmt = '🕫 {}',
-                        mouse_callbacks = {'Button3': lambda: qtile.spawn('gnome-terminal -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
+                        cardid = 0,
+                        channel = "Master",
+                        check_mute_command = "wpctl get-mute @DEFAULT_SINK@",
+                        get_volume_command = "wpctl get-volume @DEFAULT_SINK@",
+                        device = "default",
+                        fmt = ' {}',
+                        emoji = False,
+                        update_interval = 0.2,
+                        volume_app = "pavucontrol",
+                        mouse_callbacks = {'Button3': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
                         ),
                 widget.Spacer(length = 8),
                 widget.Clock(
                         foreground = colors[8],
-                        format = " %A %d/%m/%y %H:%M",
-                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+                        format = "  %A %d/%m/%y %H:%M",
+                        #mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')}, 
                         ),
                 widget.TextBox(
+                        text = '|',
+                        font = "Ubuntu Mono",
+                        foreground = colors[1],
+                        padding = 2,
+                        fontsize = 14
+                        ),
+              widget.Systray(padding = 3),
+            widget.TextBox(
                         text = '|',
                         font = "Ubuntu Mono",
                         foreground = colors[1],
@@ -154,6 +173,37 @@ screens = [
                         foreground = colors[1],
                         padding = 5
                         ),
+                widget.TextBox(
+                        text = '|',
+                        font = "Ubuntu Mono",
+                        foreground = colors[1],
+                        padding = 2,
+                        fontsize = 14
+                        ),      
+                # New custom widget to call my xrandr.sh script via mouse callback
+                widget.TextBox(
+                    text=" ",
+                    fontsize=16,
+                    foreground="#f8f8f2",
+                    background=colors[0],
+                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr.sh"))}                    
+                ),
+                widget.Spacer(length = 8),
+                # New custom widget to call my xrandr-movie.sh script via mouse callback
+                widget.TextBox(
+                    text=" ",
+                    fontsize=16,
+                    foreground="#f8f8f2",
+                    background=colors[0],
+                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
+                ),
+                widget.TextBox(
+                        text = '|',
+                        font = "Ubuntu Mono",
+                        foreground = colors[1],
+                        padding = 2,
+                        fontsize = 14
+                ),
             ],
             size=24  # Fix: Move the positional argument before the keyword argument
         )
@@ -173,7 +223,7 @@ screens = [
                     fmt = '{}',
                     foreground = colors[7],
                     separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                    selected = ('<b><span color="#8BE9FD">    ', '</span></b>'),
                 ),
                 widget.Spacer(length = 8),
                 widget.CPU(
@@ -211,7 +261,7 @@ screens = [
                         foreground = colors[5],
                         partition = '/',
                         format = '{r:.0f}%',
-                        fmt = '🖴 {}',
+                        fmt = ' {}',
                         visible_on_warn = False,
                         ),
                 widget.Spacer(length = 8),
@@ -230,24 +280,10 @@ screens = [
                         padding = 2,
                         fontsize = 14
                 ),
-                widget.Volume(
-                            # input device
-                            channel = "Capture",
-                            foreground = colors[1],
-                            fmt = ' {}',
-                            emoji = False,
-                            check_mute_string = '[off]', # '' icon not working
-                ),
-                widget.Spacer(length = 8),
-                widget.Volume(
-                        foreground = colors[7],
-                        fmt = '🕫 {}',
-                        mouse_callbacks = {'Button3': lambda: qtile.spawn('gnome-terminal -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
-                        ),
-                widget.Spacer(length = 8),
+                                widget.Spacer(length = 8),
                 widget.Clock(
                         foreground = colors[8],
-                        format = " %A %d/%m/%y %H:%M",
+                        format = "  %A %d/%m/%y %H:%M",
                         mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
                         ),
                 widget.TextBox(
@@ -273,7 +309,6 @@ screens = [
                         padding = 2,
                         fontsize = 14
                 ),
-                widget.Systray(padding = 3),
             ],
             size=20
         )
@@ -293,7 +328,7 @@ screens = [
                     fmt = '{}',
                     foreground = colors[7],
                     separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
                 ),
                 widget.TextBox(
                         text = '|',
@@ -304,7 +339,7 @@ screens = [
                 ),
                 widget.Clock(
                         foreground = colors[8],
-                        format = " %A %d/%m/%y %H:%M",
+                        format = "  %A %d/%m/%y %H:%M",
                         mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
                         ),
                 widget.TextBox(

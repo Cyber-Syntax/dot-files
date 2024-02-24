@@ -17,7 +17,7 @@ keys = [
         # vscode
         Key([mod], "v", lazy.spawn("flatpak run com.visualstudio.code"), desc="vscode"),
         # gnome-terminal
-        Key([mod], "Return", lazy.spawn("gnome-terminal"), desc="Launch terminal"),
+        Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
         # firefox
         Key([mod], "less", lazy.spawn("firefox"), desc="Launch terminal"),
         # siyuan
@@ -38,6 +38,9 @@ keys = [
         Key([mod], "t", lazy.window.toggle_floating(), desc='toggle floating'),
         Key([mod], "f", lazy.window.toggle_fullscreen(), desc='toggle fullscreen'),
         Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+
+    # Change layout
+    Key([mod], "space", lazy.next_layout(), desc="Toggle between layouts"),
 
     # Focus, Send windows..
         Key([mod], "w", send_left),

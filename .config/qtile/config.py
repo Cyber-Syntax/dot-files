@@ -26,11 +26,11 @@
 
 import os
 import subprocess
-from libqtile import bar, extension, hook, layout, qtile
+from libqtile import bar, extension, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 # Import widget from qtile_extras instead of libqtile
-from qtile_extras import widget
+#from qtile_extras import widget
 # Import colors
 import colors
 # Import the keybindings
