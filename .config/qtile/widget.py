@@ -61,7 +61,7 @@ screens = [
                 ## groups, e.g workspaces
                 widget.GroupBox(
                          # DP-2: 2,4,6,8
-                        visible_groups=['2', '4', '6', '8'],
+                         #visible_groups=['2', '4', '6', '8'],
                          fontsize = 11,
                          margin_y = 5,
                          margin_x = 5,
@@ -124,8 +124,25 @@ screens = [
                             threshold = 60,
                             foreground_alert='ff6000',
                             ),
-               widget.Spacer(length = 8),
-                widget.DF(
+ 
+                widget.Spacer(length = 8),
+                widget.NvidiaSensors(
+                            foreground = 'ffffff',
+                            fmt = ' {}',
+                            update_interval = 2,
+                            threshold = 60,
+                            foreground_alert='ff6000',
+                            ),
+                widget.Spacer(length = 8),
+                widget.Memory(
+                        foreground = colors[8],
+                        measure_mem='G',
+                        #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
+                        format = '{MemUsed:.0f}{mm}/{MemTotal:.0f}{mm}',
+                        fmt = ' {}',
+                        ),
+                widget.Spacer(length = 8),
+              widget.DF(
                         update_interval = 60,
                         foreground = colors[5],
                         partition = '/',
@@ -158,7 +175,7 @@ screens = [
                     colour_have_updates = colors[6],
                     colour_no_updates = colors[7],
                     fontsize = 15,
-                    display_format = ' {updates}',
+                    display_format = 'Arch:{updates}',
                     no_update_string = '',
                 ),
                 widget.TextBox(
@@ -238,30 +255,23 @@ screens = [
                         padding = 2,
                         fontsize = 14
                         ),      
-                # New custom widget to call my xrandr.sh script via mouse callback
-                widget.TextBox(
-                    text=" ",
-                    fontsize=16,
-                    foreground="#f8f8f2",
-                    background=colors[0],
-                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr.sh"))}                    
-                ),
-                widget.Spacer(length = 8),
-                # New custom widget to call my xrandr-movie.sh script via mouse callback
-                widget.TextBox(
-                    text=" ",
-                    fontsize=16,
-                    foreground="#f8f8f2",
-                    background=colors[0],
-                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
-                ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                ),
+                # # New custom widget to call my xrandr.sh script via mouse callback
+                # widget.TextBox(
+                #     text=" ",
+                #     fontsize=16,
+                #     foreground="#f8f8f2",
+                #     background=colors[0],
+                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr.sh"))}                    
+                # ),
+                # widget.Spacer(length = 8),
+                # # New custom widget to call my xrandr-movie.sh script via mouse callback
+                # widget.TextBox(
+                #     text=" ",
+                #     fontsize=16,
+                #     foreground="#f8f8f2",
+                #     background=colors[0],
+                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
+                # ),
             ],
             size=24  # Fix: Move the positional argument before the keyword argument
         )
@@ -372,91 +382,76 @@ screens = [
     #         size=20
     #     )
     # ),
-    # DP-0: left monitor
-    Screen(
-        top=bar.Bar(
-            widgets=[
-                ## groups, e.g workspaces
-                widget.GroupBox(
-                         #visible_groups=visible_groups,
-                        visible_groups=['1', '3', '5', '7', '9'],
-                         fontsize = 11,
-                         margin_y = 5,
-                         margin_x = 5,
-                         padding_y = 0,
-                         padding_x = 1,
-                         borderwidth = 3,
-                         active = colors[8],
-                         inactive = colors[1],
-                         rounded = False,
-                         highlight_color = colors[2],
-                         highlight_method = "line",
-                         this_current_screen_border = colors[7],
-                         this_screen_border = colors [4],
-                         other_current_screen_border = colors[7],
-                         other_screen_border = colors[4],
-                         ),
- 
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
-                widget.WindowTabs(
-                    fmt = '{}',
-                    foreground = colors[7],
-                    separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
-                ),
-                widget.Spacer(length = 8),
-                widget.NvidiaSensors(
-                            foreground = 'ffffff',
-                            fmt = ' {}',
-                            update_interval = 2,
-                            threshold = 60,
-                            foreground_alert='ff6000',
-                            ),
-                widget.Spacer(length = 8),
-                widget.Memory(
-                        foreground = colors[8],
-                        measure_mem='G',
-                        #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
-                        format = '{MemUsed:.0f}{mm}/{MemTotal:.0f}{mm}',
-                        fmt = ' {}',
-                        ),
- 
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                ),
-                widget.Clock(
-                        foreground = colors[8],
-                        format = "  %A %d/%m/%y %H:%M",
-                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-                        ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
-                widget.CurrentLayoutIcon(
-                        foreground = colors[1],
-                        padding = 4,
-                        scale = 0.6
-                        ),
-                widget.CurrentLayout(
-                        foreground = colors[1],
-                        padding = 5
-                        ),
-            ],
-            size=22
-        )
-    ),
+ #    # DP-0: left monitor
+ #    Screen(
+ #        top=bar.Bar(
+ #            widgets=[
+ #                ## groups, e.g workspaces
+ #                widget.GroupBox(
+ #                         #visible_groups=visible_groups,
+ #                        visible_groups=['1', '3', '5', '7', '9'],
+ #                         fontsize = 11,
+ #                         margin_y = 5,
+ #                         margin_x = 5,
+ #                         padding_y = 0,
+ #                         padding_x = 1,
+ #                         borderwidth = 3,
+ #                         active = colors[8],
+ #                         inactive = colors[1],
+ #                         rounded = False,
+ #                         highlight_color = colors[2],
+ #                         highlight_method = "line",
+ #                         this_current_screen_border = colors[7],
+ #                         this_screen_border = colors [4],
+ #                         other_current_screen_border = colors[7],
+ #                         other_screen_border = colors[4],
+ #                         ),
+ # 
+ #                widget.TextBox(
+ #                        text = '|',
+ #                        font = "Ubuntu Mono",
+ #                        foreground = colors[1],
+ #                        padding = 2,
+ #                        fontsize = 14
+ #                        ),
+ #                widget.WindowTabs(
+ #                    fmt = '{}',
+ #                    foreground = colors[7],
+ #                    separator = ' | ',
+ #                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
+ #                ),
+ #
+ #                widget.TextBox(
+ #                        text = '|',
+ #                        font = "Ubuntu Mono",
+ #                        foreground = colors[1],
+ #                        padding = 2,
+ #                        fontsize = 14
+ #                ),
+ #                widget.Clock(
+ #                        foreground = colors[8],
+ #                        format = "  %A %d/%m/%y %H:%M",
+ #                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+ #                        ),
+ #                widget.TextBox(
+ #                        text = '|',
+ #                        font = "Ubuntu Mono",
+ #                        foreground = colors[1],
+ #                        padding = 2,
+ #                        fontsize = 14
+ #                        ),
+ #                widget.CurrentLayoutIcon(
+ #                        foreground = colors[1],
+ #                        padding = 4,
+ #                        scale = 0.6
+ #                        ),
+ #                widget.CurrentLayout(
+ #                        foreground = colors[1],
+ #                        padding = 5
+ #                        ),
+ #            ],
+ #            size=22
+ #        )
+ #    ),
+    #./end-DP-0
 ]
