@@ -41,14 +41,28 @@ from widget import *
 # Log location
 # ~/.local/share/qtile/qtile.log
 
+# @param: screen_affinity: monitor to display the group on
+# @param: group: the group to display on the monitor
 # DP-0   left monitor    :   screen_affinity=2, group 1
 # DP-2   primary monitor :   screen_affinity=0, group 2
-# HDMI-0 right monitor   :   screen_affinity=1, group 3
+#### HDMI-0 right monitor   :   screen_affinity=1, group 3 ## Undetached
 groups = [
-    Group("1", screen_affinity=2, layout="max"), # DP-0: left monitor
-    Group("2", screen_affinity=0, layout="max"), # DP-2: primary monitor
-    Group("3", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="max"), # HDMI-0: right monitor
+    Group("1", screen_affinity=2, matches=[Match(wm_class="superproductivity")], layout="max", init=True), # DP-0: left monitor
+    Group("2", screen_affinity=0, layout="max", init=True), # DP-2: primary monitor
+    Group("3", screen_affinity=2, layout="max"), # DP-0: left monitor
+    Group("4", screen_affinity=0, layout="max"),
+    Group("5", screen_affinity=2, layout="max"),
+    Group("6", screen_affinity=0, layout="max"),
+    Group("7", screen_affinity=2, layout="max"),
+    Group("8", screen_affinity=0, layout="max"),
+    Group("9", screen_affinity=2, layout="max"),
 ]
+# Add groups to keybindings, e.g to switch to group 1 use mod+1
+#TODO: Fix, sending other workspace not work as expected
+# Cause: when sending window from dp-0 to dp-2,mod+shift+4 -> it can't send correctly because we didn't handle the screen_affinity
+for i in groups:
+    keys.append(Key([mod], i.name, lazy.group[i.name].toscreen()) )
+    keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name))),
 
 ## Layouts ##
 layout_theme = {"border_width": 2,
@@ -59,13 +73,13 @@ layout_theme = {"border_width": 2,
 
 layouts = [
     layout.MonadTall(**layout_theme),
-    layout.Tile(
-         shift_windows=True,
-         border_width = 0,
-         margin = 0,
-         ratio = 0.335,
-         ),
-    layout.Max(
+#     layout.Tile(
+#          shift_windows=True,
+#          border_width = 0,
+#          margin = 0,
+#          ratio = 0.335,
+#          ),
+     layout.Max(
          border_width = 0,
          margin = 0,
          ),
@@ -86,6 +100,8 @@ floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
+        # keepassxc
+        Match(wm_class='keepassxc'),
         Match(wm_class="confirmreset"),   # gitk
         Match(wm_class="dialog"),         # dialog boxes
         Match(wm_class="download"),       # downloads

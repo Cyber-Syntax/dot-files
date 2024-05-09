@@ -1,7 +1,7 @@
 import os
 from libqtile.lazy import lazy
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
-from functions import send_left, send_right, focus_left, focus_right
+from functions import send_left, send_right, focus_left, focus_right, cycle_groups
 
 ## Keybindings ##
 mod = "mod4"              # Sets mod key to SUPER/WINDOWS
@@ -12,6 +12,7 @@ mouse = [
     Click([mod], "Button1", lazy.window.bring_to_front()),
 ]
 
+
 keys = [
     ## APPS ##
         # vscode
@@ -19,16 +20,20 @@ keys = [
         # gnome-terminal
         Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
         # firefox
-        Key([mod], "less", lazy.spawn("firefox"), desc="Launch terminal"),
+        #Key([mod], "less", lazy.spawn("firefox"), desc="Launch terminal"),
+        # brave browser
+        Key([mod], "less", lazy.spawn(os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")), desc="Launch brave"),
         # siyuan
         Key([mod], "s", lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")), desc="Launch siyuan"),
         # nautilus
-        Key([mod], "z", lazy.spawn("nautilus"), desc="Launch nautilus"),
+        Key([mod], "z", lazy.spawn("pcmanfm"), desc="Launch pcmanfm"),
 
     ## Custom Rofi Scripts ##
         Key([mod], "r", lazy.spawn(os.path.expanduser("~/.config/rofi/launchers/type-6/launcher.sh")), desc="Spawn a command using a prompt widget"),
         Key([mod], "x", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu/type-6/powermenu.sh")), desc="Spawn a command using a prompt widget"),
         Key([mod], "m", lazy.spawn("pactl set-default-sink $(pactl list short sinks |awk '{print $2}' | rofi -dmenu)"), desc="Spawn a command using a prompt widget"),
+    ## i3lock ##
+    Key([mod, "shift"], "l", lazy.spawn("i3lock"), desc="Lock the screen"),
 
     ## Qtile Controls ##
         Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
@@ -49,12 +54,14 @@ keys = [
         Key([mod], "d", focus_right),
 
         # Change focus of windows when layout is Max
-        Key([mod], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
+        Key([mod, "shift"], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
+        # cycle through the groups with the same screen_affinity
+        Key([mod], "Tab", cycle_groups),
 
     # Multimedia keys
         Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
-        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%")),
-        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%")),
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%")),
         Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
         Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
         Key([], "XF86AudioPrev", lazy.spawn("playerctl previous")),

@@ -96,7 +96,18 @@ volume_level() {
     if [ "$is_muted" = "muted" ]; then
         echo "Muted"
     else
-        echo "$level"
+        # Print default sink name
+        if [ "$running_sink" = "1" ]; then
+            echo "Headset": $level                    
+        elif [ "$running_sink" = "2" ]; then
+            echo "DP-1": $level
+        elif [ "$running_sink" = "3" ]; then
+            echo "DP-2": $level
+        elif [ "$running_sink" = "4" ]; then
+            echo "DP-0": $level
+        fi
+
+        # Print the volume level
     fi
 }
 
