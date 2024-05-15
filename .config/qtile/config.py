@@ -48,13 +48,12 @@ from widget import *
 #### HDMI-0 right monitor   :   screen_affinity=1, group 3 ## Undetached
 groups = [
     ## 1 monitor setup
-    Group("1", screen_affinity=0, layout="MonadTall", matches=[Match(wm_class=['Firefox', 'brave', 'google-chromium'])], init=True, label=""),
+    Group("1", screen_affinity=0, layout="max", matches=[Match(wm_class=['firefox-browser', 'brave-browser', 'chromium-browser'])],  label=""),
     Group("2", screen_affinity=0, layout="max", label=""),
     Group("3", screen_affinity=0, layout="max", matches=[Match(wm_class=['siyuan', 'SiYuan'])], label=""),
-    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
-    Group("5", screen_affinity=0, layout="MonadTall", label="", matches=[Match(wm_class=['pcmanfm', 'libreoffice', 'calibre'])]),
+    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label="", init=True),
+    Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=['pcmanfm', 'libreoffice', 'calibre'])]),
     Group("6", screen_affinity=0, layout="max", label="", matches=[Match(wm_class="nuclear")]),
-    Group("7", screen_affinity=0, layout="max", matches=[Match(wm_class="telegram")], label=""),
     ## 2 monitor setup
     # Group("1", screen_affinity=2, matches=[Match(wm_class="superproductivity")], layout="max", init=True), # DP-0: left monitor
     # Group("2", screen_affinity=0, layout="max", init=True), # DP-2: primary monitor

@@ -21,3 +21,4 @@ gammastep & # redshift alternative (works wayland and xorg)
 python3 /home/developer/Documents/repository/WallpaperChanger/main.py & # My wallpaper changer script
 /home/developer/Documents/screenloyout/xrandr.sh & # My screen layout script
 keepassxc & # password manager
+/home/developer/Documents/appimages/siyuan.AppImage & # note taking app

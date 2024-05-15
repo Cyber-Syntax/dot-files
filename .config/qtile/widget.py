@@ -147,7 +147,7 @@ screens = [
                         foreground = colors[5],
                         partition = '/',
                         format = '{r:.0f}%',
-                        fmt = ' {}',
+                        fmt = 'R:{}',
                         visible_on_warn = False,
                         ),
                 widget.Spacer(length = 8),
@@ -156,7 +156,26 @@ screens = [
                     foreground = colors[5],
                     partition = '/home',
                     format = '{r:.0f}%',
-                    fmt = ' {}',
+                    fmt = 'H:{}',
+                    visible_on_warn = False,
+                    ),
+
+                widget.Spacer(length = 8),
+                widget.DF(
+                    update_interval = 60,
+                    foreground = colors[5],
+                    partition = '/nix',
+                    format = '{r:.0f}%',
+                    fmt = 'Nix:{}',
+                    visible_on_warn = False,
+                    ),
+                widget.Spacer(length = 8),
+                widget.DF(
+                    update_interval = 60,
+                    foreground = colors[5],
+                    partition = '/mnt/backups',
+                    format = '{r:.0f}%',
+                    fmt = 'Backups:{}',
                     visible_on_warn = False,
                     ),
                 widget.TextBox(
@@ -166,6 +185,7 @@ screens = [
                         padding = 2,
                         fontsize = 14
                 ),
+
                 widget.Spacer(length = 8),
                 # TODO: Debug
                 widget.CheckUpdates(
