@@ -51,9 +51,10 @@ groups = [
     Group("1", screen_affinity=0, layout="max", matches=[Match(wm_class=['firefox-browser', 'brave-browser', 'chromium-browser'])],  label=""),
     Group("2", screen_affinity=0, layout="max", label=""),
     Group("3", screen_affinity=0, layout="max", matches=[Match(wm_class=['siyuan', 'SiYuan'])], label=""),
-    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label="", init=True),
-    Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=['pcmanfm', 'libreoffice', 'calibre'])]),
-    Group("6", screen_affinity=0, layout="max", label="", matches=[Match(wm_class="nuclear")]),
+    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
+    #Group("5", screen_affinity=0, layout="max", label=""),
+    Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class="nuclear")]),
+    
     ## 2 monitor setup
     # Group("1", screen_affinity=2, matches=[Match(wm_class="superproductivity")], layout="max", init=True), # DP-0: left monitor
     # Group("2", screen_affinity=0, layout="max", init=True), # DP-2: primary monitor
@@ -66,8 +67,6 @@ groups = [
     # Group("9", screen_affinity=2, layout="max"),
 ]
 # Add groups to keybindings, e.g to switch to group 1 use mod+1
-#TODO: Fix, sending other workspace not work as expected
-# Cause: when sending window from dp-0 to dp-2,mod+shift+4 -> it can't send correctly because we didn't handle the screen_affinity
 for i in groups:
     keys.append(Key([mod], i.name, lazy.group[i.name].toscreen()) )
     keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name))),
@@ -93,22 +92,66 @@ layouts = [
          ),
 ]
 
-dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
-bring_front_click = False
 
-# Take mouse focus with window while focusing or moving windows
-cursor_warp = True
-follow_mouse_focus = True
 
 ## Rules ##
+
+# # Define the rules for the window to be placed in the group
+# @hook.subscribe.client_focus
+# def float_to_front(qtile):
+#     for group in qtile.groups:
+#         for window in group.windows:
+#             if window.floating:
+#                 window.cmd_bring_to_front()
+
+# # Focus superproductivity when dunst notification came
+# @hook.subscribe.client_new
+# def focus_group_on_notification(window):
+#     # Define the application name for which you want to focus the group on notifications
+#     app_name = "superproductivity"
+#
+#     # Check if the window belongs to the specified application
+#     if window.window.get_wm_class() == app_name:
+#         # Check if a notification from the specified application is currently being displayed
+#         notification_active = qtile.spawn_process.poll() is not None
+#
+#         if notification_active:
+#             # Find the group (workspace) where you want to focus
+#             lazy.group["4"].toscreen()
+    
+
+# @hook.subscribe.client_new
+# def dialogs(window):
+#     if(window.window.get_wm_type() == 'dialog'
+#         or window.window.get_wm_transient_for()):
+#         window.floating = True
+#
+# @hook.subscribe.client_new
+# def idle_dialogues(window):
+#     if((window.window.get_name() == 'Search Dialog') or
+#       (window.window.get_name() == 'Module') or
+#       (window.window.get_name() == 'Goto') or
+#       (window.window.get_name() == 'IDLE Preferences')):
+#         window.floating = True
+#
+# @hook.subscribe.client_new
+# def libreoffice_dialogues(window):
+#     if((window.window.get_wm_class() == ('VCLSalFrame', 'libreoffice-calc')) or
+#     (window.window.get_wm_class() == ('VCLSalFrame', 'LibreOffice 3.4'))):
+#         window.floating = True
+
 floating_layout = layout.Floating(
+    auto_float_types=[
+      "notification",
+      "toolbar",
+      "splash",
+      "dialog",
+    ],
     border_focus=colors[8],
     border_width=2,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
-        # keepassxc
         Match(wm_class='keepassxc'),
         Match(wm_class="confirmreset"),   # gitk
         Match(wm_class="dialog"),         # dialog boxes
@@ -134,9 +177,17 @@ floating_layout = layout.Floating(
     ]
 )
 auto_fullscreen = True
+#focus: urgent, smart, focus, or None
 focus_on_window_activation = "smart"
 reconfigure_screens = True
+bring_front_click = False
+dgroups_key_binder = None
+dgroups_app_rules = []  # type: list
+bring_front_click = False
 
+# Take mouse focus with window while focusing or moving windows
+cursor_warp = True
+follow_mouse_focus = True
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
 auto_minimize = True

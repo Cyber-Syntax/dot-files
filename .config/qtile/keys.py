@@ -48,8 +48,8 @@ keys = [
         Key([mod], 'd',     lazy.layout.down()),
         Key([mod], 'a',     lazy.layout.up()),
         ## change window location up or down
-        Key([mod], 'k',  lazy.layout.shuffle_down()),
-        Key([mod], 'j',  lazy.layout.shuffle_up()),
+        Key([mod], 'w',  lazy.layout.shuffle_down()),
+        Key([mod], 'e',  lazy.layout.shuffle_up()),
 
         ## Change focus of windows when layout is Max
         Key([mod, "shift"], "Tab", lazy.layout.next(), desc="Move window focus to other window"),

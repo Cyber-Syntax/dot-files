@@ -14,7 +14,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 -- Declarative object management
-local ruled = require("ruled")
+--local ruled = require("ruled")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
@@ -343,11 +343,11 @@ ruled.client.connect_signal("request::rules", function()
         properties = { titlebars_enabled = true      }
     }
 
-    -- Set superproductivity to always on the tag name "1" on screen 3.
-    ruled.client.append_rule {
-        rule       = { class = "superproductivity" },
-        properties = { screen = 3, tag = "1" }
-    }
+    -- -- Set superproductivity to always on the tag name "1" on screen 3.
+    -- ruled.client.append_rule {
+    --     rule       = { class = "superproductivity" },
+    --     properties = { screen = 3, tag = "1" }
+    -- }
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- ruled.client.append_rule {
