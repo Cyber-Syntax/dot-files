@@ -7,11 +7,22 @@ Dracula  = [
     ["#000000", "#000000"], # color01 # black
     ["#ff5555", "#ff5555"], # color02 # red
     ["#50fa7b", "#50fa7b"], # color03 # green
-    ["#f1fa8c", "#f1fa8c"], # color04 # yellow
+    ["#f1fa8c", "#f1fa8c"], # color04 # yellow -> 5
     ["#bd93f9", "#bd93f9"], # color05 # purple
     ["#ff79c6", "#ff79c6"], # color06 # pink
     ["#8BE9FD", "#8BE9FD"]  # color15 # cyan
     ]
+Mocha  = [
+    ["#1e1e2e", "#1e1e2e"], # bg
+    ["#cdd6f4", "#cdd6f4"], # fg
+    ["#f5e0dc", "#f5e0dc"], # color01
+    ["#f38ba8", "#f38ba8"], # color02
+    ["#a6e3a1", "#a6e3a1"], # color03
+    ["#f9e2af", "#f9e2af"], # color04
+    ["#cba6f7", "#cba6f7"], # color05
+    ["#f5c2e7", "#f5c2e7"], # color06
+    ["#94e2d5", "#94e2d5"], # color07
+    ] 
 
 Nord = [
     ["#2E3440", "#2E3440"], # bg

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-COLORSCHEME=Nord
+COLORSCHEME=Mocha
 
 ### AUTOSTART PROGRAMS ###
 ##Not work on nixos
@@ -11,14 +11,16 @@ xset s off & # disable screen saver
 # ##Disable beep
 # xset b off &
 
-picom & # compositor
-#numlockx on &
+picom -b & # compositor
+numlockx on &
+nm-applet & # network manager applet
 #lxpolkit & # polkit agent
 setxkbmap tr &
 polkit &
 gammastep & # redshift alternative (works wayland and xorg)
-/home/developer/Documents/appimages/super-productivity.AppImage & # task manager app
-python3 /home/developer/Documents/repository/WallpaperChanger/main.py & # My wallpaper changer script
-/home/developer/Documents/screenloyout/xrandr.sh & # My screen layout script
+/home/developer/Documents/appimages/super-productivity.AppImage &
+python3 /home/developer/Documents/repository/WallpaperChanger/main.py & 
+sh /home/developer/Documents/screenloyout/xrandr.sh & # My screen layout script
 keepassxc & # password manager
-/home/developer/Documents/appimages/siyuan.AppImage & # note taking app
+syncthing-tray & # syncthing tray app
+nextcloud & # nextcloud client

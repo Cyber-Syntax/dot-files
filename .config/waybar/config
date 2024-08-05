@@ -11,7 +11,7 @@
         "modules-right": ["pulseaudio"]
     },
     {
-        "output": "DP-1",
+        "output": "DP-4",
         "include": [
             "~/.config/waybar/default-modules.json"
         ],

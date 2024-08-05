@@ -1,20 +1,32 @@
-#from qtile_extras import widget
-from libqtile import bar, extension, hook, layout, qtile, widget
+from libqtile import bar, extension, hook, layout, qtile
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 import os
 import colors
 import subprocess
-colors = colors.TomorrowNight 
+### qtile extras
+from qtile_extras import widget
+from qtile_extras.widget.decorations import RectDecoration
+#from qtile_extras.widget.groupbox2 import GroupBoxRule
+from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
+
+colors = colors.Mocha
 
 # Defaul widget settings
 widget_defaults = dict(
     font="JetBrains Mono Bold",
-    fontsize=13,
+    fontsize=16,
     foreground=colors[7],
     background=colors[0],
     padding=1,
 )
+
+decoration_group = {
+        "decorations": [
+            RectDecoration(colour="#181825", radius=10, filled=True, padding_y=4, group=True)
+        ],
+        "padding": 3,
+}
 
 extension_defaults = widget_defaults.copy()
 
@@ -37,6 +49,7 @@ pinned_apps = [
     ("", "keepassxc"),
 ]
 
+
 # Textbox widget to start pinned apps
 app_widgets = [
     widget.TextBox(
@@ -48,6 +61,15 @@ app_widgets = [
     )
     for app_name, app_cmd in pinned_apps
 ]
+def set_label(rule, box):
+    if box.focused:
+        rule.text = "◉"
+    elif box.occupied:
+        rule.text = "◎"
+    else:
+        rule.text = "○"
+
+    return True
 
 ## Screens ##
 screens = [
@@ -61,49 +83,57 @@ screens = [
                 ## groups, e.g workspaces
                 widget.GroupBox(
                          # DP-2: 2,4,6,8
-                         #visible_groups=['2', '4', '6', '8'],
-                         fontsize = 11,
+                         visible_groups=['2', '4', '6'],
+                         fontsize = 15,
                          margin_y = 5,
                          margin_x = 5,
                          padding_y = 0,
                          padding_x = 1,
                          borderwidth = 3,
-                         active = colors[8],
-                         inactive = colors[1],
-                         rounded = False,
-                         highlight_color = colors[2],
+                         active = colors[3],
+                         inactive = colors[2],
+                         rounded = True,
+                         highlight_color = colors[0],
                          highlight_method = "line",
                          this_current_screen_border = colors[7],
                          this_screen_border = colors [4],
                          other_current_screen_border = colors[7],
                          other_screen_border = colors[4],
+                        **decoration_group,
+                        #rules = [GroupBoxRule().when(func=set_label)]
+
                          ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
+                # widget.TextBox(
+                #         text = '|',
+                #         font = "Ubuntu Mono",
+                #         foreground = colors[1],
+                #         padding = 2,
+                #         fontsize = 14
+                #         ),
+                widget.Spacer(length = 8),
                 widget.WindowTabs(
                     fmt = '{}',
                     foreground = colors[7],
                     background = colors[0],
-                    separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
+                    separator = '  ',
+                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                    **decoration_group,
+                ),                
+                widget.Spacer(length = 8),                
+                widget.Mpris2(
+                    fmt = '{}',
+                    format = '{xesam:title} - {xesam:artist}',
+                    foreground = colors[7],
+                    paused_text = ' {track}',
+                    playing_text = ' {track}',
+                    scroll_fixed_width = False,
+                    max_chars = 200,
+                    separator = ', ',
+                    stopped_text = '',
+                    width=200,
+                    #popup_layout = COMPACT_LAYOUT,
+                    **decoration_group,
                 ),
-                # widget.Mpris2(
-                # fmt = '{}',
-                # format = '{xesam:title} - {xesam:artist}',
-                # foreground = colors[7],
-                # paused_text = ' {track}',
-                # playing_text = ' {track}',
-                # scroll_fixed_width = False,
-                # max_chars = 200,
-                # separator = ', ',
-                # stopped_text = '',
-                # width=200,
-                # ),
                     # Not work on arch for now, developers didn't add some modules to main arch repo yet.
                 # widget.PulseVolume(
                 #     foreground = colors[1],
@@ -112,8 +142,9 @@ screens = [
                 #     ),
                 widget.Spacer(length = 8),
                 widget.CPU(
-                        format = ' {load_percent}%',
+                        format = ' {freq_current}GHz {load_percent}%',
                         foreground = colors[4],
+                        **decoration_group,
                         ),
                 widget.Spacer(length = 8),
                 widget.ThermalSensor(
@@ -123,15 +154,18 @@ screens = [
                             update_interval = 2,
                             threshold = 60,
                             foreground_alert='ff6000',
+                            **decoration_group,
                             ),
  
                 widget.Spacer(length = 8),
                 widget.NvidiaSensors(
                             foreground = 'ffffff',
-                            fmt = ' {}',
+                            fmt = ' {}',
+                            format = '{temp}°C {fan_speed} {perf}',
                             update_interval = 2,
                             threshold = 60,
                             foreground_alert='ff6000',
+                            **decoration_group,
                             ),
                 widget.Spacer(length = 8),
                 widget.Memory(
@@ -140,24 +174,27 @@ screens = [
                         #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
                         format = '{MemUsed:.0f}{mm}/{MemTotal:.0f}{mm}',
                         fmt = ' {}',
+                        **decoration_group,
                         ),
                 widget.Spacer(length = 8),
-              widget.DF(
-                        update_interval = 60,
-                        foreground = colors[5],
-                        partition = '/',
-                        format = '{r:.0f}%',
-                        fmt = 'R:{}',
-                        visible_on_warn = False,
-                        ),
+                widget.DF(
+                    update_interval = 60,
+                    foreground = colors[5],
+                    partition = '/',
+                    format = '{r:.0f}%',
+                    fmt = ' {}',
+                    visible_on_warn = False,
+                    **decoration_group,
+                    ),
                 widget.Spacer(length = 8),
                 widget.DF(
                     update_interval = 60,
                     foreground = colors[5],
                     partition = '/home',
                     format = '{r:.0f}%',
-                    fmt = 'H:{}',
+                    fmt = ' {}',
                     visible_on_warn = False,
+                    **decoration_group,
                     ),
 
                 widget.Spacer(length = 8),
@@ -166,8 +203,9 @@ screens = [
                     foreground = colors[5],
                     partition = '/nix',
                     format = '{r:.0f}%',
-                    fmt = 'Nix:{}',
+                    fmt = ' {}',
                     visible_on_warn = False,
+                    **decoration_group,
                     ),
                 widget.Spacer(length = 8),
                 widget.DF(
@@ -175,55 +213,59 @@ screens = [
                     foreground = colors[5],
                     partition = '/mnt/backups',
                     format = '{r:.0f}%',
-                    fmt = 'Backups:{}',
+                    fmt = ' {}',
                     visible_on_warn = False,
-                    ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                ),
-
+                    **decoration_group,
+                    ),         
                 widget.Spacer(length = 8),
-                # TODO: Debug
-                widget.CheckUpdates(
-                    fmt = '{}',
-                    distro = 'Arch',
-                    update_interval = 60,
-                    colour_have_updates = colors[6],
-                    colour_no_updates = colors[7],
-                    fontsize = 15,
-                    display_format = 'Arch:{updates}',
-                    no_update_string = '',
-                ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                ),
-                # widget.Volume(
-                #             # input device
-                #             #channel = "Capture",
-                #             foreground = colors[1],
-                #             fmt = ' {}',
-                #             emoji = False,
-                #             check_mute_string = '[off]', # '' icon not working
+                # widget.TextBox(
+                #         text = '|',
+                #         font = "Ubuntu Mono",
+                #         foreground = colors[1],
+                #         padding = 2,
+                #         fontsize = 14
                 # ),
+
+ #               widget.Spacer(length = 8),
+                # # TODO: Debug
+                # widget.CheckUpdates(
+                #     fmt = '{}',
+                #     distro = 'Arch',
+                #     update_interval = 60,
+                #     colour_have_updates = colors[6],
+                #     colour_no_updates = colors[7],
+                #     fontsize = 15,
+                #     display_format = 'Arch:{updates}',
+                #     no_update_string = '',
+                # ),
+                # widget.TextBox(
+                #         text = '|',
+                #         font = "Ubuntu Mono",
+                #         foreground = colors[1],
+                #         padding = 2,
+                #         fontsize = 14
+                # ),
+
+# Work on nixos, not on arch
+                widget.Volume(
+                            foreground = colors[1],
+                            fmt = '🔈{}',
+                            emoji = False,
+                            check_mute_string = '[off]', # '' icon not working
+                    mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
+                    **decoration_group,
+                ),
                 # widget.Spacer(length = 8),
 
-# Custom volume widget
-                 widget.GenPollText(
-                    update_interval=1,
-   func=lambda: subprocess.check_output("~/.config/qtile/scripts/sink-change.sh --status", shell=True, text=True),
-                    # call script when clicked
-                    mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')}
-),
+# # Custom volume widget
+#                  widget.GenPollText(
+#                     update_interval=1,
+#    func=lambda: subprocess.check_output("~/.config/qtile/scripts/sink-change.sh --status", shell=True, text=True),
+#                     # call script when clicked
+#                     mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')}
+# ),
 
-                # # TODO: Not working on pipewire arch
+                # # # TODO: Not working on pipewire arch
                 # widget.Volume(
                 #         foreground = colors[7],
                 #         cardid = 0,
@@ -242,16 +284,13 @@ screens = [
                 widget.Clock(
                         foreground = colors[8],
                         format = "  %A %d/%m/%y %H:%M",
+                        **decoration_group,
                         #mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')}, 
                         ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
-              widget.Systray(padding = 3),
+            widget.Spacer(length = 8),
+            widget.Systray(                        
+                        **decoration_group,
+                             ),
             widget.TextBox(
                         text = '|',
                         font = "Ubuntu Mono",
@@ -264,17 +303,13 @@ screens = [
                         padding = 4,
                         scale = 0.6
                         ),
-                widget.CurrentLayout(
-                        foreground = colors[1],
-                        padding = 5
-                        ),
-                widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),      
+                # widget.TextBox(
+                #         text = '|',
+                #         font = "Ubuntu Mono",
+                #         foreground = colors[1],
+                #         padding = 2,
+                #         fontsize = 14
+                #         ),      
                 # # New custom widget to call my xrandr.sh script via mouse callback
                 # widget.TextBox(
                 #     text=" ",
@@ -293,10 +328,63 @@ screens = [
                 #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
                 # ),
             ],
-            size=24  # Fix: Move the positional argument before the keyword argument
+            size=30  # Fix: Move the positional argument before the keyword argument
         )
     ),
-    # no longer used monitor
+  #    # DP-0: left monitor
+    Screen(
+        top=bar.Bar(
+            widgets=[
+                ## groups, e.g workspaces
+                widget.GroupBox(
+                         #visible_groups=visible_groups,
+                        visible_groups=['1', '3', '5'],
+                         fontsize = 15,
+                         margin_y = 5,
+                         margin_x = 5,
+                         padding_y = 0,
+                         padding_x = 1,
+                         borderwidth = 3,
+                         active = colors[3],
+                         inactive = colors[2],
+                         rounded = True,
+                         highlight_color = colors[0],
+                         highlight_method = "line",
+                         this_current_screen_border = colors[7],
+                         this_screen_border = colors [4],
+                         other_current_screen_border = colors[7],
+                         other_screen_border = colors[4],
+                        **decoration_group,
+                         ),
+                widget.Spacer(length = 8),
+                widget.WindowTabs(
+                    fmt = '{}',
+                    foreground = colors[7],
+                    separator = ' | ',
+                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
+                    **decoration_group,
+                ),
+                widget.Spacer(length = 8),
+                widget.Clock(
+                        foreground = colors[8],
+                        format = "  %A %d/%m/%y %H:%M",
+                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+                        **decoration_group,
+                        ),
+                widget.Spacer(length = 8),
+                widget.CurrentLayoutIcon(
+                        foreground = colors[1],
+                        padding = 4,
+                        scale = 0.6
+                        ),
+            ],
+            size=29
+        )
+    ),
+#    ./end-DP-0
+]
+
+   # no longer used monitor
     # # HDMI-0: right monitor
     # Screen(
     #     top=bar.Bar(
@@ -402,76 +490,4 @@ screens = [
     #         size=20
     #     )
     # ),
- #    # DP-0: left monitor
- #    Screen(
- #        top=bar.Bar(
- #            widgets=[
- #                ## groups, e.g workspaces
- #                widget.GroupBox(
- #                         #visible_groups=visible_groups,
- #                        visible_groups=['1', '3', '5', '7', '9'],
- #                         fontsize = 11,
- #                         margin_y = 5,
- #                         margin_x = 5,
- #                         padding_y = 0,
- #                         padding_x = 1,
- #                         borderwidth = 3,
- #                         active = colors[8],
- #                         inactive = colors[1],
- #                         rounded = False,
- #                         highlight_color = colors[2],
- #                         highlight_method = "line",
- #                         this_current_screen_border = colors[7],
- #                         this_screen_border = colors [4],
- #                         other_current_screen_border = colors[7],
- #                         other_screen_border = colors[4],
- #                         ),
- # 
- #                widget.TextBox(
- #                        text = '|',
- #                        font = "Ubuntu Mono",
- #                        foreground = colors[1],
- #                        padding = 2,
- #                        fontsize = 14
- #                        ),
- #                widget.WindowTabs(
- #                    fmt = '{}',
- #                    foreground = colors[7],
- #                    separator = ' | ',
- #                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
- #                ),
- #
- #                widget.TextBox(
- #                        text = '|',
- #                        font = "Ubuntu Mono",
- #                        foreground = colors[1],
- #                        padding = 2,
- #                        fontsize = 14
- #                ),
- #                widget.Clock(
- #                        foreground = colors[8],
- #                        format = "  %A %d/%m/%y %H:%M",
- #                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
- #                        ),
- #                widget.TextBox(
- #                        text = '|',
- #                        font = "Ubuntu Mono",
- #                        foreground = colors[1],
- #                        padding = 2,
- #                        fontsize = 14
- #                        ),
- #                widget.CurrentLayoutIcon(
- #                        foreground = colors[1],
- #                        padding = 4,
- #                        scale = 0.6
- #                        ),
- #                widget.CurrentLayout(
- #                        foreground = colors[1],
- #                        padding = 5
- #                        ),
- #            ],
- #            size=22
- #        )
- #    ),
-    #./end-DP-0
-]
+

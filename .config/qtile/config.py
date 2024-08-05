@@ -23,53 +23,49 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 import os
 import subprocess
-from libqtile import bar, extension, hook, layout, qtile, widget
+from libqtile import bar, extension, hook, layout, qtile #, widget #qtile default widget 
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
-# Import widget from qtile_extras instead of libqtile
-#from qtile_extras import widget
-# Import colors
+
+### Import colors
 import colors
-# Import the keybindings
+### Import the keybindings
 from keys import *
-# Import widget.py
+### Import widget.py
 from widget import *
+## Import functions
+from functions import *
 
 # Log location
 # ~/.local/share/qtile/qtile.log
-
+# `qtile cmd-obj -o cmd -f get_screens ` # find the screen index
 # @param: screen_affinity: monitor to display the group on
-# @param: group: the group to display on the monitor
-# DP-0   left monitor    :   screen_affinity=2, group 1
-# DP-2   primary monitor :   screen_affinity=0, group 2
-#### HDMI-0 right monitor   :   screen_affinity=1, group 3 ## Undetached
+# DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
+# DP_4   right monitor :   screen_affinity=1, group 4 # view right
 groups = [
-    ## 1 monitor setup
-    Group("1", screen_affinity=0, layout="max", matches=[Match(wm_class=['firefox-browser', 'brave-browser', 'chromium-browser'])],  label=""),
-    Group("2", screen_affinity=0, layout="max", label=""),
-    Group("3", screen_affinity=0, layout="max", matches=[Match(wm_class=['siyuan', 'SiYuan'])], label=""),
-    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
-    #Group("5", screen_affinity=0, layout="max", label=""),
-    Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class="nuclear")]),
-    
-    ## 2 monitor setup
-    # Group("1", screen_affinity=2, matches=[Match(wm_class="superproductivity")], layout="max", init=True), # DP-0: left monitor
-    # Group("2", screen_affinity=0, layout="max", init=True), # DP-2: primary monitor
-    # Group("3", screen_affinity=2, layout="max"), # DP-0: left monitor
-    # Group("4", screen_affinity=0, layout="max"),
-    # Group("5", screen_affinity=2, layout="max"),
-    # Group("6", screen_affinity=0, layout="max"),
-    # Group("7", screen_affinity=2, layout="max"),
+    # 2 monitor setup
+    Group("1", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="monadtall", init=True), # DP_4: right monitor
+    Group("2", screen_affinity=0, layout="monadtall", init=True), # DP-2: left monitor
+    Group("3", screen_affinity=1, layout="monadtall"), 
+    Group("4", screen_affinity=0, layout="monadtall"), 
+    Group("5", screen_affinity=1, layout="monadtall"), 
+    Group("6", screen_affinity=0, layout="monadtall"), 
+    # Group("7", screen_affinity=1, layout="max"),
     # Group("8", screen_affinity=0, layout="max"),
-    # Group("9", screen_affinity=2, layout="max"),
 ]
-# Add groups to keybindings, e.g to switch to group 1 use mod+1
+
 for i in groups:
-    keys.append(Key([mod], i.name, lazy.group[i.name].toscreen()) )
-    keys.append(Key([mod, "shift"], i.name, lazy.window.togroup(i.name))),
+    keys.extend([
+        # mod1 + letter of group = switch to group
+        Key([mod], i.name, lazy.group[i.name].toscreen()),
+        # switch to group with ability to go to prevous group if pressed again
+        #Key([mod], i.name, lazy.function(toscreen, i.name)),
+
+        # mod1 + shift + letter of group = switch to & move focused window to group
+        Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
+    ])
 
 ## Layouts ##
 layout_theme = {"border_width": 2,
@@ -80,75 +76,23 @@ layout_theme = {"border_width": 2,
 
 layouts = [
     layout.MonadTall(**layout_theme),
-#     layout.Tile(
-#          shift_windows=True,
-#          border_width = 0,
-#          margin = 0,
-#          ratio = 0.335,
-#          ),
-     layout.Max(
+    layout.Max(
          border_width = 0,
          margin = 0,
-         ),
+    ),
 ]
 
-
-
-## Rules ##
-
-# # Define the rules for the window to be placed in the group
-# @hook.subscribe.client_focus
-# def float_to_front(qtile):
-#     for group in qtile.groups:
-#         for window in group.windows:
-#             if window.floating:
-#                 window.cmd_bring_to_front()
-
-# # Focus superproductivity when dunst notification came
-# @hook.subscribe.client_new
-# def focus_group_on_notification(window):
-#     # Define the application name for which you want to focus the group on notifications
-#     app_name = "superproductivity"
-#
-#     # Check if the window belongs to the specified application
-#     if window.window.get_wm_class() == app_name:
-#         # Check if a notification from the specified application is currently being displayed
-#         notification_active = qtile.spawn_process.poll() is not None
-#
-#         if notification_active:
-#             # Find the group (workspace) where you want to focus
-#             lazy.group["4"].toscreen()
-    
-
-# @hook.subscribe.client_new
-# def dialogs(window):
-#     if(window.window.get_wm_type() == 'dialog'
-#         or window.window.get_wm_transient_for()):
-#         window.floating = True
-#
-# @hook.subscribe.client_new
-# def idle_dialogues(window):
-#     if((window.window.get_name() == 'Search Dialog') or
-#       (window.window.get_name() == 'Module') or
-#       (window.window.get_name() == 'Goto') or
-#       (window.window.get_name() == 'IDLE Preferences')):
-#         window.floating = True
-#
-# @hook.subscribe.client_new
-# def libreoffice_dialogues(window):
-#     if((window.window.get_wm_class() == ('VCLSalFrame', 'libreoffice-calc')) or
-#     (window.window.get_wm_class() == ('VCLSalFrame', 'LibreOffice 3.4'))):
-#         window.floating = True
-
 floating_layout = layout.Floating(
-    auto_float_types=[
-      "notification",
-      "toolbar",
-      "splash",
-      "dialog",
-    ],
     border_focus=colors[8],
     border_width=2,
+    
+    # auto_float_types=[
+    #   "notification",
+    #   "toolbar",
+    #   "splash",
+    #   "dialog",
+    # ],
+
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -197,8 +141,10 @@ wl_input_rules = None
 
 @hook.subscribe.startup_once
 def start_once():
-    home = os.path.expanduser('~')
-    subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
+    # home = os.path.expanduser('~')
+    # subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
+    home = os.path.expanduser('~/.config/qtile/scripts/autostart.sh')
+    subprocess.Popen([home])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the

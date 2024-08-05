@@ -10,10 +10,10 @@ running_sink=$(echo "$pactl_output" | grep "RUNNING" | cut -f 2)
 # available_sinks=$(pactl list sinks short | cut -f 2)
 
 # Define sink available_sinks
-headset='alsa_output.pci-0000_28_00.3.analog-surround-71'
+headset='alsa_output.usb-SteelSeries_Arctis_Pro_Wireless-00.stereo-game'
 DP_0='alsa_output.pci-0000_26_00.1.hdmi-stereo'
 DP_1='alsa_output.pci-0000_26_00.1.hdmi-stereo-extra1'
-DP_2='alsa_output.pci-0000_26_00.1.hdmi-stereo-extra2'
+DP_2='alsa_output.pci-0000_2b_00.1.hdmi-stereo-extra1.2'
 
 # Create a hash table to store the available sinks
 declare -A available_sinks
