@@ -1,12 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 set -x # Enable verbose output for debugging
 
-# Check if the current DISPLAY is ":0" or not
-if [[ $DISPLAY == ":0" ]]; then
-    export DISPLAY=:0
-else
-    export DISPLAY=:1
-fi
+export DISPLAY=":0"
 
 monitor_left="DP-0"
 monitor_center="DP-2"
@@ -18,7 +13,7 @@ if xrandr | grep -q "None-1-1 connected"; then
 else
 	echo "None-1-1 is not connected. Skipping..."
 fi
-  
+
 # Define the display configurations
 xrandr --output $monitor_center --primary --rate 143.97 --mode 2560x1440 --rotate normal \
        --output $monitor_right --rate 59.79 --mode 1366x768 --rotate normal --right-of $monitor_center \
