@@ -1,0 +1,688 @@
+# Edit this configuration file to define what should be installed on
+
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, lib, ... }:
+
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./unstable.nix
+      #home-manager.nixosModules.default
+    ];
+
+#### HOME-MANAGER ####
+  ### nix accces for normal user ###
+# home-manager.users.developer = {
+#   dconf = {
+#     enable = true;
+#     settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+#   };
+# };
+#
+##! Testing: importing them in flake.nix, 
+#### ./home-manager ###
+
+  # Bootloader.
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  
+  boot = {
+    loader = {
+      systemd-boot = {
+      enable = true;
+      #timeout = 5;
+      #defaultKernelOptions = [ "quiet" ];
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        #systemPartition = "/boot";
+      };
+    };
+
+    # reno cubic enabled: 83-89down 18-19up
+    # after bbr enabled: 89-93down 18-20up
+    kernelModules = ["tcp_bbr"]; # Enable BBR congestion control algorithm.
+    kernel.sysctl = {
+      "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.core.default_qdisc" = "fq";
+      "net.core.wmem_max" = 104857000; # 100Mib
+      "net.core.rmem_max" = 104857000; # 100Mib
+      "net.ipv4.tcp_rmem" = "4096 87380 104857000"; # 4Kib 87Kib 100Mib
+      "net.ipv4.tcp_wmem" = "4096 87380 104857000"; # 4Kib 87Kib 100Mib
+    };
+      
+  };
+
+### NETWORK
+  networking = {
+    # Enable the NetworkManager
+    networkmanager.enable = true;
+    # Define your hostname.
+    hostName = "nixos";
+    
+      # hosts = {
+      #   "192.168.1.60" = ["nextcloud.local"];
+      # };
+    
+    ### FIREWALL 
+      firewall = {
+      enable = true;
+      allowPing = false; # decline ICMP pings 
+      # allow syncthing
+      allowedTCPPorts = [ 8384 22000];
+      allowedUDPPorts = [ 22000 21027 ];
+      # allowedUDPPortRanges = [
+      #   { from = 4000; to = 4007; }
+      #   { from = 8000; to = 8010; }
+      # ];
+      
+      # Allow my laptop to connect to my desktop 192.168.1.107
+      #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
+      extraCommands = '' 
+          iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
+          iptables -A nixos-fw -p tcp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
+
+        '';
+    };
+  };
+  # https://nixos.org/manual/nixos/stable/#sec-wireless
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+
+
+  # Set your time zone.
+  time.timeZone = "Europe/Istanbul";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "tr_TR.UTF-8";
+    LC_IDENTIFICATION = "tr_TR.UTF-8";
+    LC_MEASUREMENT = "tr_TR.UTF-8";
+    LC_MONETARY = "tr_TR.UTF-8";
+    LC_NAME = "tr_TR.UTF-8";
+    LC_NUMERIC = "tr_TR.UTF-8";
+    LC_PAPER = "tr_TR.UTF-8";
+    LC_TELEPHONE = "tr_TR.UTF-8";
+    LC_TIME = "tr_TR.UTF-8";
+  };
+###nix
+
+nix = {
+  daemonCPUSchedPolicy = "batch"; #medium=batch, default: high=other, low=idle
+  daemonIOSchedClass = "idle"; #high=best-effort, low=idle
+  daemonIOSchedPriority = 4; #default=4, 0 high, 7 low
+
+    # nixos garbage collection
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+      #persistent = true; # Default = true. This make systemd timer persistent if missed the last start time, similar anacron
+    };
+  
+    settings = {
+      warn-dirty = false;
+      use-xdg-base-directories = true;
+      builders-use-substitutes = true;
+      max-substitution-jobs = 20;
+      auto-optimise-store = true;
+      
+      allowed-users = [ "developer" "cyber-syntax""@wheel"];
+      experimental-features = ["nix-command" "flakes"];
+
+      substituters = [
+        "https://cache.nixos.org/"
+        #"https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        #"nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+
+    }; 
+};
+#performance cause problem with amd 2600x CPU. amd_pstate driver is not supported with this CPU.(Zen+)
+# only zen2 and newer support this amd_pstate driver.
+ powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
+ # battery management
+ # services.tlp.enable = true;
+
+## Gnome excluded packages ##
+environment.gnome.excludePackages = (with pkgs; [
+  gnome-photos
+  gnome-tour
+  gedit
+]) ++ (with pkgs.gnome; [
+  gnome-contacts
+  gnome-characters
+  cheese # webcam tool
+  gnome-music
+  gnome-terminal
+  epiphany # web browser
+  geary # email reader
+  evince # document viewer
+  gnome-characters
+  totem # video player
+  tali # poker game
+  iagno # go game
+  hitori # sudoku game
+  atomix # puzzle game
+]);
+## ./Gnome excluded packages ##
+
+### GNOME some settings ###
+programs.dconf.enable = true;
+
+
+services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+#hardware.sensor.iio.enable = true; # automatic screen rotation like in mobile phones
+## ./Gnome some settings ###
+### fix autologin issue on gdm ###
+systemd.services."getty@tty1".enable = false;
+systemd.services."autovt@tty1".enable = false;
+### ./fix ###
+
+
+### X11, displayManager, windowManager, videoDriver
+  services = {
+    libinput.enable = false; # for syncaptics touchpads
+   
+  ###### Qtile, X11, Light #####
+    displayManager = {
+     # defaultSession = "none+qtile"; # none+qtile
+      autoLogin.enable = true; 
+      autoLogin.user = "developer";
+    };
+  #### ./Qtile, X11, Light ####
+
+    xserver = {
+      enable = true;
+      xkb.layout = "tr";
+
+    ## Gnome, gdm ##
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland = false;
+      };
+    };
+    desktopManager.gnome = {
+      enable = true;
+        
+        # extraGSettingsOverrides = ''
+        #   [org.gnome.desktop.interface]
+        #   gtk-theme = "Materia-dark";
+        # '';
+    };
+    ### ./Gnome, gdm ###
+      
+    ### LightDM ###
+      # displayManager = {
+      #   lightdm.enable = true;
+      #   # lightdm keyboard layout
+      #   lightdm.extraConfig = ''
+      #     [Seat:*]
+      #     greeter-setup-script=/usr/bin/setxkbmap -layout tr
+      #     '';
+      # };
+    ### ./lightdm ###
+
+    ### QTILE stable version for now. #
+      # windowManager.qtile = {
+      #   enable = true;
+      #   #extraPackages = p: with p; [ qtile-extras ]; # CAUSE ERROR
+      # };
+    ### ./Qtile, X11, Light ####
+
+      autorun = true;
+      exportConfiguration = true;
+      videoDrivers = ["nvidia"];
+    };
+  };
+
+  # Configure console keymap
+  console.keyMap = "trq";
+   
+  # font	
+  fonts = {
+    packages = with pkgs; [
+      corefonts
+      liberation_ttf
+      dejavu_fonts
+      terminus_font
+      ubuntu_font_family
+      noto-fonts-cjk
+      noto-fonts-emoji
+      font-awesome
+    ];
+
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = ["Jetbrains Mono Bold"];
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"]; 
+      };
+    };
+  };
+
+### USERS SETUP
+  users.users.developer = {
+    isNormalUser = true;
+    description = "developer";
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "video" "kvm"];
+    packages = with pkgs; [];
+  };
+
+  # Enable automatic login for the user.
+  services.getty.autologinUser = "developer";
+
+
+### GPU, NVIDIA, Proprietary Driver in use 
+	hardware.nvidia = {
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    # Enable this if you have graphical corruption issues or application crashes after waking
+    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+    # of just the bare essentials
+		powerManagement.enable = false;
+
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+		powerManagement.finegrained = false;
+		nvidiaSettings = true;
+     
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+		package = config.boot.kernelPackages.nvidiaPackages.production; # stable: 545, production: 555 --- 30-05-24
+     
+    # TODO: debug, not work
+    #dynamicBoost.enable = true;
+		open = false;
+		modesetting.enable = false; # disable modesetting because proprietary driver is used
+	};
+
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
+
+### PACKAGES 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    #python311Packages.qtile-extras
+    xorg.setxkbmap
+    xorg.xrandr
+    xorg.xhost
+    xorg.xev
+    xorg.xkbcomp
+    xorg.xkill
+    xorg.xwininfo
+    alsa-utils
+    xorg.xinit
+    xorg.xauth
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    kitty
+   #neovim # TODO: debug if programs enable not work
+    networkmanagerapplet # for nm-applet
+    unzip
+    xclip
+    htop
+    acpi
+    git
+    rofi
+    picom
+    fastfetch
+    xdg-user-dirs
+    playerctl
+    lm_sensors
+    pulseaudio
+    ### Apps
+    fluent-reader
+    feh
+    dunst
+    gammastep
+    flameshot
+    pcmanfm
+    # browsers
+    #firefox
+    brave
+    # password manager
+    keepassxc
+    #virt-manager # already enabled from programs, TODO: debug is it work with enable
+    #freetube # using unstable
+    signal-desktop
+    ungoogled-chromium
+    tutanota-desktop
+    xournalpp
+    libreoffice
+    calibre
+    borgbackup
+    #syncthing # Not work when comment this while using service
+    syncthingtray
+    pavucontrol
+    ### theme
+    materia-theme
+    ### security
+    i3lock
+    ### terminal
+    #zsh
+    gparted
+    ### Productivity
+    zoxide
+    trash-cli
+    ### Development 
+    nodejs_22
+    hugo
+    go
+    ### Development for compiling
+    clang
+    libgcc
+    libstdcxx5  # for litellm
+    ### encryption
+    openssl
+    ### documentation
+    evince
+    gimp
+    ### other
+    xdotool
+    ## AI
+      python311Packages.litellm
+      python311Packages.tokenizers
+
+    ## Nextcloud packages
+    nextcloud-client
+    wakeonlan
+
+    # gnome extension systemwide
+    gnomeExtensions.appindicator
+    gnomeExtensions.pop-shell
+    gnome.gnome-tweaks
+    lxappearance
+
+    ## home-manager
+    home-manager
+
+
+  ];
+
+### Virtulization
+virtualisation.libvirtd.enable = true;
+programs.virt-manager.enable = true;
+
+# TODO: dconf settings when I decided to use home-manager
+
+##### PROGRAMS
+
+### ZSH
+# for global user
+users.defaultUserShell=pkgs.zsh;
+environment.shells = with pkgs; [ zsh ];
+
+programs.zsh = {
+	enable = true;
+	autosuggestions.enable = true;
+	syntaxHighlighting.enable = true;
+
+	shellAliases = {
+		switch = "sudo nixos-rebuild switch";
+    switch-upgrade = "sudo nixos-rebuild switch --upgrade";
+    git-bare="git --git-dir=$HOME/dotfiles --work-tree=$HOME";
+    st = "status";
+    br = "branch";
+    co = "checkout";
+    ci = "commit";
+    df = "diff";
+    adog = "log --all --decorate --oneline --graph";
+	};
+  histSize = 10000;
+  histFile = "$HOME/.histfile-nixos";
+
+  interactiveShellInit = ''
+      bindkey '^[[H' beginning-of-line
+      bindkey '^[[F' end-of-line
+      bindkey '^[[1;5D' backward-word
+      bindkey '^[[1;5C' forward-word
+      eval "$(zoxide init zsh)"
+  '';
+
+  promptInit = "";
+};
+### neovim
+
+programs.neovim = {
+	enable = true;
+	defaultEditor = true;
+};
+
+### SOUND, SECURITY, SERVICES
+security.rtkit.enable = true;
+security.polkit.enable = true;
+hardware.pulseaudio.enable = false;
+
+
+# sytemd-timer for trash-cli to delete files older than 30 days.
+systemd.timers."trash-cli" = {
+  wantedBy = [ "timers.target" ];
+  timerConfig = {
+    OnCalendar = "daily";
+    Persistent = true;
+  };
+};
+
+systemd.services."trash-cli" = {
+# (crontab -l ; echo "@daily $(which trash-empty) 30") | crontab -
+  script = ''
+    ${pkgs.trash-cli}/bin/trash-empty 30  
+  '';
+  
+  serviceConfig = {
+    Type = "oneshot";
+    #ExecStart = "${pkgs.trash-cli}/bin/trash-empty 30";
+    User = "developer";
+  };
+};
+
+
+services = {
+  gnome.gnome-keyring.enable = true;
+  acpid.enable = true;
+  dbus.enable = true;
+  devmon.enable = true;
+  printing.enable = false;
+
+  fstrim.enable = true;
+  fwupd.enable = true;
+  smartd.enable = true;
+
+ 
+  pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;	
+  };
+  # # syncthing
+  syncthing = {
+    enable = true;
+    user = "developer";
+    #group = "developer";
+    #dataDir = "/home/developer/.local/share/syncthing";
+    configDir = "/home/developer/.config/syncthing";
+  };
+
+  # borgbackup
+  borgbackup.jobs."home-backup" = {
+    paths = "/home/developer/";
+    exclude = [
+      # Largest cache dirs
+      ".cache"
+      "*/cache2" # firefox
+      "*/Cache"
+      ".config/Slack/logs"
+      ".config/Code/CachedData"
+      ".container-diff"
+      ".npm/_cacache"
+      # Work related dirs
+      "*/node_modules"
+      "*/bower_components"
+      "*/_build"
+      "*/.tox"
+      "*/venv"
+      "*/.venv"
+      "~/Downloads"
+    ];
+    encryption.mode = "none";
+    repo = "/mnt/backups/borgbackup/home-nixos";
+    compression = "zstd,15";
+    # prune and keep only 12 backups
+    prune.keep = {
+      daily = 7;
+      weekly = 4;
+      monthly = 2;
+    };
+    # persistent systemd timer if missed the last start time, similar anacron
+    persistentTimer = true;
+    # start time Europe/Istanbul 10:00
+    startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
+  };
+
+  borgbackup.jobs."nixos-backup" = {
+    paths = "/etc/nixos/";
+    encryption.mode = "none";
+    repo = "/mnt/backups/borgbackup/root-nixos";
+    #doInit = true;  # cause it the make 2 backup in a day
+    compression = "zstd,15";
+    persistentTimer = true;
+    # start time Europe/Istanbul 10:00
+    startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
+    #prune and keep only 12 backups
+    prune.keep = {
+      daily = 7;
+      weekly = 4;
+      monthly = 2;
+    };
+    
+  };
+    
+};
+
+
+### Appimage won't work without it, appimage-run 
+boot.binfmt.registrations.appimage = {
+  wrapInterpreterInShell = false;
+  interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+  recognitionType = "magic";
+  offset = 0;
+  mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+  magicOrExtension = ''\x7fELF....AI\x02'';
+};
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = true;
+  };
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "24.05"; # Did you read the comment?
+
+}
+
+
+# systemd.timers."borgbackup-job-home-backup" = {
+#   timerConfig = {
+#     #OnBootSec=5min
+#     OnCalendar= lib.mkForce "*-*-* 10:00 Europe/Istanbul";
+#     #OnCalendar = "daily";
+#     # it triggers the service immediately if it missed the last start time
+#     Persistent = lib.mkForce true;
+#   };
+# };
+#
+# systemd.timers."borgbackup-job-nixos-backup" = {
+#   timerConfig = {
+#     #OnBootSec=5min
+#     OnCalendar= lib.mkForce "*-*-* 10:00 Europe/Istanbul";
+#     #OnCalendar = "daily";
+#     # it triggers the service immediately if it missed the last start time
+#     Persistent = lib.mkForce true;
+#   };
+# };
+
+
+### TODO: Debug, latest version didn't work. Overlay for qtile latest
+# nixpkgs.overlays = [
+#                           (self: super: {
+#                               qtile = super.qtile.overrideAttrs(oldAttrs: {
+# 			      version = "latest";
+#                               pythonPath = oldAttrs.pythonPath ++ (with self.python37Packages; [
+#                               keyring
+#                               xcffib
+#                               #cairocffi-xcffib
+#                               setuptools
+#                               setuptools_scm
+#                               dateutil
+#                               dbus-python
+#                               mpd2
+#                               psutil
+#                               pyxdg
+#                               pygobject3
+#                             ]);
+#                           });
+#                         })];
+
+
+### system auto autoUpgrade
+  # Auto Upgrade
+#   system.autoUpgrade = {
+#     enable = true;
+#     # dates = "22:14";
+#     #flake = "${location}#${host}"; # my flake online uri is for example github:yeshey/nixos-config#laptop
+#     flags = [
+#       "--upgrade" # upgrade NixOS to the latest version in your chosen channel
+#       "--option fallback false" # fallback false should force it to use pre-built packages (https://github.com/NixOS/nixpkgs/issues/77971)
+#       "--update-input nixos-hardware --update-input home-manager --update-input nixpkgs" # To update all the packages
+#       # "--commit-lock-file" # commit the new lock file with git
+#     ];
+#     allowReboot = false; # set to false
+#   };
+# # Solve %100 cpu usage while compiling packages on auto upgrade
+#     systemd.services.nixos-upgrade.serviceConfig = {
+#     # https://unix.stackexchange.com/questions/436791/limit-total-memory-usage-for-multiple-instances-of-systemd-service
+#     # This doesn't prevent it from using swap
+#     MemoryHigh = [ "500M" ];
+#     MemoryMax = [ "2048M" ];
+#
+#     # https://unix.stackexchange.com/questions/494843/how-to-limit-a-systemd-service-to-play-nice-with-the-cpu
+#     CPUWeight = [ "20" ];
+#     CPUQuota = [ "85%" ];
+#     IOWeight = [ "20" ];
+#   };
+

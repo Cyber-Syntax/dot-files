@@ -1,0 +1,313 @@
+# home-manager waybar setup
+{
+ programs.waybar = {
+   enable = true;
+
+   style = ''
+
+          * {
+              /* `otf-font-awesome` is required to be installed for icons */
+              font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+              font-size: 20px;
+          }
+
+          window#waybar {
+              background-color: rgba(43, 48, 59, 0.5);
+              border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+              color: #ffffff;
+              transition-property: background-color;
+              transition-duration: .5s;
+          }
+
+          window#waybar.hidden {
+              opacity: 0.2;
+          }
+
+#custom-icon {
+              background-color: rgb(71, 160, 255);
+          }
+
+          /*
+          window#waybar.empty {
+              background-color: transparent;
+          }
+          window#waybar.solo {
+              background-color: #FFFFFF;
+          }
+          */
+
+          window#waybar.termite {
+              background-color: #3F3F3F;
+          }
+
+          window#waybar.chromium {
+              background-color: #000000;
+              border: none;
+          }
+
+          button {
+              /* Use box-shadow instead of border so the text isn't offset */
+              box-shadow: inset 0 -3px transparent;
+              /* Avoid rounded borders under each button name */
+              border: none;
+              border-radius: 0;
+          }
+
+          /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+          button:hover {
+              background: #000000;
+              box-shadow: inset 0 -3px #ffffff;
+          }
+
+#workspaces button {
+              padding: 0 5px;
+              background-color: rgb(129, 204, 248);
+              color: #ffffff;
+          }
+
+#workspaces button:hover {
+              background: rgba(0, 0, 0, 0.2);
+          }
+
+#workspaces button.active {
+              background-color: #64727D;
+              box-shadow: inset 0 -3px #ffffff;
+          }
+
+#workspaces button.urgent {
+              background-color: #fd7e7c;
+          }
+
+#workspaces button.empty {
+              background-color: transparent;
+          }
+
+#mode {
+              background-color: #64727D;
+              border-bottom: 3px solid #ffffff;
+          }
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#mpd {
+              padding: 0 10px;
+              color: #ffffff;
+          }
+
+#window,
+#workspaces {
+              margin: 0 4px;
+          }
+
+          /* If workspaces is the leftmost module, omit left margin */
+          .modules-left > widget:first-child > #workspaces {
+              margin-left: 0;
+          }
+
+          /* If workspaces is the rightmost module, omit right margin */
+          .modules-right > widget:last-child > #workspaces {
+              margin-right: 0;
+          }
+
+#clock {
+              background-color: #64727D;
+          }
+
+          @keyframes blink {
+              to {
+                  background-color: #ffffff;
+                  color: #000000;
+              }
+          }
+
+          label:focus {
+              background-color: #000000;
+          }
+
+#cpu {
+              background-color: rgb(115, 168, 137);
+              color: #000000;
+          }
+
+#memory {
+              background-color: rgb(141, 81, 112);
+          }
+
+#disk {
+              background-color: rgb(131, 93, 57);
+          }
+
+#pulseaudio {
+              background-color: rgb(138, 122, 160);
+              color: #000000;
+          }
+
+#pulseaudio.muted {
+              background-color: rgb(72, 77, 77);
+              color: #2a5c45;
+          }
+
+#network {
+              background-color: #2980b9;
+          }
+
+#network.disconnected {
+              background-color: #f53c3c;
+          }
+
+#custom-media {
+              background-color: #4e9471;
+              color: #212a26;
+              min-width: 100px;
+          }
+
+#temperature {
+              background-color: #f0932b;
+          }
+
+#temperature.critical {
+              background-color: #eb4d4b;
+          }
+
+#tray {
+              background-color: transparent;
+          }
+
+#tray > .passive {
+              -gtk-icon-effect: dim;
+          }
+
+#tray > .needs-attention {
+              -gtk-icon-effect: highlight;
+              background-color: #f86d6b;
+          }
+
+          /* 
+#custom-media.custom-spotify {
+              background-color: #66cc99;
+          }
+
+#custom-media.custom-vlc {
+              background-color: #ffa000;
+          }
+
+#language {
+              background: #00b093;
+              color: #740864;
+              padding: 0 5px;
+              margin: 0 5px;
+              min-width: 16px;
+          }
+
+#keyboard-state {
+              background: #97e1ad;
+              color: #000000;
+              padding: 0 0px;
+              margin: 0 5px;
+              min-width: 16px;
+          }
+
+#keyboard-state > label {
+              padding: 0 5px;
+          }
+
+#keyboard-state > label.locked {
+              background: rgba(0, 0, 0, 0.2);
+          }
+
+#scratchpad {
+              background: rgba(0, 0, 0, 0.2);
+          }
+
+#scratchpad.empty {
+            background-color: transparent;
+          }
+
+#idle_inhibitor {
+              background-color: #2d3436;
+          }
+
+#idle_inhibitor.activated {
+              background-color: #ecf0f1;
+              color: #2d3436;
+          }
+
+#backlight {
+              background-color: #90b1b1;
+          }
+
+#battery {
+              background-color: #ffffff;
+              color: #000000;
+          }
+
+#battery.charging, #battery.plugged {
+              color: #ffffff;
+              background-color: #26A65B;
+          }
+
+#battery.critical:not(.charging) {
+              background-color: #f53c3c;
+              color: #ffffff;
+              animation-name: blink;
+              animation-duration: 0.5s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              animation-direction: alternate;
+          }
+
+#wireplumber {
+              background-color: #fff0f5;
+              color: #000000;
+          }
+
+#wireplumber.muted {
+              background-color: #f53c3c;
+          } */
+
+   '';
+
+   settings = {
+    {
+        "output": "DP-4",
+        "include": [
+            "~/.config/waybar/default-modules.json"
+        ],
+        "layer": "top",
+        "spacing": 4,
+        "modules-left": ["hyprland/workspaces", "custom/icon1", "custom/icon2", "custom/icon3"],
+        "modules-center": ["hyprland/window", "clock", "tray", "custom/dnf-update-status"],
+        "modules-right": ["idle_inhibitor", "disk#d2", "disk", "cpu", "memory","pulseaudio"]
+    },
+    {
+        "output": "DP-2",
+        "include": [
+            "~/.config/waybar/default-modules.json"
+        ],
+        "layer": "top",
+        "position": "top",
+        "spacing": 4,
+        "modules-left": ["hyprland/workspaces", "custom/icon1", "custom/icon2", "custom/icon3"],
+        "modules-center": ["custom/media", "hyprland/window", "clock", "tray", "custom/dnf-update-status" ],
+        "modules-right": [ "custom/sink-status", "pulseaudio"]
+    }
+   };
+
+ };
+# ./programs.waybar#
+
+
+}
