@@ -1,11 +1,4 @@
 from libqtile.lazy import lazy
-# Import the keybindings
-#from keys import *
-
-#from config import groups
-# old variables
-## Custom Functions ##
-
 
 ## 2 monitor setup ##
 DP_2 = 0
