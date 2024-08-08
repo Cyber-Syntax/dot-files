@@ -12,7 +12,7 @@
       ./hardware-configuration.nix
       ./modules/qtile.nix
       ./modules/nvidia.nix
-      #./modules/ollama.nix
+      ./modules/ollama.nix
     ];
 
   # Bootloader.
@@ -270,9 +270,13 @@ programs.dconf.enable = true;
       dunst
       gammastep
 
+    #nix
+    nix-prefetch # get hash from github branches 
+
     # apps
       pcmanfm
       brave
+      firefox
       keepassxc
       signal-desktop
       ungoogled-chromium
@@ -283,7 +287,8 @@ programs.dconf.enable = true;
       borgbackup
       syncthingtray
       kitty
-    # My best apps
+      #zsh
+      # My best apps
       freetube
       obsidian
   ];
@@ -297,39 +302,9 @@ programs.virt-manager.enable = true;
 ##### PROGRAMS
 
 ### ZSH
-# for global user
-users.defaultUserShell=pkgs.zsh;
-environment.shells = with pkgs; [ zsh ];
+environment.pathsToLink = ["/share/zsh"];
+environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
-programs.zsh = {
-	enable = true;
-	autosuggestions.enable = true;
-	syntaxHighlighting.enable = true;
-
-	shellAliases = {
-		switch = "sudo nixos-rebuild switch";
-    switch-upgrade = "sudo nixos-rebuild switch --upgrade";
-    git-bare="git --git-dir=$HOME/dotfiles --work-tree=$HOME";
-    st = "status";
-    br = "branch";
-    co = "checkout";
-    ci = "commit";
-    df = "diff";
-    adog = "log --all --decorate --oneline --graph";
-	};
-  histSize = 10000;
-  histFile = "$HOME/.histfile-nixos";
-
-  interactiveShellInit = ''
-      bindkey '^[[H' beginning-of-line
-      bindkey '^[[F' end-of-line
-      bindkey '^[[1;5D' backward-word
-      bindkey '^[[1;5C' forward-word
-      eval "$(zoxide init zsh)"
-  '';
-
-  promptInit = "";
-};
 ### neovim
 
 programs.neovim = {
@@ -337,9 +312,19 @@ programs.neovim = {
 	defaultEditor = true;
 };
 
-### SOUND, SECURITY, SERVICES
-security.rtkit.enable = true;
-security.polkit.enable = true;
+## Security
+security = {
+  rtkit.enable = true;
+  polkit.enable = true;
+  
+# Increase password timeout for sudo
+# Allow access on other tty's
+  sudo.extraConfig = ''
+    Defaults timestamp_type=global
+    Defaults env_reset,timestamp_timeout=10
+  '';
+};
+
 hardware.pulseaudio.enable = false;
 
 # sytemd-timer for trash-cli to delete files older than 30 days.

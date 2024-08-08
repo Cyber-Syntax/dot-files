@@ -24,3 +24,4 @@ sh /home/developer/Documents/screenloyout/xrandr.sh & # My screen layout script
 keepassxc & # password manager
 syncthing-tray & # syncthing tray app
 nextcloud & # nextcloud client
+sh /home/developer/Documents/scripts/fedora-server/wake_fedora.sh # Wake up Fedora Server everytime

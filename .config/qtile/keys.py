@@ -75,8 +75,7 @@ keys = [
         Key([mod], "e", send_right),
         Key([mod], "a", focus_left_mon),
         Key([mod], "d", focus_right_mon),
-        Key([mod], "l", lazy.prev_screen(), desc="Move focus to right"),
-        Key([mod], "j", lazy.next_screen(), desc="Move focus to right"),
+        #Key([mod], "j", lazy.next_screen(), desc="Move focus to right"),
         #  (tilde) " = keycode 49 (keysym 0x22, quotedbl)
         # use xev to find the keycode of the key
         Key([mod], 49, lazy.layout.down(), desc="Move focus down"),

@@ -57,7 +57,7 @@
 
             {
               imports = [ 
-              ./cachix.nix  
+              #./cachix.nix  
               ];
               home-manager = {
                 backupFileExtension = "bak3";

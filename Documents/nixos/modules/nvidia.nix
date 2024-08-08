@@ -14,7 +14,14 @@
 
         # Fine-grained power management. Turns off GPU when not in use.
         # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+
         powerManagement.finegrained = false;
+        
+        # # if finegrained is enabled
+        #   prime.offload.enable = true;
+        #   # if offload enabled
+        #     prime.nvidiaBusId = "00000000:2B:00.0";
+
         nvidiaSettings = true;
          
         # Optionally, you may need to select the appropriate driver 
@@ -25,7 +32,7 @@
         # TODO: debug, not work
         #dynamicBoost.enable = true;
         open = false;
-        #! modesetting: Cause the system to freeze on suspend -> 05.08.2024
+        #! modesetting: Cause the system to freeze on suspend for qtile -> 05.08.2024
         modesetting.enable = false;
       };
      
