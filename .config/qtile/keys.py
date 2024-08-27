@@ -47,20 +47,37 @@ keys = [
         
     
     # Switch focus of windows
-     ## 1 window setup
-        # ## focus window up or down
-        # Key([mod], 'd',     lazy.layout.down()),
-        # Key([mod], 'a',     lazy.layout.up()),
-        # ## change window location up or down
-        # Key([mod], 'w',  lazy.layout.shuffle_down()),
-        # Key([mod], 'e',  lazy.layout.shuffle_up()),
+        #lazy.screen.prev_group(skip_empty=True),
+     
         
-        ## Change focus of windows when layout is Max
-        #Key([mod, "shift"], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
-        ## cycle through the groups with the same screen_affinity
-        Key([mod], "Tab", cycle_groups),
+        # 1 monitor setup
+        # cycle groups on 1 monitor setup
+        Key([mod], "Tab", lazy.screen.next_group(), desc="Move to next group"),
+        Key([mod, "shift"], "Tab", lazy.screen.prev_group(), desc="Move to previous group"),
+        # Cycle only if there are window in the group (e.g skip empty groups)
+         Key([mod], 49, lazy.screen.next_group(skip_empty=True), desc="Move to next group"),
+        # Key([mod, "shift"], "Tab", lazy.screen.prev_group(skip_empty=True), desc="Move to previous group"),
 
-        Key([mod, "shift"], "Tab", cycle_groups_reverse),
+        ## focus window up or down
+        Key([mod], 'd', lazy.layout.down()),
+        Key([mod], 'a', lazy.layout.up()),
+        ## change window location up or down
+        Key([mod], 'w', lazy.layout.shuffle_down()),
+        Key([mod], 'e', lazy.layout.shuffle_up()),
+       
+        # ## 2 monitor setup
+        # Key([mod], "Tab", cycle_groups),
+        # Key([mod, "shift"], "Tab", cycle_groups_reverse),
+
+
+        #     Key([mod], "w", send_left),
+        #     Key([mod], "e", send_right),
+        #     Key([mod], "a", focus_left_mon),
+        #     Key([mod], "d", focus_right_mon),
+        
+        # #  (tilde) " = keycode 49 (keysym 0x22, quotedbl)
+        # # use xev to find the keycode of the key
+        #     Key([mod], 49, lazy.layout.down(), desc="Move focus down"),
 
     ### Multimedia keys
         Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
@@ -70,13 +87,13 @@ keys = [
         Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
         Key([], "XF86AudioPrev", lazy.spawn("playerctl previous")),
 
-        ## 2 monitor setup
-        Key([mod], "w", send_left),
-        Key([mod], "e", send_right),
-        Key([mod], "a", focus_left_mon),
-        Key([mod], "d", focus_right_mon),
-        #Key([mod], "j", lazy.next_screen(), desc="Move focus to right"),
-        #  (tilde) " = keycode 49 (keysym 0x22, quotedbl)
-        # use xev to find the keycode of the key
-        Key([mod], 49, lazy.layout.down(), desc="Move focus down"),
+
+
 ]
+
+
+        
+        ## Change focus of windows when layout is Max
+        #Key([mod, "shift"], "Tab", lazy.layout.next(), desc="Move window focus to other window"),
+        ## cycle through the groups with the same screen_affinity
+

@@ -45,15 +45,14 @@ from functions import *
 # DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
 # DP_4   right monitor :   screen_affinity=1, group 4 # view right
 groups = [
-    # 2 monitor setup
-    Group("1", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="monadtall", init=True), # DP_4: right monitor
-    Group("2", screen_affinity=0, layout="monadtall", init=True), # DP-2: left monitor
-    Group("3", screen_affinity=1, layout="monadtall"), 
-    Group("4", screen_affinity=0, layout="monadtall"), 
-    Group("5", screen_affinity=1, layout="monadtall"), 
-    Group("6", screen_affinity=0, layout="monadtall"), 
-    # Group("7", screen_affinity=1, layout="max"),
-    # Group("8", screen_affinity=0, layout="max"),
+        # ## 1 monitor setup
+    Group("1", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=['firefox-browser', 'brave-browser', 'chromium-browser'])],  label=""),
+    Group("2", screen_affinity=0, layout="monadtall", label=""),
+    Group("3", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=['siyuan', 'SiYuan', 'obsidian'])], label=""),
+    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
+    Group("5", screen_affinity=0, layout="monadtall", label=""),
+    Group("6", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=['nuclear', 'spotify', 'youtube-music-desktop-app','youtube-music'])]),
+
 ]
 
 for i in groups:

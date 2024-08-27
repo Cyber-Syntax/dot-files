@@ -1,10 +1,11 @@
-    # ## 1 monitor setup
-    # Group("1", screen_affinity=0, layout="max", matches=[Match(wm_class=['firefox-browser', 'brave-browser', 'chromium-browser'])],  label=""),
-    # Group("2", screen_affinity=0, layout="max", label=""),
-    # Group("3", screen_affinity=0, layout="max", matches=[Match(wm_class=['siyuan', 'SiYuan'])], label=""),
-    # Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
-    # #Group("5", screen_affinity=0, layout="max", label=""),
-    # Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class="nuclear")]),
+    # 2 monitor setup
+    Group("1", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="monadtall", init=True), # DP_4: right monitor
+    Group("2", screen_affinity=0, layout="monadtall", init=True), # DP-2: left monitor
+    Group("3", screen_affinity=1, layout="monadtall"), 
+    Group("4", screen_affinity=0, layout="monadtall"), 
+    Group("5", screen_affinity=1, layout="monadtall"), 
+    Group("6", screen_affinity=0, layout="monadtall"), 
+
 ## group setup ##
 
 # 

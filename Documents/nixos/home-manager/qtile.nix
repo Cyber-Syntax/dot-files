@@ -1,3 +1,6 @@
+{ config, pkgs, lib,... }:
+
+
 {
   home.file.qtile_config = {
     source = ./src;

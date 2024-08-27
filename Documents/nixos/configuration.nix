@@ -13,6 +13,9 @@
       ./modules/qtile.nix
       ./modules/nvidia.nix
       ./modules/ollama.nix
+      ./home-manager/zsh.nix
+      #./home-manager/neovim.nix # chadrc error.
+      ./modules/neovim.nix
     ];
 
   # Bootloader.
@@ -290,7 +293,9 @@ programs.dconf.enable = true;
       #zsh
       # My best apps
       freetube
+      # My unfree apps
       obsidian
+      spotify
   ];
 
 
@@ -305,12 +310,8 @@ programs.virt-manager.enable = true;
 environment.pathsToLink = ["/share/zsh"];
 environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
-### neovim
-
-programs.neovim = {
-	enable = true;
-	defaultEditor = true;
-};
+# global default editor neovim
+environment.variables.EDITOR = "nvim";
 
 ## Security
 security = {

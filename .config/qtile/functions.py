@@ -16,7 +16,6 @@ def go_to_group(name: str):
         else:
             qtile.go_to_group(name)
         return _inner
-# #
 
 def toscreen(qtile, group_name):
     current_screen_index = qtile.current_screen.index
@@ -195,6 +194,3 @@ def cycle_groups_reverse(qtile):
 
 
 ## ./FUNCTIONS ##
-
-
-

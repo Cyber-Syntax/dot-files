@@ -82,8 +82,10 @@ screens = [
                 widget.Spacer(length = 8),
                 ## groups, e.g workspaces
                 widget.GroupBox(
-                         # DP-2: 2,4,6,8
-                         visible_groups=['2', '4', '6'],
+                        # # multi monitor setup
+                        # # DP-2: 2,4,6,8
+                        #  visible_groups=['2', '4', '6'],
+
                          fontsize = 15,
                          margin_y = 5,
                          margin_x = 5,
@@ -111,14 +113,19 @@ screens = [
                 #         fontsize = 14
                 #         ),
                 widget.Spacer(length = 8),
-                widget.WindowTabs(
-                    fmt = '{}',
-                    foreground = colors[7],
-                    background = colors[0],
-                    separator = '  ',
-                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                widget.WindowName(
                     **decoration_group,
-                ),                
+                    for_current_screen=True,
+                    ),
+                # widget.WindowTabs(
+                #     fmt = '{}',
+                #     #max_chars = 50,
+                #     foreground = colors[7],
+                #     background = colors[0],
+                #     separator = '  ',
+                #     selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
+                #     **decoration_group,
+                # ),                
                 widget.Spacer(length = 8),                
                 widget.Mpris2(
                     fmt = '{}',
@@ -131,7 +138,6 @@ screens = [
                     separator = ', ',
                     stopped_text = '',
                     width=200,
-                    #popup_layout = COMPACT_LAYOUT,
                     **decoration_group,
                 ),
                     # Not work on arch for now, developers didn't add some modules to main arch repo yet.
@@ -310,14 +316,14 @@ screens = [
                 #         padding = 2,
                 #         fontsize = 14
                 #         ),      
-                # # New custom widget to call my xrandr.sh script via mouse callback
-                # widget.TextBox(
-                #     text=" ",
-                #     fontsize=16,
-                #     foreground="#f8f8f2",
-                #     background=colors[0],
-                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr.sh"))}                    
-                # ),
+                # New custom widget to call my xrandr.sh script via mouse callback
+                widget.TextBox(
+                    text=" ",
+                    fontsize=16,
+                    foreground="#f8f8f2",
+                    background=colors[0],
+                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("/home/developer/Documents/screenloyout/xrandr.sh"))}                    
+                ),
                 # widget.Spacer(length = 8),
                 # # New custom widget to call my xrandr-movie.sh script via mouse callback
                 # widget.TextBox(
@@ -331,57 +337,61 @@ screens = [
             size=30  # Fix: Move the positional argument before the keyword argument
         )
     ),
-  #    # DP-0: left monitor
-    Screen(
-        top=bar.Bar(
-            widgets=[
-                ## groups, e.g workspaces
-                widget.GroupBox(
-                         #visible_groups=visible_groups,
-                        visible_groups=['1', '3', '5'],
-                         fontsize = 15,
-                         margin_y = 5,
-                         margin_x = 5,
-                         padding_y = 0,
-                         padding_x = 1,
-                         borderwidth = 3,
-                         active = colors[3],
-                         inactive = colors[2],
-                         rounded = True,
-                         highlight_color = colors[0],
-                         highlight_method = "line",
-                         this_current_screen_border = colors[7],
-                         this_screen_border = colors [4],
-                         other_current_screen_border = colors[7],
-                         other_screen_border = colors[4],
-                        **decoration_group,
-                         ),
-                widget.Spacer(length = 8),
-                widget.WindowTabs(
-                    fmt = '{}',
-                    foreground = colors[7],
-                    separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
-                    **decoration_group,
-                ),
-                widget.Spacer(length = 8),
-                widget.Clock(
-                        foreground = colors[8],
-                        format = "  %A %d/%m/%y %H:%M",
-                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-                        **decoration_group,
-                        ),
-                widget.Spacer(length = 8),
-                widget.CurrentLayoutIcon(
-                        foreground = colors[1],
-                        padding = 4,
-                        scale = 0.6
-                        ),
-            ],
-            size=29
-        )
-    ),
-#    ./end-DP-0
+
+
+# #    # DP-0: left monitor
+#     Screen(
+#         top=bar.Bar(
+#             widgets=[
+#                 ## groups, e.g workspaces
+#                 widget.GroupBox(
+#                          #visible_groups=visible_groups,
+#                         visible_groups=['1', '3', '5'],
+#                          fontsize = 15,
+#                          margin_y = 5,
+#                          margin_x = 5,
+#                          padding_y = 0,
+#                          padding_x = 1,
+#                          borderwidth = 3,
+#                          active = colors[3],
+#                          inactive = colors[2],
+#                          rounded = True,
+#                          highlight_color = colors[0],
+#                          highlight_method = "line",
+#                          this_current_screen_border = colors[7],
+#                          this_screen_border = colors [4],
+#                          other_current_screen_border = colors[7],
+#                          other_screen_border = colors[4],
+#                         **decoration_group,
+#                          ),
+#                 widget.Spacer(length = 8),
+#                 widget.WindowTabs(
+#                     fmt = '{}',
+#                     foreground = colors[7],
+#                     separator = ' | ',
+#                     selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
+#                     **decoration_group,
+#                 ),
+#                 widget.Spacer(length = 8),
+#                 widget.Clock(
+#                         foreground = colors[8],
+#                         format = "  %A %d/%m/%y %H:%M",
+#                         mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+#                         **decoration_group,
+#                         ),
+#                 widget.Spacer(length = 8),
+#                 widget.CurrentLayoutIcon(
+#                         foreground = colors[1],
+#                         padding = 4,
+#                         scale = 0.6
+#                         ),
+#             ],
+#             size=29
+#         )
+#     ),
+# #    ./end-DP-0
+
+
 ]
 
    # no longer used monitor

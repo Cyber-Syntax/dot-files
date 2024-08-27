@@ -31,6 +31,8 @@
          
         # TODO: debug, not work
         #dynamicBoost.enable = true;
+        
+        # open is useable with my rtx2060
         open = false;
         #! modesetting: Cause the system to freeze on suspend for qtile -> 05.08.2024
         modesetting.enable = false;
