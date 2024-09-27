@@ -35,11 +35,11 @@
          };
          updater.interval = "hourly";
       };
-
+      # TODO: testing root user, prohibit later.
       openssh = {
-        enable = false;
-        settings.permitRootLogin = "prohibit-password";
-        settings.PasswordAuthentication = false;
+        enable = true;
+        settings.PermitRootLogin = "yes"; # prohibit-password
+        settings.PasswordAuthentication = true;
       };
 
       gnome.gnome-keyring.enable = true;

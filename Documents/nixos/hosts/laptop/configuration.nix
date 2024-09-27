@@ -5,11 +5,9 @@
     [ 
       ./hardware-configuration.nix
  
-      # desktop modules
-      ./../../modules/desktopModules/nvidia.nix
-      ./../../modules/desktopModules/ollama.nix
+      # desktop ../../modules
 
-      # common modules 
+      # common ../../modules 
       ./../../modules/commonModules/qtile.nix
       ./../../modules/commonModules/i18n.nix
       ./../../modules/commonModules/neovim.nix
@@ -25,9 +23,9 @@
     ];
 
   # Bootloader.
+  boot.initrd.systemd.enable = true;
+
   boot = {
-    #TODO: Testing suspend problem on qtile with this option
-      #kernelParams = [ "nvidia-drm.modeset=1" ];
    
     kernelPackages = pkgs.linuxPackages_latest; # Use latest stable Linux
     loader = {
@@ -63,12 +61,8 @@
     # Enable the NetworkManager
     networkmanager.enable = true;
     # Define your hostname.
-    hostName = "nixos";
+    hostName = "nixosLaptop";
     
-      hosts = {
-        "192.168.1.60" = ["nextcloud"];
-        "192.168.1.107" = ["laptop"];
-      };
     
     ### FIREWALL 
       firewall = {
@@ -85,14 +79,14 @@
       # Allow my laptop to connect to my desktop 192.168.1.107
       #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
       extraCommands = '' 
-          iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
-          iptables -A nixos-fw -p tcp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
+          iptables -A nixos-fw -p udp --source 192.168.1.39 --dport 1:65535 -j nixos-fw-accept || true
+          iptables -A nixos-fw -p tcp --source 192.168.1.39 --dport 1:65535 -j nixos-fw-accept || true
 
         '';
     };
   };
   # https://nixos.org/manual/nixos/stable/#sec-wireless
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -127,12 +121,10 @@ nix = {
 
       substituters = [
         "https://cache.nixos.org/"
-        #"https://nix-community.cachix.org"
         
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        #"nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
 
     }; 
@@ -141,7 +133,7 @@ nix = {
 # only zen2 and newer support this amd_pstate driver.
  powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
  # battery management
- # services.tlp.enable = true;
+ services.tlp.enable = true;
 
 ### USERS SETUP
   users.users.developer = {
@@ -262,73 +254,8 @@ nix = {
   ];
 
 ### Virtulization
-virtualisation.libvirtd.enable = true;
-programs.virt-manager.enable = true;
-
-services = {
-  # # syncthing
-  syncthing = {
-    enable = true;
-    user = "developer";
-    #group = "developer";
-    #dataDir = "/home/developer/.local/share/syncthing";
-    configDir = "/home/developer/.config/syncthing";
-  };
-
-  # borgbackup
-  borgbackup.jobs."home-backup" = {
-    paths = "/home/developer/";
-    exclude = [
-      # Largest cache dirs
-      ".cache"
-      "*/cache2" # firefox
-      "*/Cache"
-      ".config/Slack/logs"
-      ".config/Code/CachedData"
-      ".container-diff"
-      ".npm/_cacache"
-      # Work related dirs
-      "*/node_modules"
-      "*/bower_components"
-      "*/_build"
-      "*/.tox"
-      "*/venv"
-      "*/.venv"
-      "~/Downloads"
-    ];
-    encryption.mode = "none";
-    repo = "/mnt/backups/borgbackup/home-nixos";
-    compression = "zstd,15";
-    # prune and keep only 13 backups
-    prune.keep = {
-      daily = 7;
-      weekly = 4;
-      monthly = 2;
-    };
-    # persistent systemd timer if missed the last start time, similar anacron
-    persistentTimer = true;
-    # start time Europe/Istanbul 10:00
-    startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
-  };
-
-  borgbackup.jobs."nixos-backup" = {
-    paths = "/etc/nixos/";
-    encryption.mode = "none";
-    repo = "/mnt/backups/borgbackup/root-nixos";
-    #doInit = true;  # cause it the make 2 backup in a day
-    compression = "zstd,15";
-    persistentTimer = true;
-    # start time Europe/Istanbul 10:00
-    startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
-    #prune and keep only 13 backups
-    prune.keep = {
-      daily = 7;
-      weekly = 4;
-      monthly = 2;
-    };
-  };
-    
-};
+#virtualisation.libvirtd.enable = true;
+#programs.virt-manager.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
