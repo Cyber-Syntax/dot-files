@@ -52,6 +52,7 @@ home-manager.users.developer.programs.zsh = {
         
         shellAliases = {
           switch = "sudo nixos-rebuild switch";
+          flake-update = "sudo nix flake update";
           switch-upgrade = "sudo nixos-rebuild switch --upgrade";
           git-bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
           gtst = "git status";

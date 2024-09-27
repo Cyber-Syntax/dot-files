@@ -61,7 +61,6 @@ for i in groups:
         Key([mod], i.name, lazy.group[i.name].toscreen()),
         # switch to group with ability to go to prevous group if pressed again
         #Key([mod], i.name, lazy.function(toscreen, i.name)),
-
         # mod1 + shift + letter of group = switch to & move focused window to group
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
@@ -144,9 +143,7 @@ wl_input_rules = None
 def start_once():
     # home = os.path.expanduser('~')
     # subprocess.call([home + '/.config/qtile/scripts/autostart.sh'])
-    #home = os.path.expanduser('~/Documents/nixos/home-manager/qtile_nixos/scripts/autostart.sh')
-
-    home = os.path.expanduser('~/.config/qtile/scripts/autostart.sh')
+    home = os.path.expanduser('~/Documents/nixos/hosts/desktop/qtile/scripts/autostart.sh')
     subprocess.Popen([home])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
@@ -154,7 +151,7 @@ def start_once():
 # mailing lists, GitHub issues, and other WM documentation that suggest setting
 # this string if your java app doesn't work correctly. We may as well just lie
 # and say that we're a working one by default.
-##"""
+#"""
 #"""
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.

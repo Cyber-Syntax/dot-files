@@ -10,7 +10,10 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-  
+      # sops-nix = {
+      #   url = "github:Mic92/sops-nix";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };  
 };
   
 
@@ -19,6 +22,7 @@
       nixpkgs,
       nixos-hardware,
       home-manager,
+      #sops-nix, # secret management
       ...
     }@inputs:
     let
@@ -26,12 +30,13 @@
       pkgs = import nixpkgs { inherit system; };
       nixos-hardware = inputs.nixos-hardware.nixosModules;
       home-manager = inputs.home-manager.nixosModules.home-manager;
+      #sops-nix = inputs.sops-nix.nixosModules.sops;
       createSystem =
         {
           name,
           config,
           #base,
-          home, #         
+          home,        
           #system,
           #extraModules,
         }:
@@ -54,25 +59,24 @@
             #system
             config
             home-manager
-
+            #sops-nix
             {
               imports = [ 
-              #./cachix.nix  
+              #./cachix.nix 
               ];
               home-manager = {
-                backupFileExtension = "bak3";
+                backupFileExtension = "bak6";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
-                  imports = [ 
-                  home
-                  ];
+                  imports = [ home ];
                   home.stateVersion = version;
                 };
                 useGlobalPkgs = true;
                 useUserPackages = true;
               };
             }
-          ]; #++ extraModules;
+          #] ++ extraModules;
+          ];
         };
     in
     {
@@ -82,18 +86,18 @@
       nixosConfigurations = {
         "nixos" = createSystem {
           name = "developer";
-          config = ./configuration.nix;
+          config = ./hosts/desktop/configuration.nix;
           #base = ../../etc/nixos/hosts/developer/base.nix;
-          home = ./hosts/developer/home.nix;
+          home = ./hosts/desktop/home.nix;
           #system = ../../etc/nixos/hosts/developer/system.nix;
-          #extraModules = [ ];
+          #extraModules = [ nixos-hardware.common-cpu-amd ];
         };
         "laptop" = createSystem {
-          name = "cyber-syntax";
-          config = ./hosts/cyber-syntax/configuration.nix;
-          #base = ./hosts/cyber-syntax/base.nix;
-          home = ./hosts/cyber-syntax/home.nix;
-          #system = ./hosts/cyber-syntax/system.nix;
+          name = "developer";
+          config = ./hosts/laptop/configuration.nix;
+          #base = ./hosts/laptop/base.nix;
+          home = ./hosts/laptop/home.nix;
+          #system = ./hosts/laptop/system.nix;
           #extraModules = [ nixos-hardware.thinkpad-e14-intel ];
         };
       };

@@ -1,15 +1,9 @@
 from libqtile.lazy import lazy
-
-
 # it's not work for break notifications but work for task notifications
 # focus_on_window_activation = "focus"     
 
 # # focus is work
 # qtile cmd-obj -o group 4 -f toscreen
-
-    
-
-
 
 ## 2 monitor setup ##
 DP_2 = 0

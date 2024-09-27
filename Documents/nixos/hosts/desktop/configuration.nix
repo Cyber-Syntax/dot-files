@@ -1,27 +1,33 @@
-# Edit this configuration file to define what should be installed on
-
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, lib,... }:
-
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
-      ./modules/qtile.nix
-      ./modules/nvidia.nix
-      ./modules/ollama.nix
-      ./home-manager/zsh.nix
+ 
+      # desktop modules
+      ./../../modules/desktopModules/nvidia.nix
+      ./../../modules/desktopModules/ollama.nix
+
+      # common modules 
+      ./../../modules/commonModules/qtile.nix
+      ./../../modules/commonModules/i18n.nix
+      ./../../modules/commonModules/neovim.nix
+      ./../../modules/commonModules/fonts.nix
+      ./../../modules/commonModules/programs.nix
+      ./../../modules/commonModules/security.nix
+      ./../../modules/commonModules/services.nix
+      ./../../modules/commonModules/appimages.nix
+      
+      # Home-Manager used via nix builds. 
+      ./../../home-manager/zsh.nix 
       #./home-manager/neovim.nix # chadrc error.
-      ./modules/neovim.nix
     ];
 
   # Bootloader.
   boot = {
     #TODO: Testing suspend problem on qtile with this option
-    #kernelParams = [ "nvidia-drm.modeset=1" ];
+      #kernelParams = [ "nvidia-drm.modeset=1" ];
    
     kernelPackages = pkgs.linuxPackages_latest; # Use latest stable Linux
     loader = {
@@ -91,25 +97,6 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-
-
-  # Set your time zone.
-  time.timeZone = "Europe/Istanbul";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "tr_TR.UTF-8";
-    LC_IDENTIFICATION = "tr_TR.UTF-8";
-    LC_MEASUREMENT = "tr_TR.UTF-8";
-    LC_MONETARY = "tr_TR.UTF-8";
-    LC_NAME = "tr_TR.UTF-8";
-    LC_NUMERIC = "tr_TR.UTF-8";
-    LC_PAPER = "tr_TR.UTF-8";
-    LC_TELEPHONE = "tr_TR.UTF-8";
-    LC_TIME = "tr_TR.UTF-8";
-  };
 ###nix
 
 nix = {
@@ -134,7 +121,7 @@ nix = {
       max-substitution-jobs = 20;
       auto-optimise-store = true;
       
-      allowed-users = [ "developer" "cyber-syntax""@wheel"];
+      allowed-users = [ "developer" "@wheel"];
       experimental-features = ["nix-command" "flakes"];
 
       substituters = [
@@ -155,40 +142,6 @@ nix = {
  # battery management
  # services.tlp.enable = true;
 
-
-
-### dconf settings #
-programs.dconf.enable = true;
-
-
-# ./services #
-
-  # Configure console keymap
-  console.keyMap = "trq";
-   
-  # font	
-  fonts = {
-    packages = with pkgs; [
-      corefonts
-      liberation_ttf
-      dejavu_fonts
-      terminus_font
-      ubuntu_font_family
-      noto-fonts-cjk
-      noto-fonts-emoji
-      font-awesome
-    ];
-
-    fontconfig = {
-      enable = true;
-      defaultFonts = {
-        monospace = ["Jetbrains Mono Bold"];
-        serif = ["Noto Serif"];
-        sansSerif = ["Noto Sans"]; 
-      };
-    };
-  };
-
 ### USERS SETUP
   users.users.developer = {
     isNormalUser = true;
@@ -200,180 +153,118 @@ programs.dconf.enable = true;
 ### PACKAGES 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    xorg.setxkbmap
-    xorg.xrandr
-    xorg.xhost
-    xorg.xev
-    xorg.xkbcomp
-    xorg.xkill
-    xorg.xwininfo
-    alsa-utils
-    xorg.xinit
-    xorg.xauth
-    vim 
-    wget
-    networkmanagerapplet # for nm-applet
-    unzip
-    xclip
-    htop
-    acpi
-    git
-    picom
-    fastfetch
-    xdg-user-dirs
-    playerctl
-    lm_sensors
-    pulseaudio
-    numlockx
-    ### Apps
-    fluent-reader
-    feh
-    flameshot
-    pavucontrol
-    ### theme
-    materia-theme
-    ### X11, window manager
-    i3lock
-    rofi
-    ### terminal
-    gparted
-    ### Productivity
-    zoxide
-    trash-cli
-    ### Development 
-    nodejs_22
-    hugo
-    go
-    ### Development for compiling
-    clang
-    libgcc
-    libstdcxx5  # for litellm
+    # xorg
+      xorg.setxkbmap
+      xorg.xrandr
+      xorg.xhost
+      xorg.xev
+      xorg.xkbcomp
+      xorg.xkill
+      xorg.xwininfo
+      xorg.xinit
+      xorg.xauth
+    # Main apps 
+      vim 
+      networkmanagerapplet # for nm-applet
+      unzip
+      acpi
+      xdg-user-dirs
+      ## Stats, system infos etc.
+        lm_sensors
+        fastfetch
+        htop
+      ## basic developer tools
+        wget
+        git    
+      ## Sound music etc.
+        alsa-utils
+        playerctl
+        #easyeffects
+        pulseaudio
+        pavucontrol
+      ## theme
+        materia-theme
+      ## X11, window manager
+        i3lock
+        rofi
+        dunst
+        gammastep
+        picom
+        xclip # for copy paste
+    ## Productivity
+      zoxide
+      trash-cli
+      numlockx
+    ## Development 
+      nodejs_22
+      hugo
+      go
+      ### Development for compiling
+        clang
+        libgcc
+        libstdcxx5  # for litellm
     ### encryption
-    openssl
-    ### documentation
-    evince
-    gimp
+      openssl
     ### other
-    xdotool
+      xdotool
     ## AI
       python311Packages.litellm
       python311Packages.tokenizers
       python3
-    ## Nextcloud packages
-    nextcloud-client
-    wakeonlan
-
-    home-manager
-   
-    # X11-wayland notification and bluecolor setup
-      dunst
-      gammastep
-
-    #nix
-    nix-prefetch # get hash from github branches 
-
-    # apps
-      pcmanfm
-      brave
-      firefox
-      keepassxc
-      signal-desktop
-      ungoogled-chromium
-      tutanota-desktop
-      xournalpp
-      libreoffice
-      calibre
-      borgbackup
-      syncthingtray
-      kitty
-      #zsh
-      # My best apps
-      freetube
-      # My unfree apps
-      obsidian
-      spotify
+    # Nixos
+      nix-prefetch # get hash from github branches 
+      home-manager
+    # Apps
+      ## Pictures, Documents etc.
+        feh
+        gimp
+        evince
+        calibre
+        libreoffice
+        flameshot
+        fluent-reader
+        xournalpp
+        pcmanfm
+      ## email
+        thunderbird
+        tutanota-desktop
+        birdtray
+      ## Nextcloud packages
+        nextcloud-client
+        wakeonlan
+      ## Disk
+        gparted
+      ## backup
+        rclone
+        borgbackup
+        syncthingtray
+      ## Browser    
+        brave
+        firefox
+        ungoogled-chromium
+      ## Password manager
+        keepassxc
+      ## Chat
+        signal-desktop
+      ## Terminal
+        kitty
+      ## My best apps
+        freetube
+      ## for windows
+        ntfs3g
+      ## My unfree apps
+        obsidian
+        spotify
   ];
-
-
 
 ### Virtulization
 virtualisation.libvirtd.enable = true;
 programs.virt-manager.enable = true;
 
-##### PROGRAMS
-
-### ZSH
-environment.pathsToLink = ["/share/zsh"];
-environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
-
-# global default editor neovim
-environment.variables.EDITOR = "nvim";
-
-## Security
-security = {
-  rtkit.enable = true;
-  polkit.enable = true;
-  
-# Increase password timeout for sudo
-# Allow access on other tty's
-  sudo.extraConfig = ''
-    Defaults timestamp_type=global
-    Defaults env_reset,timestamp_timeout=10
-  '';
-};
-
-hardware.pulseaudio.enable = false;
-
-# sytemd-timer for trash-cli to delete files older than 30 days.
-systemd.timers."trash-cli" = {
-  wantedBy = [ "timers.target" ];
-  timerConfig = {
-    OnCalendar = "daily";
-    Persistent = true;
-  };
-};
-
-systemd.services."trash-cli" = {
-# (crontab -l ; echo "@daily $(which trash-empty) 30") | crontab -
-  script = ''
-    ${pkgs.trash-cli}/bin/trash-empty 30  
-  '';
-  
-  serviceConfig = {
-    Type = "oneshot";
-    #ExecStart = "${pkgs.trash-cli}/bin/trash-empty 30";
-    User = "developer";
-  };
-};
-
-# enable seahorse for gnome-keyring
-programs.seahorse = {
-  enable = true;
-};
-
-
 services = {
-  gnome.gnome-keyring.enable = true;
-  acpid.enable = true;
-  dbus.enable = true;
-  devmon.enable = true;
-  printing.enable = false;
-
-  fstrim.enable = true;
-  fwupd.enable = true;
-  smartd.enable = true;
-
- 
-  pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;	
-  };
   # # syncthing
   syncthing = {
     enable = true;
@@ -434,20 +325,8 @@ services = {
       weekly = 4;
       monthly = 2;
     };
-    
   };
     
-};
-
-
-### Appimage won't work without it, appimage-run 
-boot.binfmt.registrations.appimage = {
-  wrapInterpreterInShell = false;
-  interpreter = "${pkgs.appimage-run}/bin/appimage-run";
-  recognitionType = "magic";
-  offset = 0;
-  mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
-  magicOrExtension = ''\x7fELF....AI\x02'';
 };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -458,14 +337,6 @@ boot.binfmt.registrations.appimage = {
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = true;
-  };
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -473,6 +344,5 @@ boot.binfmt.registrations.appimage = {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
 

@@ -212,11 +212,11 @@ screens = [
                     **decoration_group,
                 ),
                 widget.Spacer(length = 8),
-                # widget.CPU(
-                #         format = ' {freq_current}GHz {load_percent}%',
-                #         foreground = colors[4],
-                #         **decoration_group,
-                #         ),
+                widget.CPU(
+                        format = ' {freq_current}GHz {load_percent}%',
+                        foreground = colors[4],
+                        **decoration_group,
+                        ),
                 widget.Spacer(length = 8),
                 widget.ThermalSensor(
                             tag_sensor='Tctl',
@@ -324,7 +324,8 @@ screens = [
                             check_mute_string = '[off]', # '' icon not working
                     mouse_callbacks={
                         # Left click to change volume output
-                        'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'),
+                        #'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'),
+                        'Button1': lambda: qtile.spawn('kitty -- bash -c "~/Documents/nixos/hosts/desktop/qtile/scripts/sink-change.sh --change"'),
                         # Right click to open pavucontrol
                         'Button3': lambda: qtile.spawn('pavucontrol'),
                                      },
