@@ -1,4 +1,4 @@
-{ config, pkgs, lib,... }:
+{ pkgs, ... }:
 
 {
 home-manager.users.developer.programs.zsh = {
@@ -38,16 +38,16 @@ home-manager.users.developer.programs.zsh = {
               sha256 = "fJX748lwVP1+GF/aIl1J3c6XAy/AtYCpEHsP8weUNo0=";
             };
           }
-          {
-            name = "powerlevel10k-config";
-            src = ./.;
-            file = "p10k.zsh";
-          }
-          {
-            name = "zsh-powerlevel10k";
-            src = pkgs.zsh-powerlevel10k;
-            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-          }
+          # {
+          #   name = "powerlevel10k-config";
+          #   src = ./.;
+          #   file = "p10k.zsh";
+          # }
+          # {
+          #   name = "zsh-powerlevel10k";
+          #   src = pkgs.zsh-powerlevel10k;
+          #   file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          # }
          ];
         
         shellAliases = {
@@ -77,6 +77,9 @@ home-manager.users.developer.programs.zsh = {
 
             # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
             [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+            # # oh-my-posh NOT USED FOR NOW
+            # eval "$(${pkgs.oh-my-posh}/bin/oh-my-posh init zsh --config ${./slimfat.omp.json})"
 
             bindkey '^[[H' beginning-of-line
             bindkey '^[[F' end-of-line

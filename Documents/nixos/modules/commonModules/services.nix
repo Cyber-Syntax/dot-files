@@ -38,8 +38,8 @@
       # TODO: testing root user, prohibit later.
       openssh = {
         enable = true;
-        settings.PermitRootLogin = "yes"; # prohibit-password
-        settings.PasswordAuthentication = true;
+        settings.PermitRootLogin = "no"; # prohibit-password
+        settings.PasswordAuthentication = false;
       };
 
       gnome.gnome-keyring.enable = true;
