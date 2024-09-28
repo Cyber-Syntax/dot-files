@@ -14,7 +14,7 @@ colors = colors.Nord
 
 # Defaul widget settings
 widget_defaults = dict(
-    font="JetBrains Mono Bold",
+    font="JetBrains Mono Medium",
     fontsize=16,
     foreground=colors[1],
     background=colors[0],
@@ -31,68 +31,8 @@ decoration_group = {
         "padding": 3,
 }
 
-# .qtile-extras
-
-# # test show only when treshold is reached ram widget
-# from qtile import widget
-# from qtile.widget.base import _Widget
-# import psutil
-#
-# class MemoryVisibility(_Widget):
-#     defaults = [
-#         ('update_interval', 1, 'Update interval in seconds.'),
-#         ('threshold', 3, 'Memory usage percentage threshold for showing the widget.'),
-#         ('fontsize', 14, 'Font size of the widget.'),
-#         ('foreground_color', '#FFFFFF', 'Color of the text when visible.'),
-#         ('hidden_foreground_color', '#000000', 'Color of the text when hidden.')
-#     ]
-#
-#     def __init__(self, **config):
-#         _Widget.__init__(self, **config)
-#         self.add_defaults(MemoryVisibility.defaults)
-#         self.threshold = self.threshold
-#         self.visible = False  # Initial visibility state
-#
-#     def poll(self):
-#         mem = psutil.virtual_memory()
-#         percent = mem.percent
-#         if percent > self.threshold:
-#             if not self.visible:
-#                 self.visible = True
-#                 self.bar.draw()
-#             return f'{percent:.0f}%'
-#         else:
-#             if self.visible:
-#                 self.visible = False
-#                 self.bar.draw()
-#             return ''
-#
-#     def draw(self):
-#         if self.visible:
-#             self.foreground = self.foreground_color
-#         else:
-#             self.foreground = self.hidden_foreground_color
-#         super().draw()
-
-
-
-
 # Pin apps to the bar
 pinned_apps = [
-    #("", "flatpak run net.minetest.Minetest"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/telegram/Telegram")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/ungoogled-chromium/ungoogled-chromium")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/nuclear/nuclear")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/tutanota/tutanota")),
-    #("", "pcmanfm"),
-    #("", os.path.expanduser("~/Documents/appimages/siyuan.AppImage")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/freetube/freetube")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/syncthing-tray/syncthing-tray")),
-    #("", "firefox"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")),
-    #("", "kitty"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/flameshot/flameshot")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/keepassxc/keepassxc")),
     ("", "keepassxc"),
 ]
 
@@ -108,15 +48,6 @@ app_widgets = [
     )
     for app_name, app_cmd in pinned_apps
 ]
-def set_label(rule, box):
-    if box.focused:
-        rule.text = "◉"
-    elif box.occupied:
-        rule.text = "◎"
-    else:
-        rule.text = "○"
-
-    return True
 
 ## Screens ##
 screens = [
@@ -124,24 +55,12 @@ screens = [
     Screen(
         top=bar.Bar(
              widgets=[
-                 widget.Spacer(length = 8),
-
-    #MemoryVisibility(
-    #     update_interval=10,
-    #     fontsize=14,
-    #     threshold=3,
-    #     foreground_color='#FF0000',  # Color when the widget is visible
-    #     hidden_foreground_color='#000000',  # Color when the widget is hidden
-    # ),
-
                 #*app_widgets,
                 widget.Spacer(length = 8),
-                ## groups, e.g workspaces
                 widget.GroupBox(
                         # # multi monitor setup
                         # # DP-2: 2,4,6,8
                         #  visible_groups=['2', '4', '6'],
-
                          fontsize = 15,
                          margin_y = 5,
                          margin_x = 5,
@@ -159,15 +78,7 @@ screens = [
                          other_screen_border = colors[4],
                         **decoration_group,
                         #rules = [GroupBoxRule().when(func=set_label)]
-
-                         ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                #         ),
+                ),
                 widget.Spacer(length = 8),
                 widget.TaskList(
                     highlight_method = "block",
@@ -183,20 +94,6 @@ screens = [
                     icon_size = 20,
                     border_width = 0,
                     ),
-
-                # widget.WindowName(
-                #     **decoration_group,
-                #     for_current_screen=True,
-                #     ),
-                # widget.WindowTabs(
-                #     fmt = '{}',
-                #     #max_chars = 50,
-                #     foreground = colors[7],
-                #     background = colors[0],
-                #     separator = '  ',
-                #     selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
-                #     **decoration_group,
-                # ),                
                 widget.Spacer(length = 8),                
                 widget.Mpris2(
                     fmt = '{}',
@@ -211,12 +108,6 @@ screens = [
                     width=200,
                     **decoration_group,
                 ),
-                widget.Spacer(length = 8),
-                # widget.CPU(
-                #         format = ' {freq_current}GHz {load_percent}%',
-                #         foreground = colors[4],
-                #         **decoration_group,
-                #         ),
                 widget.Spacer(length = 8),
                 widget.ThermalSensor(
                             tag_sensor='Tctl',
@@ -265,8 +156,7 @@ screens = [
                     fmt = ' {}',
                     visible_on_warn = False,
                     **decoration_group,
-                    ),
-
+                ),
                 widget.Spacer(length = 8),
                 widget.DF(
                     update_interval = 60,
@@ -288,35 +178,6 @@ screens = [
                     **decoration_group,
                     ),         
                 widget.Spacer(length = 8),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                # ),
-
- #               widget.Spacer(length = 8),
-                # # TODO: Debug
-                # widget.CheckUpdates(
-                #     fmt = '{}',
-                #     distro = 'Arch',
-                #     update_interval = 60,
-                #     colour_have_updates = colors[6],
-                #     colour_no_updates = colors[7],
-                #     fontsize = 15,
-                #     display_format = 'Arch:{updates}',
-                #     no_update_string = '',
-                # ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                # ),
-
-# Work on nixos, not on arch
                 widget.Volume(
                             foreground = colors[1],
                             fmt = '🔈{}',
@@ -330,31 +191,6 @@ screens = [
                                      },
                     **decoration_group,
                 ),
-                # widget.Spacer(length = 8),
-
-# # Custom volume widget
-#                  widget.GenPollText(
-#                     update_interval=1,
-#    func=lambda: subprocess.check_output("~/.config/qtile/scripts/sink-change.sh --status", shell=True, text=True),
-#                     # call script when clicked
-#                     mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')}
-# ),
-
-                # # # TODO: Not working on pipewire arch
-                # widget.Volume(
-                #         foreground = colors[7],
-                #         cardid = 0,
-                #         channel = "Master",
-                #         get_volume_command = "os.path.expanduser('~/.config/qtile/scripts/sink-change.sh --status')",
-                #         #get_volume_command = "",
-                #         device = "default",
-                #         fmt = ' {}',
-                #         #emoji = False,
-                #         update_interval = 0.2,
-                #         volume_app = "pavucontrol",
-                #         mouse_callbacks = {'Button3': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
-                #         ),
-                
                 widget.Spacer(length = 8),
                 widget.Clock(
                         foreground = colors[8],
@@ -362,37 +198,25 @@ screens = [
                         **decoration_group,
                         #mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')}, 
                         ),
-            widget.Spacer(length = 8),
-            widget.Systray(                        
-                        **decoration_group,
-                             ),
-            widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
+                widget.Spacer(length = 8),
+                widget.Systray(                        
+                            **decoration_group,
+                ),
+                widget.Spacer(length = 8),
                 widget.CurrentLayoutIcon(
                         foreground = colors[1],
                         padding = 4,
                         scale = 0.6
-                        ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                #         ),      
-                # New custom widget to call my xrandr.sh script via mouse callback
-                widget.TextBox(
-                    text=" ",
-                    fontsize=16,
-                    foreground="#f8f8f2",
-                    background=colors[0],
-                    mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("/home/developer/Documents/screenloyout/xrandr.sh"))}                    
                 ),
+                
+                # widget.TextBox(
+                #     text=" ",
+                #     fontsize=16,
+                #     foreground="#f8f8f2",
+                #     background=colors[0],
+                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("/home/developer/Documents/screenloyout/xrandr.sh"))}                    
+                # ),
+
                 # widget.Spacer(length = 8),
                 # # New custom widget to call my xrandr-movie.sh script via mouse callback
                 # widget.TextBox(

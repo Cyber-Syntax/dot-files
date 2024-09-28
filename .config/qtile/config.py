@@ -28,15 +28,35 @@ import subprocess
 from libqtile import bar, extension, hook, layout, qtile #, widget #qtile default widget 
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
+import re
 
 ### Import colors
 import colors
 ### Import the keybindings
 from keys import *
 ### Import widget.py
-from widget import *
+#from widget import *
 ## Import functions
 from functions import *
+
+# 2 machine setup, different widgets
+# if desktop import widget else import laptop_widget
+
+# learn it is desktop or laptop
+def get_hostname():
+    hostname = subprocess.check_output(['hostname']).decode('utf-8').strip()
+    return hostname
+# debug
+print(get_hostname())
+
+hostname = get_hostname()
+
+if hostname == "nixos":
+    from widget import *
+elif hostname == "nixosLaptop":
+    from laptopWidget import *
+else:
+    print("No hostname found")
 
 # Log location
 # ~/.local/share/qtile/qtile.log
@@ -44,16 +64,30 @@ from functions import *
 # @param: screen_affinity: monitor to display the group on
 # DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
 # DP_4   right monitor :   screen_affinity=1, group 4 # view right
-groups = [
-    # ## 1 monitor setup
-    Group("1", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["firefox-browser", "brave-browser", "chromium-browser"])],  label=""),
-    Group("2", screen_affinity=0, layout="monadtall", label=""),
-    Group("3", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["siyuan", "obsidian"])], label=""),
-    Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
-    Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=["spotify", "Spotify"])]),
-    Group("6", screen_affinity=0, layout="monadtall", label=""),
 
+#TODO: TESTING
+groups = [
+    Group("1", screen_affinity=0, layout="monadtall", 
+          matches=[Match(wm_class=re.compile(r"^(firefox-browser|brave-browser|chromium-browser)$"))], label=""),
+    Group("2", screen_affinity=0, layout="monadtall", label=""),
+    Group("3", screen_affinity=0, layout="monadtall", 
+          matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))], label=""),
+    Group("4", screen_affinity=0, layout="max", 
+          matches=[Match(wm_class=re.compile(r"^superproductivity$"))], label=""),
+    Group("5", screen_affinity=0, layout="max", 
+          matches=[Match(wm_class=re.compile(r"^(spotify|Spotify)$"))], label=""),
+    Group("6", screen_affinity=0, layout="monadtall", label=""),
 ]
+# groups = [
+#     # ## 1 monitor setup
+#     Group("1", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["firefox-browser", "brave-browser", "chromium-browser"])],  label=""),
+#     Group("2", screen_affinity=0, layout="monadtall", label=""),
+#     Group("3", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["siyuan", "obsidian"])], label=""),
+#     Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
+#     Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=["spotify", "Spotify"])]),
+#     Group("6", screen_affinity=0, layout="monadtall", label=""),
+#
+# ]
 
 for i in groups:
     keys.extend([
@@ -79,7 +113,6 @@ layouts = [
          border_width = 0,
          margin = 0,
     ),
-    #layout.TreeTab(),
 ]
 
 floating_layout = layout.Floating(
