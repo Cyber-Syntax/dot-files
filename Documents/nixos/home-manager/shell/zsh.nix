@@ -55,6 +55,10 @@ home-manager.users.developer.programs.zsh = {
           flake-update = "sudo nix flake update";
           switch-upgrade = "sudo nixos-rebuild switch --upgrade";
           git-bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
+          git-bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
+          git-bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
+          git-bare-commit = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit";
+          git-bare-push-bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
           gtst = "git status";
           gtbr = "git branch";
           gtck = "checkout";
