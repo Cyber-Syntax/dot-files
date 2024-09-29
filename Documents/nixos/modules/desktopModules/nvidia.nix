@@ -1,4 +1,4 @@
-{ config, pkgs, lib,... }:
+{ ... }:
 # Nvidia-open is used now.
 # TODO: Use proprietary drivers later
 

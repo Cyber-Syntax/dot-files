@@ -7,6 +7,13 @@
     defaultEditor = true;
     #extraPython3Packages = pyPkgs: with pyPkgs; [ python-language-server ];
     #extraConfig = lib.fileContents ../../../.config/nvim/init.lua;
+    extraPackages = with pkgs; [
+      #Language server packages (executables)
+      pyright # python language server
+      lua-language-server # lua
+      nixd # nix
+      #nil # nix 
+    ]
     plugins = with pkgs.vimPlugins; [
       nvchad-ui
       nvchad

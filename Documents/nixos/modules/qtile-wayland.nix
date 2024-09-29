@@ -1,4 +1,4 @@
-{config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 # Qtile Wayland
 # TODO: Nvidia driver is not good with wayland for now. I will try later.

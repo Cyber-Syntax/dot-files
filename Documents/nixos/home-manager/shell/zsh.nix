@@ -58,7 +58,7 @@ home-manager.users.developer.programs.zsh = {
           git-bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
           git-bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
           git-bare-commit = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit";
-          git-bare-push-bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
+          git-bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
           gtst = "git status";
           gtbr = "git branch";
           gtck = "checkout";
@@ -92,7 +92,7 @@ home-manager.users.developer.programs.zsh = {
             # Rofi custom themes
             export PATH=$HOME/.config/rofi/scripts:$PATH
 
-            # export .local/bin xdg
+            # add support .local/bin xdg, useful for mason.nvim to work?
             export PATH=$PATH:$(xdg-user-dir USER)/.local/bin
 
             # import zoxide

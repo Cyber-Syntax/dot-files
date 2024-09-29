@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ...}:
 
 {
     # Disable pulseaudio, using pipewire

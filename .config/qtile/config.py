@@ -39,6 +39,8 @@ from keys import *
 ## Import functions
 from functions import *
 
+
+#TODO: TESTING
 # 2 machine setup, different widgets
 # if desktop import widget else import laptop_widget
 

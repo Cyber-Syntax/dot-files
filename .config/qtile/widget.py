@@ -14,7 +14,7 @@ colors = colors.Nord
 
 # Defaul widget settings
 widget_defaults = dict(
-    font="JetBrains Mono Medium",
+    font="JetBrains Mono Bold",
     fontsize=16,
     foreground=colors[1],
     background=colors[0],

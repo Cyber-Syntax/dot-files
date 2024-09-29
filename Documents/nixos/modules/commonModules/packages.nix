@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
 ### PACKAGES 
   # Allow unfree packages
@@ -67,6 +67,8 @@
     # Nixos
       nix-prefetch # get hash from github branches 
       home-manager
+      nil # nix language server as lsp
+      cargo # for rust
     # Apps
       ## Pictures, Documents etc.
         feh

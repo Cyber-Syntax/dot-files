@@ -98,7 +98,7 @@
           #base = ./hosts/laptop/base.nix;
           home = ./hosts/laptop/home.nix;
           #system = ./hosts/laptop/system.nix;
-          #extraModules = [ nixos-hardware.thinkpad-e14-intel ];
+          #extraModules = [nixos-hardware.common-cpu-intel nixos-hardware.common-pc-laptop];
         };
       };
     };
