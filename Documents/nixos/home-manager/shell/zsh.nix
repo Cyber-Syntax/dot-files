@@ -63,6 +63,8 @@ home-manager.users.developer.programs.zsh = {
         # git bare repo
           bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
           bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
+          bare-fetch = "git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo";
+          bare-pull = "git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo";
           bare-single-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
           bare-adog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
           bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
