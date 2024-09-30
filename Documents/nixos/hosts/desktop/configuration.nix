@@ -26,7 +26,7 @@
       
       # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
-      #./home-manager/neovim.nix # chadrc error.
+      #./home-manager/neovim.nix # chadrc error. 
     ];
 
 ### NETWORK
@@ -36,10 +36,10 @@
     # Define your hostname.
     hostName = "nixos";
     
-      hosts = {
-        "192.168.1.60" = ["nextcloud"];
-        "192.168.1.107" = ["laptop"];
-      };
+    hosts = {
+      "192.168.1.60" = ["nextcloud"];
+      "192.168.1.107" = ["laptop"];
+    };
     
     ### FIREWALL 
       firewall = {
@@ -52,7 +52,6 @@
       #   { from = 4000; to = 4007; }
       #   { from = 8000; to = 8010; }
       # ];
-      # Allow my laptop to connect to my desktop 192.168.1.107
       #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
       extraCommands = '' 
           iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
@@ -64,7 +63,7 @@
 #performance cause problem with amd 2600x CPU. amd_pstate driver is not supported with this CPU.(Zen+)
 # only zen2 and newer support this amd_pstate driver.
 # TODO: testing common-cpu-amd on flakes
-#powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
+powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
 
 users.users.developer = {
   isNormalUser = true;

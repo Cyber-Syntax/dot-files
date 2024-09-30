@@ -10,6 +10,7 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      #TODO: Learn secrets management later
       # sops-nix = {
       #   url = "github:Mic92/sops-nix";
       #   inputs.nixpkgs.follows = "nixpkgs";
@@ -28,7 +29,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      nixos-hardware = inputs.nixos-hardware.nixosModules;
+      #nixos-hardware = inputs.nixos-hardware.nixosModules;
       home-manager = inputs.home-manager.nixosModules.home-manager;
       #sops-nix = inputs.sops-nix.nixosModules.sops;
       createSystem =

@@ -1,12 +1,10 @@
 { pkgs, ... }:
 {
-### PACKAGES 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # xorg
       xorg.setxkbmap
       xorg.xrandr
       xorg.xhost
@@ -68,7 +66,7 @@
       nix-prefetch # get hash from github branches 
       home-manager
       nil # nix language server as lsp
-      cargo # for rust
+      cargo # for rust and nil to work
     # Apps
       ## Pictures, Documents etc.
         feh
@@ -102,7 +100,6 @@
       ## Chat
         signal-desktop
       ## Terminal
-        oh-my-posh
         kitty
       ## My best apps
         freetube

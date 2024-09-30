@@ -7,8 +7,7 @@
       # add overlays-compat
       #nixPath = [ "/home/developer/Documents/nixos/overlays-compat/"];
 
-      # nixos garbage collection
-      gc = {
+      gc = { # nixos garbage collection
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 30d";
@@ -21,6 +20,12 @@
         builders-use-substitutes = true;
         max-substitution-jobs = 20;
         auto-optimise-store = true;
+        
+        #TEST: enableParallelBuilding need to be enabled to used on packages??
+
+        max-jobs = "auto"; # default: auto, total number of logical cores
+        cores = 0; # default: 0, all cpu cores going to be used for builder 
+
         
         allowed-users = [ "developer" "@wheel"];
         experimental-features = ["nix-command" "flakes"];

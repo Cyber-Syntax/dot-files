@@ -1,7 +1,5 @@
 {pkgs, ...}:
-
 {
-
   ### Appimage won't work without it, appimage-run 
   boot.binfmt.registrations.appimage = {
     wrapInterpreterInShell = false;
@@ -11,5 +9,4 @@
     mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
     magicOrExtension = ''\x7fELF....AI\x02'';
   };
-
 }

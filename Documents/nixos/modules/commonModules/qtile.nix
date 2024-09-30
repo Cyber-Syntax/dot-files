@@ -5,8 +5,8 @@
     # TODO: Get this to laptopModules
     #libinput.enable = false; # for syncaptics touchpads
     displayManager = {
-     defaultSession = "qtile"; 
-     autoLogin.enable = true; 
+     defaultSession = "qtile";
+     autoLogin.enable = true;  #NOTE: ctrl + alt + F1,2,3,4 still works
      autoLogin.user = "developer";
     };
     

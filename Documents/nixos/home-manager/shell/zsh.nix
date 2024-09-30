@@ -52,13 +52,15 @@ home-manager.users.developer.programs.zsh = {
         
         shellAliases = {
           switch = "sudo nixos-rebuild switch";
-          flake-update = "sudo nix flake update";
-          switch-upgrade = "sudo nixos-rebuild switch --upgrade";
-          git-bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
-          git-bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
-          git-bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
-          git-bare-commit = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit";
-          git-bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
+          flake-update = "sudo nix flake update"; #NOTE: this is going to be used for updating packages etc.
+          switch-upgrade = "sudo nixos-rebuild switch --upgrade"; #NOTE: this not needed when using flake
+          switch-nixos = "sudo nixos-rebuild switch --flake .#nixos";
+          switch-laptop = "sudo nixos-rebuild switch --flake .#laptop";
+          bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
+          bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
+          bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
+          bare-cmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
+          bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
           gtst = "git status";
           gtbr = "git branch";
           gtck = "checkout";

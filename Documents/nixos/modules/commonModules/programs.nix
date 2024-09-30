@@ -1,11 +1,9 @@
 { pkgs, ...}:
 
 {
-  ### ZSH
   environment.pathsToLink = ["/share/zsh"];
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
-  # global default editor neovim
   environment.variables.EDITOR = "nvim";
 
   programs = {
@@ -16,5 +14,4 @@
       enable = true;
     };
   };
-
 }

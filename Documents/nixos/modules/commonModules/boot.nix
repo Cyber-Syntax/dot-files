@@ -2,7 +2,7 @@
 {
   boot = {
     #TODO: Testing suspend problem on qtile with this option
-      #kernelParams = [ "nvidia-drm.modeset=1" ];
+    #kernelParams = [ "nvidia-drm.modeset=1" ];
     kernelPackages = pkgs.linuxPackages_latest; # Use latest stable Linux
     loader = {
       systemd-boot = {
@@ -29,7 +29,5 @@
       "net.ipv4.tcp_rmem" = "4096 87380 104857000"; # 4Kib 87Kib 100Mib
       "net.ipv4.tcp_wmem" = "4096 87380 104857000"; # 4Kib 87Kib 100Mib
     };
-      
   };
-
 }

@@ -1,14 +1,9 @@
+{ ... }:
+
 {
-
-  # Configure console keymap
   console.keyMap = "trq";
-
-  # Set your time zone.
   time.timeZone = "Europe/Istanbul";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "tr_TR.UTF-8";
     LC_IDENTIFICATION = "tr_TR.UTF-8";

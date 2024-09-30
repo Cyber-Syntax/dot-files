@@ -1,0 +1,12 @@
+# 2 machine setup
+"rev": "14929f7089268481d86b83ed31ffd88713dcd415",
+
+# update nixos and qtile
+
+        "rev": "a6c743980e23f4cef6c2a377f9ffab506568413a",
+
+# add nixos
+
+        "rev": "6e090576c4824b16e8759ebca3958c5b09659ee8",
+
+
