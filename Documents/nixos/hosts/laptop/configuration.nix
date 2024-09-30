@@ -68,8 +68,20 @@
 # TODO: setup hardware for laptop
 # powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
 
-# battery management
-services.tlp.enable = true;
+# Fix thinkfan issue
+systemd.services.thinkfan.preStart = "
+  /run/current-system/sw/bin/modprobe  -r thinkpad_acpi && /run/current-system/sw/bin/modprobe thinkpad_acpi
+";
+
+services = {
+  tlp = {
+    enable = true; 
+  };
+
+  thinkfan = {
+    enable = true;
+  };
+};
 
 # bluetooth
 hardware.bluetooth = {
