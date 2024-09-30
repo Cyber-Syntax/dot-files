@@ -51,16 +51,24 @@ home-manager.users.developer.programs.zsh = {
          ];
         
         shellAliases = {
+        # nixos
           switch = "sudo nixos-rebuild switch";
           flake-update = "sudo nix flake update"; #NOTE: this is going to be used for updating packages etc.
           switch-upgrade = "sudo nixos-rebuild switch --upgrade"; #NOTE: this not needed when using flake
           switch-nixos = "sudo nixos-rebuild switch --flake .#nixos";
           switch-laptop = "sudo nixos-rebuild switch --flake .#laptop";
+          ll-nix = "ll /nix/var/nix/profiles";
+          switch-gen = "sudo nix-env --profile /nix/var/nix/profiles/system --switch-generation";
+          del-gen = "sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations";
+        # git bare repo
           bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
           bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
+          bare-single-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
+          bare-adog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
           bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
           bare-cmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
           bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
+        # git aliases
           gtst = "git status";
           gtbr = "git branch";
           gtck = "checkout";
