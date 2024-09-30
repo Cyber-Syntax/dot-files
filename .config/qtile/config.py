@@ -28,35 +28,24 @@ import subprocess
 from libqtile import bar, extension, hook, layout, qtile #, widget #qtile default widget 
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
-import re
+import re # this fixes the Match error on group
 
-### Import colors
 import colors
-### Import the keybindings
-from keys import *
-### Import widget.py
-#from widget import *
-## Import functions
 from functions import *
 
-
-#TODO: TESTING
-# 2 machine setup, different widgets
-# if desktop import widget else import laptop_widget
-
-# learn it is desktop or laptop
+# 2 machine setup
 def get_hostname():
     hostname = subprocess.check_output(['hostname']).decode('utf-8').strip()
     return hostname
-# debug
-print(get_hostname())
 
 hostname = get_hostname()
 
 if hostname == "nixos":
     from widget import *
+    from keys import *
 elif hostname == "nixosLaptop":
     from laptopWidget import *
+    from laptopKeys import *
 else:
     print("No hostname found")
 
@@ -67,7 +56,6 @@ else:
 # DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
 # DP_4   right monitor :   screen_affinity=1, group 4 # view right
 
-#TODO: TESTING
 groups = [
     Group("1", screen_affinity=0, layout="monadtall", 
           matches=[Match(wm_class=re.compile(r"^(firefox-browser|brave-browser|chromium-browser)$"))], label=""),
@@ -80,16 +68,6 @@ groups = [
           matches=[Match(wm_class=re.compile(r"^(spotify|Spotify)$"))], label=""),
     Group("6", screen_affinity=0, layout="monadtall", label=""),
 ]
-# groups = [
-#     # ## 1 monitor setup
-#     Group("1", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["firefox-browser", "brave-browser", "chromium-browser"])],  label=""),
-#     Group("2", screen_affinity=0, layout="monadtall", label=""),
-#     Group("3", screen_affinity=0, layout="monadtall", matches=[Match(wm_class=["siyuan", "obsidian"])], label=""),
-#     Group("4", screen_affinity=0, layout="max", matches=[Match(wm_class="superproductivity")], label=""),
-#     Group("5", screen_affinity=0, layout="max", label="", matches=[Match(wm_class=["spotify", "Spotify"])]),
-#     Group("6", screen_affinity=0, layout="monadtall", label=""),
-#
-# ]
 
 for i in groups:
     keys.extend([
@@ -102,7 +80,6 @@ for i in groups:
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
 
-## Layouts ##
 layout_theme = {"border_width": 2,
                 "margin": 8,
                 "border_focus": colors[8],

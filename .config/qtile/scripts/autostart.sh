@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-COLORSCHEME=Mocha
+COLORSCHEME=Nord
 
 ### AUTOSTART PROGRAMS ###
 #run "eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)" & # nixos already start this
@@ -20,7 +20,6 @@ python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
 sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout script
 keepassxc & # password manager
 /home/developer/Documents/appimages/super-productivity.AppImage &
-
 
 syncthing-tray & #TODO: Not starting, fix needed
 

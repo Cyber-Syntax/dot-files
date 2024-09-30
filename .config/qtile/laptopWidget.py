@@ -109,23 +109,15 @@ screens = [
                     **decoration_group,
                 ),
                 widget.Spacer(length = 8),
-                widget.ThermalZone(
+                widget.ThermalSensor(
+                        tag_sensor='CPU',
                             foreground = colors[4],
                             fmt = ' {}',
                             update_interval = 2,
                             threshold = 60,
                             foreground_alert='ff6000',
-                            ),
-                # widget.ThermalSensor(
-                #             tag_sensor='Tctl',
-                #             foreground = colors[4],
-                #             fmt = ' {}',
-                #             update_interval = 2,
-                #             threshold = 60,
-                #             foreground_alert='ff6000',
-                #             **decoration_group,
-                #             ),
-
+                            **decoration_group,
+                ),
                 widget.Spacer(length = 8),
                 # widget.Memory(
                 #         foreground = colors[8],
@@ -169,17 +161,30 @@ screens = [
                 widget.DF(
                     update_interval = 60,
                     foreground = colors[5],
-                    partition = '/mnt/backups',
+                    partition = '/backup',
                     format = '{r:.0f}%',
                     fmt = ' {}',
                     visible_on_warn = False,
                     **decoration_group,
                     ),         
                 widget.Spacer(length = 8),
-                 widget.Battery (
-                    background = colors[0],
+                widget.BatteryIcon(
+                        theme_path = '/home/developer/.config/qtile/icons',
+                        **decoration_group,
                 ),
-
+                widget.Battery (
+                    format = '{percent:2.0%} {hour:d}:{min:02d}',
+                    low_foreground = colors[4],
+                    low_background = colors[0],
+                    discharge_char = '  V',
+                    charge_char = ' ',
+                    empty_char = ' ',
+                    full_char = ' ',
+                    not_charging_char = ' ',
+                    show_short_text = True,
+                    **decoration_group,
+                ),
+                widget.Spacer(length = 8),
                 widget.Volume(
                             foreground = colors[1],
                             fmt = '🔈{}',
