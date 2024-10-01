@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
-
 COLORSCHEME=Nord
-
-xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
-xset s off & # disable screen saver
-# ##Disable beep
-# xset b off &
 
 picom -b & # compositor
 numlockx on &
@@ -20,13 +14,14 @@ keepassxc & # password manager
 syncthing-tray & #TODO: Not starting, fix needed
 
 #TESTING: handle inside python if this is not work
-# get hostname, if it is desktop start xrandr else not
-# sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout script
+#Laptop statement is worked.
 if [ $(hostname) == "nixos" ]; then
+  xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
+  xset s off & # disable screen saver
   sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout scripts
   printf "Desktop detected\n"
 elif [ $(hostname) == "nixosLaptop" ]; then
-  printf "Laptop detected\n"
+  cbatticon & # battery icon
 fi
 
 #nextcloud & # nextcloud client

@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports =
@@ -26,6 +26,12 @@
 
   # Luks encryption support
   boot.initrd.systemd.enable = true;
+
+  # laptop specific packages
+  environment.systemPackages = with pkgs; [
+    cbatticon # battery icon
+  ];
+
 
 ### NETWORK
   networking = {
@@ -65,17 +71,114 @@
     extraGroups = [ "networkmanager" "wheel" "libvirtd" "video" "kvm"];
   };
 
-# TODO: setup hardware for laptop
-# powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
 
 # Fix thinkfan issue
 systemd.services.thinkfan.preStart = "
   /run/current-system/sw/bin/modprobe  -r thinkpad_acpi && /run/current-system/sw/bin/modprobe thinkpad_acpi
 ";
 
+# TODO: setup hardware for laptop
+# set this if tlp not able to handle it
+#NOTE: if max freq is is 400mhz on battery disable Intel SpeedStep in the BIOS
+# powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
+
 services = {
+# THIS IS NOT WORKING on i5-13th gen yet
+  #throttled.enable = true; # fix for intel cpu throttling on thinkpads
+
   tlp = {
     enable = true; 
+    settings = {
+      TLP_ENABLE = 1; # This is default to 1 but just to be sure
+      #NOTE: Enable debug to see if tlp is working correctly
+      #TLP_DEBUG="arg bat disk lock nm path pm ps rf run sysfs udev usb"; 
+      START_CHARGE_THRESH_BAT0 = 85;
+      STOP_CHARGE_THRESH_BAT0 = 95;
+      TPACPI_ENABLE = 1;
+      TPSMAPI_ENABLE = 1;
+      # AC balanced to prevent high cpu temp, BAT balanced because powersave is too slow
+      PLATFORM_PROFILE_ON_AC = "performance"; # use balanced if cause issues
+      PLATFORM_PROFILE_ON_BAT = "balanced"; # use balanced if cause issues
+
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance"; # 12th gen and above refuses to activate turbo boost on battery
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "balanced_performance";   # 12th gen and above refuses to activate turbo boost on battery 
+#TODO: Later if needed limit power consumtion under high cpu load  with nn < 100 to achieve it.
+# CPU_MAX_PERF_ON_AC=nn;
+# CPU_MAX_PERF_ON_BAT=nn;
+      MEM_SLEEP_ON_AC = "s2idle"; #  Idle standby, a pure software, light-weight, system sleep state
+      MEM_SLEEP_ON_BAT = "deep"; # Suspend to RAM, the whole system is put into a low-power state, except for memory, usually resulting in higher savings than s2idle
+      
+      #TESTING: cpu boost maybe decrease scalin_max_freq, if that's happen do not disable this on battery.
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+
+      CPU_HWP_DYN_BOOST_ON_AC=1;
+      CPU_HWP_DYN_BOOST_ON_BAT=0;
+      
+      #NOTE: intel_pstate scaling driver is support only powersafe and performance on Sandy Bridge or newer hardwares. 
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+    # wifi powersave 23mbps, AC 30mbps
+      #FIXME: remove /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+        # Seems like nixos is not enable wifi powersave by default because I found null option on powersave.
+      WIFI_PWR_ON_BAT = "off";
+      WIFI_PWR_ON_AC = "off";
+
+      DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wwan"; # disable bluetooth and wwan if not in use
+      DEVICES_TO_ENABLE_ON_STARTUP="bluetooth wifi wwan";
+      
+      DEVICES_TO_DISABLE_ON_LAN_CONNECT="wifi wwan";
+      DEVICES_TO_DISABLE_ON_WIFI_CONNECT="wwan";
+      DEVICES_TO_DISABLE_ON_WWAN_CONNECT="wifi";
+
+      DEVICES_TO_ENABLE_ON_LAN_DISCONNECT="wifi wwan";
+      DEVICES_TO_ENABLE_ON_WIFI_DISCONNECT="";
+      DEVICES_TO_ENABLE_ON_WWAN_DISCONNECT="";
+
+# DEVICES_TO_ENABLE_ON_UNDOCK="wifi";
+# DEVICES_TO_DISABLE_ON_UNDOCK="";
+      
+      # wake on lan default is disabled, change to enable if needed
+      #WOL_DISABLE = Y; # default is Y-disabled
+      #NOTE: Bluetooth devices hang, disconnect or do not pair
+      #USB_EXCLUDE_BTUSB = 1;
+# if does not disable auto suspend(see tlp-stat -u) than:
+#Solution: add the boot option btusb.enable_autosuspend=0 to your GRUB configuration.
+
+# use max_performance if cause issues
+      SATA_LINKPWR_ON_BAT = "med_power_with_dipm";
+      SATA_LINKPWR_ON_AC = "max_performance";
+      
+# on – disabled (devices powered on permanently)
+# auto – enabled (power down idle devices)
+# #NOTE: Default is on usage, Change if cause issue on BAT
+#       AHCI_RUNTIME_PM_ON_AC=on;
+#       AHCI_RUNTIME_PM_ON_BAT=auto;
+#       AHCI_RUNTIME_PM_TIMEOUT=15;
+
+    # # 100 - 1250mhz intel gpu
+# looks like this is already defualt
+    # INTEL_GPU_MIN_FREQ_ON_AC=100;
+    # INTEL_GPU_MIN_FREQ_ON_BAT=100;
+    # INTEL_GPU_MAX_FREQ_ON_AC=1250;
+    # INTEL_GPU_MAX_FREQ_ON_BAT=1250;
+    # INTEL_GPU_BOOST_FREQ_ON_AC=1250;
+    # INTEL_GPU_BOOST_FREQ_ON_BAT=1250;
+  
+  # # intel_pstate and active mode use this instead cpu_scaling_performance
+  #   CPU_MIN_PERF_ON_AC=0;
+  #   CPU_MAX_PERF_ON_AC=100;
+  #   CPU_MIN_PERF_ON_BAT=0;
+  #   CPU_MAX_PERF_ON_BAT=90;
+    
+    # Runtime PM and ASPM for PCIe/PCI devices (default on AC)
+    RUNTIME_PM_ON_AC = "on";
+    RUNTIME_PM_ON_BAT = "auto";
+    #RUNTIME_PM_DENYLIST="11:22.3 44:55.6"; # deny some device if needed
+#    RUNTIME_PM_DRIVER_DENYLIST="mei_me nouveau radeon xhci_hcd"
+
+    };
   };
 
   thinkfan = {

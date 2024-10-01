@@ -10,6 +10,35 @@ from qtile_extras.widget.decorations import RectDecoration
 #from qtile_extras.widget.groupbox2 import GroupBoxRule
 from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
 
+#FIXME: widget need dbus-next library. Systray eror after UPowerWidget added
+# error about 2 systray won't work together...
+# hooks from qtile-extras for UPowerWidget
+from libqtile import qtile
+
+import qtile_extras.hook
+
+@qtile_extras.hook.subscribe.up_power_disconnected
+def unplugged():
+    qtile.spawn("ffplay power_off.wav")
+
+@qtile_extras.hook.subscribe.up_power_connected
+def plugged_in():
+    qtile.spawn("ffplay power_on.wav")
+
+@qtile_extras.hook.subscribe.up_battery_full
+def battery_full(battery_name):
+    send_notification(battery_name, "Battery is fully charged.")
+
+@qtile_extras.hook.subscribe.up_battery_low
+def battery_low(battery_name):
+    send_notification(battery_name, "Battery is running low.")
+
+@qtile_extras.hook.subscribe.up_battery_critical
+def battery_critical(battery_name):
+    send_notification(battery_name, "Battery is critically low. Plug in power supply.")
+
+#./hooks from qtile-extras
+
 colors = colors.Nord
 
 # Defaul widget settings
@@ -168,37 +197,6 @@ screens = [
                     **decoration_group,
                     ),         
                 widget.Spacer(length = 8),
-                widget.BatteryIcon(
-                        theme_path = '/home/developer/.config/qtile/icons',
-                        **decoration_group,
-                ),
-                widget.Battery (
-                    format = '{percent:2.0%} {hour:d}:{min:02d}',
-                    low_foreground = colors[4],
-                    low_background = colors[0],
-                    discharge_char = '  V',
-                    charge_char = ' ',
-                    empty_char = ' ',
-                    full_char = ' ',
-                    not_charging_char = ' ',
-                    show_short_text = True,
-                    **decoration_group,
-                ),
-                widget.Spacer(length = 8),
-                widget.Volume(
-                            foreground = colors[1],
-                            fmt = '🔈{}',
-                            emoji = False,
-                            check_mute_string = '[off]', # '' icon not working
-                    mouse_callbacks={
-                        # Left click to change volume output
-                        'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'),
-                        # Right click to open pavucontrol
-                        'Button3': lambda: qtile.spawn('pavucontrol'),
-                                     },
-                    **decoration_group,
-                ),
-                widget.Spacer(length = 8),
                 widget.Clock(
                         foreground = colors[8],
                         format = "  %A %d/%m/%y %H:%M",
@@ -206,8 +204,48 @@ screens = [
                         #mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')}, 
                         ),
                 widget.Spacer(length = 8),
+                widget.BatteryIcon(
+                        theme_path = '/home/developer/.config/qtile/icons/battery',
+                        update_interval = 60,
+                        **decoration_group,
+                ),
+                widget.Battery (
+                    format = '{percent:2.0%} {hour:d}:{min:02d}',
+                    update_interval = 60,
+                    low_foreground = colors[4],
+                    low_background = colors[0],
+                    **decoration_group,
+                ),
+                widget.Spacer(length = 8),
+                widget.Volume(
+                            foreground = colors[1],
+                            fmt = '{}',
+                            emoji = True,
+                            theme_path='/home/developer/.config/qtile/icons/volume',
+                            check_mute_string = '[off]', # '' icon not working
+                    mouse_callbacks={
+                        # Left click to change volume output
+                        'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'),
+                     # Right click to open pavucontrol
+                        'Button3': lambda: qtile.spawn('pavucontrol'),
+                                     },
+                    **decoration_group,
+                ),
+                widget.Spacer(length = 8),
+                widget.PulseVolumeExtra(
+                        theme_path='/home/developer/.config/qtile/icons/volume',
+                        limit_normal = 80,
+                        limit_high = 100,
+                        limit_loud = 101,
+                        **decoration_group,
+                ),
+                # widget.UPowerWidget(
+                #         **decoration_group,
+                #         ),
+                widget.Spacer(length = 8),
                 widget.Systray(                        
-                            **decoration_group,
+                        icon_size = 28,
+                        **decoration_group,
                 ),
                 widget.Spacer(length = 8),
                 widget.CurrentLayoutIcon(
@@ -215,189 +253,9 @@ screens = [
                         padding = 4,
                         scale = 0.6
                 ),
-                
-                # widget.TextBox(
-                #     text=" ",
-                #     fontsize=16,
-                #     foreground="#f8f8f2",
-                #     background=colors[0],
-                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("/home/developer/Documents/screenloyout/xrandr.sh"))}                    
-                # ),
-
-                # widget.Spacer(length = 8),
-                # # New custom widget to call my xrandr-movie.sh script via mouse callback
-                # widget.TextBox(
-                #     text=" ",
-                #     fontsize=16,
-                #     foreground="#f8f8f2",
-                #     background=colors[0],
-                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
-                # ),
             ],
             size=30  # Fix: Move the positional argument before the keyword argument
         )
     ),
-
-
-# #    # DP-0: left monitor
-#     Screen(
-#         top=bar.Bar(
-#             widgets=[
-#                 ## groups, e.g workspaces
-#                 widget.GroupBox(
-#                          #visible_groups=visible_groups,
-#                         visible_groups=['1', '3', '5'],
-#                          fontsize = 15,
-#                          margin_y = 5,
-#                          margin_x = 5,
-#                          padding_y = 0,
-#                          padding_x = 1,
-#                          borderwidth = 3,
-#                          active = colors[3],
-#                          inactive = colors[2],
-#                          rounded = True,
-#                          highlight_color = colors[0],
-#                          highlight_method = "line",
-#                          this_current_screen_border = colors[7],
-#                          this_screen_border = colors [4],
-#                          other_current_screen_border = colors[7],
-#                          other_screen_border = colors[4],
-#                         **decoration_group,
-#                          ),
-#                 widget.Spacer(length = 8),
-#                 widget.WindowTabs(
-#                     fmt = '{}',
-#                     foreground = colors[7],
-#                     separator = ' | ',
-#                     selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
-#                     **decoration_group,
-#                 ),
-#                 widget.Spacer(length = 8),
-#                 widget.Clock(
-#                         foreground = colors[8],
-#                         format = "  %A %d/%m/%y %H:%M",
-#                         mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-#                         **decoration_group,
-#                         ),
-#                 widget.Spacer(length = 8),
-#                 widget.CurrentLayoutIcon(
-#                         foreground = colors[1],
-#                         padding = 4,
-#                         scale = 0.6
-#                         ),
-#             ],
-#             size=29
-#         )
-#     ),
-# #    ./end-DP-0
-
-
 ]
-
-   # no longer used monitor
-    # # HDMI-0: right monitor
-    # Screen(
-    #     top=bar.Bar(
-    #         widgets=[
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #                     ),
-    #             widget.WindowTabs(
-    #                 fmt = '{}',
-    #                 foreground = colors[7],
-    #                 separator = ' | ',
-    #                 selected = ('<b><span color="#8BE9FD">    ', '</span></b>'),
-    #             ),
-    #             widget.Spacer(length = 8),
-    #             widget.CPU(
-    #                     format = ' {load_percent}%',
-    #                     foreground = colors[4],
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.ThermalSensor(
-    #                         tag_sensor='Tctl',
-    #                         foreground = colors[4],
-    #                         fmt = ' {}',
-    #                         update_interval = 2,
-    #                         threshold = 60,
-    #                         foreground_alert='ff6000',
-    #                         ),
-    #             widget.Spacer(length = 8),
-    #             widget.NvidiaSensors(
-    #                         foreground = 'ffffff',
-    #                         fmt = ' {}',
-    #                         update_interval = 2,
-    #                         threshold = 60,
-    #                         foreground_alert='ff6000',
-    #                         ),
-    #             widget.Spacer(length = 8),
-    #             widget.Memory(
-    #                     foreground = colors[8],
-    #                     measure_mem='G',
-    #                     #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
-    #                     format = '{MemPercent}% - {MemUsed: .0f}{mm}/{MemTotal: .0f}{mm}',
-    #                     fmt = ' {}',
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.DF(
-    #                     update_interval = 60,
-    #                     foreground = colors[5],
-    #                     partition = '/',
-    #                     format = '{r:.0f}%',
-    #                     fmt = ' {}',
-    #                     visible_on_warn = False,
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.DF(
-    #                 update_interval = 60,
-    #                 foreground = colors[5],
-    #                 partition = '/home',
-    #                 format = '{r:.0f}%',
-    #                 fmt = ' {}',
-    #                 visible_on_warn = False,
-    #                 ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #             ),
-    #                             widget.Spacer(length = 8),
-    #             widget.Clock(
-    #                     foreground = colors[8],
-    #                     format = "  %A %d/%m/%y %H:%M",
-    #                     mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-    #                     ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #                     ),
-    #             widget.CurrentLayoutIcon(
-    #                     foreground = colors[1],
-    #                     padding = 4,
-    #                     scale = 0.6
-    #                     ),
-    #             widget.CurrentLayout(
-    #                     foreground = colors[1],
-    #                     padding = 5
-    #                     ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #             ),
-    #         ],
-    #         size=20
-    #     )
-    # ),
 
