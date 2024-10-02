@@ -1,10 +1,23 @@
-    # 2 monitor setup
-    Group("1", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="monadtall", init=True), # DP_4: right monitor
-    Group("2", screen_affinity=0, layout="monadtall", init=True), # DP-2: left monitor
-    Group("3", screen_affinity=1, layout="monadtall"), 
-    Group("4", screen_affinity=0, layout="monadtall"), 
-    Group("5", screen_affinity=1, layout="monadtall"), 
-    Group("6", screen_affinity=0, layout="monadtall"), 
+#config.py
+#from libqtile import bar, extension, hook, layout, qtile #, widget #qtile default widget 
+#from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+
+#keys.py
+#from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+#from functions import send_left, send_right, focus_left_mon, focus_right_mon, cycle_groups, cycle_groups_reverse
+
+#widget.py
+#from libqtile import bar, extension, hook, layout, qtile
+#from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+
+
+# # 2 monitor setup
+    # Group("1", screen_affinity=1, matches=[Match(wm_class="superproductivity")], layout="monadtall", init=True), # DP_4: right monitor
+    # Group("2", screen_affinity=0, layout="monadtall", init=True), # DP-2: left monitor
+    # Group("3", screen_affinity=1, layout="monadtall"), 
+    # Group("4", screen_affinity=0, layout="monadtall"), 
+    # Group("5", screen_affinity=1, layout="monadtall"), 
+    # Group("6", screen_affinity=0, layout="monadtall"), 
 
 ## group setup ##
 

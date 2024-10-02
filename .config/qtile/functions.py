@@ -1,15 +1,6 @@
 from libqtile.lazy import lazy
 
-
-# it's not work for break notifications but work for task notifications
-# focus_on_window_activation = "focus"     
-
-# # focus is work
-# qtile cmd-obj -o group 4 -f toscreen
-
-    
-
-
+# qtile cmd-obj -o group 4 -f toscreen # focus from command line
 
 ## 2 monitor setup ##
 DP_2 = 0
@@ -136,9 +127,7 @@ def focus_right_mon(qtile):
     #
 ## ./2 monitor setup ##
 
-
-## group setup ##
-
+# Common group functions
 @lazy.function
 def cycle_groups(qtile):
     """Cycle through the groups but only the odd or even groups"""
@@ -173,8 +162,6 @@ def cycle_groups(qtile):
 
     qtile.current_screen.set_group(qtile.groups[next_group_index])
 
-
-#cycle_groups function reversed
 @lazy.function
 def cycle_groups_reverse(qtile):
     """Cycle through the groups in reverse order but only the odd or even groups"""
@@ -204,4 +191,3 @@ def cycle_groups_reverse(qtile):
     next_group.toscreen()
 
 
-## ./FUNCTIONS ##

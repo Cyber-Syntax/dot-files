@@ -1,7 +1,8 @@
 import os
 from libqtile.lazy import lazy
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
-from functions import send_left, send_right, focus_left_mon, focus_right_mon, cycle_groups, cycle_groups_reverse
+#TESTING: clear imports
+from libqtile.config import Click, Drag, Key
+
 
 ## Keybindings ##
 mod = "mod4"              # Sets mod key to SUPER/WINDOWS

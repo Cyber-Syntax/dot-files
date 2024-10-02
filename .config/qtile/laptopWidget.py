@@ -1,14 +1,12 @@
-from libqtile import bar, extension, hook, layout, qtile
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+from libqtile import bar, qtile
+from libqtile.config import Screen
 from libqtile.lazy import lazy
-import os
 import colors
-import subprocess
-### qtile extras
 from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
-#from qtile_extras.widget.groupbox2 import GroupBoxRule
-from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
+
+#HACK: mpris2 popup is not working need to fix it later.
+#from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
 
 #FIXME: widget need dbus-next library. Systray eror after UPowerWidget added
 # error about 2 systray won't work together...

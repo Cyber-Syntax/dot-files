@@ -1,17 +1,16 @@
-from libqtile import bar, extension, hook, layout, qtile
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+#TESTING: clear not used imports
+from libqtile import bar, qtile
+from libqtile.config import Screen
 from libqtile.lazy import lazy
-import os
+
 import colors
-import subprocess
-### qtile extras
 from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
-#from qtile_extras.widget.groupbox2 import GroupBoxRule
-from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
+
+#HACK: mpris2 popup is not working need to fix it later.
+#from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
 
 colors = colors.Nord
-
 # Defaul widget settings
 widget_defaults = dict(
     font="JetBrains Mono Bold",
@@ -31,23 +30,23 @@ decoration_group = {
         "padding": 3,
 }
 
-# Pin apps to the bar
-pinned_apps = [
-    ("", "keepassxc"),
-]
-
-
-# Textbox widget to start pinned apps
-app_widgets = [
-    widget.TextBox(
-        text=" {} ".format(app_name),
-        fontsize=16,
-        foreground="#f8f8f2",
-        background=colors[0],
-        mouse_callbacks={'Button1': lazy.spawn(app_cmd)}
-    )
-    for app_name, app_cmd in pinned_apps
-]
+# # Pin apps to the bar
+# pinned_apps = [
+#     ("", "keepassxc"),
+# ]
+#
+#
+# # Textbox widget to start pinned apps
+# app_widgets = [
+#     widget.TextBox(
+#         text=" {} ".format(app_name),
+#         fontsize=16,
+#         foreground="#f8f8f2",
+#         background=colors[0],
+#         mouse_callbacks={'Button1': lazy.spawn(app_cmd)}
+#     )
+#     for app_name, app_cmd in pinned_apps
+# ]
 
 ## Screens ##
 screens = [
@@ -180,16 +179,25 @@ screens = [
                 widget.Spacer(length = 8),
                 widget.Volume(
                             foreground = colors[1],
-                            fmt = '🔈{}',
-                            emoji = False,
+                            fmt = '{}',
+                            emoji = True,
+                            theme_path='/home/developer/.config/qtile/icons/volume',
                             check_mute_string = '[off]', # '' icon not working
                     mouse_callbacks={
                         # Left click to change volume output
                         'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'),
-                        # Right click to open pavucontrol
+                     # Right click to open pavucontrol
                         'Button3': lambda: qtile.spawn('pavucontrol'),
                                      },
                     **decoration_group,
+                ),
+                widget.Spacer(length = 8),
+                widget.PulseVolumeExtra(
+                        theme_path='/home/developer/.config/qtile/icons/volume',
+                        limit_normal = 80,
+                        limit_high = 100,
+                        limit_loud = 101,
+                        **decoration_group,
                 ),
                 widget.Spacer(length = 8),
                 widget.Clock(

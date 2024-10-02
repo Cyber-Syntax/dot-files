@@ -25,8 +25,10 @@
 # SOFTWARE.
 import os
 import subprocess
-from libqtile import bar, extension, hook, layout, qtile #, widget #qtile default widget 
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+#TESTING: clear imports
+from libqtile import hook, layout
+from libqtile.config import Group, Key, Match
+
 from libqtile.lazy import lazy
 import re # this fixes the Match error on group
 
