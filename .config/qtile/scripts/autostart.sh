@@ -22,6 +22,8 @@ if [ $(hostname) == "nixos" ]; then
   printf "Desktop detected\n"
 elif [ $(hostname) == "nixosLaptop" ]; then
   cbatticon & # battery icon
+  #TODO: use this if cbat not necessary
+  #sh ./../scripts/battery-warn.sh
 fi
 
 #nextcloud & # nextcloud client
