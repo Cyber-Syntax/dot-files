@@ -4,14 +4,15 @@
   imports =
     [ 
       ./hardware-configuration.nix
+      
       #TODO: use this if flake won't work.
       #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
  
-      # desktop modules
+    # desktop modules
       ./../../modules/desktopModules/nvidia.nix
       ./../../modules/desktopModules/ollama.nix
 
-      # common modules 
+    # common modules 
       ./../../modules/commonModules/qtile.nix
       ./../../modules/commonModules/i18n.nix
       ./../../modules/commonModules/neovim.nix
@@ -24,9 +25,13 @@
       ./../../modules/commonModules/nix.nix
       ./../../modules/commonModules/boot.nix
       
-      # Home-Manager used via nix builds. 
+    # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
+      ./../../home-manager/gtk/gtk.nix
       #./home-manager/neovim.nix # chadrc error. 
+     
+    # Overlays
+      ./../../overlays/brave.nix
     ];
 
 ### NETWORK

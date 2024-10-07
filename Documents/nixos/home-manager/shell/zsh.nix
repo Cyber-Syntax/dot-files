@@ -38,6 +38,7 @@ home-manager.users.developer.programs.zsh = {
               sha256 = "fJX748lwVP1+GF/aIl1J3c6XAy/AtYCpEHsP8weUNo0=";
             };
           }
+          #NOTE: They are already included via .zshrc and I don't see any benefit of using as plugin.
           # {
           #   name = "powerlevel10k-config";
           #   src = ./.;
@@ -82,6 +83,8 @@ home-manager.users.developer.programs.zsh = {
           ll = "ls -alh";
           la = "ls -A";
           l = "ls -CF";
+          # others
+          icat = "kitten icat"; # kitty terminal image preview
         };
 
         initExtra = ''
@@ -94,9 +97,6 @@ home-manager.users.developer.programs.zsh = {
 
             # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
             [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-            # # oh-my-posh NOT USED FOR NOW
-            # eval "$(${pkgs.oh-my-posh}/bin/oh-my-posh init zsh --config ${./slimfat.omp.json})"
 
             bindkey '^[[H' beginning-of-line
             bindkey '^[[F' end-of-line

@@ -38,7 +38,6 @@ while true; do
     # If charging, do nothing
     if [ "$ac_status" == "Charging" ]; then
       log "AC power connected. Script will sleep for 10 minutes and check again."
-      notify-send "Battery Warning" "AC power connected. Script will sleep for 10 minutes and check again."
       sleep 600
       continue
     fi

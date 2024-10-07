@@ -4,9 +4,9 @@
   imports =
     [ 
       ./hardware-configuration.nix
-       # laptop ../../modules
+    # laptop ../../modules
 
-      # common ../../modules 
+    # common ../../modules 
       ./../../modules/commonModules/qtile.nix
       ./../../modules/commonModules/i18n.nix
       ./../../modules/commonModules/neovim.nix
@@ -19,9 +19,12 @@
       ./../../modules/commonModules/nix.nix
       ./../../modules/commonModules/packages.nix
       
-      # Home-Manager used via nix builds. 
+    # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
       #./home-manager/neovim.nix # chadrc error.
+     
+    # overlays
+      ./../../overlays/brave.nix
     ];
 
   # Luks encryption support
@@ -96,17 +99,22 @@ services = {
       #TLP_DEBUG="arg bat disk lock nm path pm ps rf run sysfs udev usb"; 
       START_CHARGE_THRESH_BAT0 = 85;
       STOP_CHARGE_THRESH_BAT0 = 95;
+      # thinkpad drivers
       TPACPI_ENABLE = 1;
       TPSMAPI_ENABLE = 1;
       # AC balanced to prevent high cpu temp, BAT balanced because powersave is too slow
-      PLATFORM_PROFILE_ON_AC = "performance"; # use balanced if cause issues
-      PLATFORM_PROFILE_ON_BAT = "balanced"; # use balanced if cause issues
-
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance"; # 12th gen and above refuses to activate turbo boost on battery
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "balanced_performance";   # 12th gen and above refuses to activate turbo boost on battery 
-#TODO: Later if needed limit power consumtion under high cpu load  with nn < 100 to achieve it.
-# CPU_MAX_PERF_ON_AC=nn;
-# CPU_MAX_PERF_ON_BAT=nn;
+      PLATFORM_PROFILE_ON_AC = "balanced"; # low-power balanced performance. 
+      PLATFORM_PROFILE_ON_BAT = "low-power"; 
+      
+      # default performance balance_performance balance_power power 
+      CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance"; #save more balance_power # 12th gen and above refuses to activate turbo boost on battery
+      #TESTING: if turbo boost is not working on battery change to balance_power
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power"; #balance-   # 12th gen and above refuses to activate turbo boost on battery 
+      #TODO: Later if needed limit power consumtion under high cpu load  with nn < 100 to achieve it.
+      # CPU_MAX_PERF_ON_AC=nn;
+      # CPU_MAX_PERF_ON_BAT=nn;
+      
+      # sleep mode
       MEM_SLEEP_ON_AC = "s2idle"; #  Idle standby, a pure software, light-weight, system sleep state
       MEM_SLEEP_ON_BAT = "deep"; # Suspend to RAM, the whole system is put into a low-power state, except for memory, usually resulting in higher savings than s2idle
       
@@ -175,7 +183,7 @@ services = {
   #   CPU_MAX_PERF_ON_BAT=90;
     
     # Runtime PM and ASPM for PCIe/PCI devices (default on AC)
-    RUNTIME_PM_ON_AC = "on";
+    RUNTIME_PM_ON_AC = "auto"; # on, auto, reduce power consumption / fan noise on AC.
     RUNTIME_PM_ON_BAT = "auto";
     #RUNTIME_PM_DENYLIST="11:22.3 44:55.6"; # deny some device if needed
 #    RUNTIME_PM_DRIVER_DENYLIST="mei_me nouveau radeon xhci_hcd"
@@ -185,6 +193,53 @@ services = {
 
   thinkfan = {
     enable = true;
+    levels = [
+      [
+        0
+        0
+        45
+      ]
+      [
+        1
+        43
+        48
+      ]
+      [
+        2
+        46
+        51
+      ]
+      [
+        3
+        49
+        54
+      ]
+      [
+        4
+        51
+        60
+      ]
+      [
+        5
+        58
+        65
+      ]
+      [
+        6
+        63
+        72
+      ]
+      [
+        7
+        70
+        82
+      ]
+      [
+        "level full-speed"
+        77
+        32767
+      ]
+    ];
   };
 
   syncthing = {

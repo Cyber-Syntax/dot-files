@@ -42,31 +42,33 @@
         gammastep
         picom
         xclip # for copy paste
-    ## Productivity
-      zoxide
-      trash-cli
-      numlockx
-    ## Development 
-      nodejs_22
-      hugo
-      go
-      ### Development for compiling
-        clang
-        libgcc
-        libstdcxx5  # for litellm
-    ### encryption
-      openssl
-    ### other
-      xdotool
-    ## AI
-      python311Packages.litellm
-      python311Packages.tokenizers
-      python3
-    # Nixos
-      nix-prefetch # get hash from github branches 
-      home-manager
-      nil # nix language server as lsp
-      cargo # for rust and nil to work
+      ## Productivity
+        zoxide
+        trash-cli
+        numlockx
+      ## Development 
+        nodejs_22
+        hugo
+        go
+        lua # for nvim
+        lua-language-server
+        ## AI
+          python311Packages.litellm
+          python311Packages.tokenizers
+          python3
+        ### Development for compiling
+          clang
+          libgcc
+          libstdcxx5  # for litellm
+      ### encryption
+        openssl
+      ### other
+        xdotool
+      # Nixos
+        nix-prefetch # get hash from github branches 
+        home-manager
+        nil # nix language server as lsp
+        cargo # for rust and nil to work
     # Apps
       ## Pictures, Documents etc.
         feh
