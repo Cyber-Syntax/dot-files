@@ -25,7 +25,6 @@
 # SOFTWARE.
 import os
 import subprocess
-#TESTING: clear imports
 from libqtile import hook, layout
 from libqtile.config import Group, Key, Match
 
