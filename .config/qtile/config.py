@@ -59,7 +59,7 @@ else:
 
 groups = [
     Group("1", screen_affinity=0, layout="monadtall", 
-          matches=[Match(wm_class=re.compile(r"^(firefox-browser|brave-browser|chromium-browser)$"))], label=""),
+          matches=[Match(wm_class=re.compile(r"^(firefox|brave-browser|chromium-browser)$"))], label=""),
     Group("2", screen_affinity=0, layout="monadtall", label=""),
     Group("3", screen_affinity=0, layout="monadtall", 
           matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))], label=""),

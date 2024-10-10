@@ -21,6 +21,7 @@
       
     # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
+      ./../../home-manager/gtk/gtk.nix
       #./home-manager/neovim.nix # chadrc error.
      
     # overlays

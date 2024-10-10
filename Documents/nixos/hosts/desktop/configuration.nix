@@ -28,6 +28,10 @@
     # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
       ./../../home-manager/gtk/gtk.nix
+
+#TESTIING: firefox home-manager
+      ./../../home-manager/browser/firefox.nix
+      ./../../home-manager/gtk/gtk.nix
       #./home-manager/neovim.nix # chadrc error. 
      
     # Overlays

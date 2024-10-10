@@ -10,6 +10,15 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+    
+    # Third party programs, packaged with nix
+#TESTING:
+    ## nur for firefox extensions usage on home-manager
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
       #TODO: Learn secrets management later
       # sops-nix = {
       #   url = "github:Mic92/sops-nix";
@@ -23,6 +32,7 @@
       nixpkgs,
       nixos-hardware,
       home-manager,
+      firefox-addons,
       #sops-nix, # secret management
       ...
     }@inputs:
@@ -66,7 +76,7 @@
               #./cachix.nix 
               ];
               home-manager = {
-                backupFileExtension = "bak6";
+                backupFileExtension = "bak10";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];

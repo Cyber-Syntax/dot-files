@@ -11,76 +11,11 @@
     home.username = "developer";
     home.homeDirectory = "/home/developer";
 
-    xdg = {
-      enable = true;
-      mime = {
-        enable = true;
-      };
-      
-      portal = {
-        enable = true;
-          
-          extraPortals = [
-            pkgs.xdg-desktop-portal-gtk
-          ];
-          
-          config = {
-            common = {
-              default = [
-                "gtk"
-              ];
-            };          
-          };
-      };
-
-      mimeApps = {
-        enable = true;
-      };
-
-      userDirs = {
-        enable = true;
-        createDirectories = true;
-      };
-    };
-    
 
     home = {
       preferXdgDirectories = true;
     };
 
-    # gtk = {
-    #     enable = true;
-    #       theme = {
-    #         name = "adw-gtk3-dark";
-    #         package = pkgs.adw-gtk3;
-    #       };
-    #       iconTheme = {
-    #         name = "Papirus-Dark";
-    #         package = pkgs.papirus-icon-theme;
-    #       };
-    #
-    #       cursorTheme = {
-    #         name = "Vimix-white-cursors";
-    #         package = pkgs.vimix-cursor-theme;
-    #         size = 24;
-    #       };
-    #       gtk3.extraConfig = {
-    #         Settings = ''
-    #           gtk-application-prefer-dark-theme=1
-    #         '';
-    #       };
-    #
-    #       gtk4.extraConfig = {
-    #         Settings = ''
-    #           gtk-application-prefer-dark-theme=1
-    #         '';
-    #       };
-    #
-    #       font = {
-    #         name = "Roboto";
-    #         size = 11;
-    #       };
-    #   };
 
     # The home.packages option allows you to install Nix packages into your
     # environment.

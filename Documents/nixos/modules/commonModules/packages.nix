@@ -20,6 +20,8 @@
       unzip
       acpi
       xdg-user-dirs
+      xdg-desktop-portal
+      xdg-desktop-portal-gtk
       ## Stats, system infos etc.
         lm_sensors
         fastfetch
