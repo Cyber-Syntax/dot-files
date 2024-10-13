@@ -12,6 +12,7 @@
           xdgOpenUsePortal = true; # resolves bugs involving programs opening inside FHS envs or with unexpected env vars set from wrappers.
           extraPortals = [
             pkgs.xdg-desktop-portal-gtk
+            #pkgs.xdg-desktop-portal-hyprland # if persist with this window manager 
           ];
           
           config = {

@@ -4,15 +4,8 @@
   imports =
     [ 
       ./hardware-configuration.nix
-      
-      #TODO: use this if flake won't work.
-      #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
- 
-    # desktop modules
-      ./../../modules/desktopModules/nvidia.nix
-      ./../../modules/desktopModules/ollama.nix
-
     # common modules 
+      ./../../modules/commonModules/boot.nix
       ./../../modules/commonModules/qtile.nix
       ./../../modules/commonModules/i18n.nix
       ./../../modules/commonModules/neovim.nix
@@ -23,19 +16,22 @@
       ./../../modules/commonModules/appimages.nix
       ./../../modules/commonModules/packages.nix
       ./../../modules/commonModules/nix.nix
-      ./../../modules/commonModules/boot.nix
-      
     # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
       ./../../home-manager/gtk/gtk.nix
-
-#TESTIING: firefox home-manager
       ./../../home-manager/browser/firefox.nix
-      ./../../home-manager/gtk/gtk.nix
       #./home-manager/neovim.nix # chadrc error. 
      
     # Overlays
       ./../../overlays/brave.nix
+      
+      #TODO: use this if flake won't work.
+      #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
+ 
+    # desktop modules
+      ./../../modules/desktopModules/nvidia.nix
+      ./../../modules/desktopModules/ollama.nix
+
     ];
 
 ### NETWORK

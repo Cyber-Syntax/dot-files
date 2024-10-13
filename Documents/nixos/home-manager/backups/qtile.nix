@@ -12,6 +12,7 @@
 
 {
   home-manager.users.developer.home.file.qtile_config = {
+#NOTE: I think this is probably need to be qtile or something else like path.
     source = ./src;
     target = "Documents/nixos/hosts/desktop/qtile";
     recursive = true;

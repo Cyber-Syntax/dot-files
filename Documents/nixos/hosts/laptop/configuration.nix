@@ -1,12 +1,12 @@
 { pkgs, ... }:
+#TEST: firefox home-manager
 
 {
   imports =
     [ 
       ./hardware-configuration.nix
-    # laptop ../../modules
-
     # common ../../modules 
+      ./../../modules/commonModules/boot.nix
       ./../../modules/commonModules/qtile.nix
       ./../../modules/commonModules/i18n.nix
       ./../../modules/commonModules/neovim.nix
@@ -15,18 +15,26 @@
       ./../../modules/commonModules/security.nix
       ./../../modules/commonModules/services.nix
       ./../../modules/commonModules/appimages.nix
-      ./../../modules/commonModules/boot.nix
-      ./../../modules/commonModules/nix.nix
       ./../../modules/commonModules/packages.nix
+      ./../../modules/commonModules/nix.nix
       
     # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
       ./../../home-manager/gtk/gtk.nix
+      ./../../home-manager/browser/firefox.nix
       #./home-manager/neovim.nix # chadrc error.
      
     # overlays
       ./../../overlays/brave.nix
+
+    # laptop ../../modules
+
     ];
+
+#TODO: test this later
+  # services = {  
+  #   #libinput.enable = false; # for syncaptics touchpads
+  #   };
 
   # Luks encryption support
   boot.initrd.systemd.enable = true;
