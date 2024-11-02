@@ -12,7 +12,14 @@
   boot.initrd.kernelModules = [ "dm-snapshot" "aesni_intel" "cryptd" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.initrd.luks.devices."cryptdev".device = "/dev/disk/by-uuid/b6b8e2b3-9db7-4693-8dac-1bd8aa50cd24";
+#  boot.initrd.luks.devices."cryptdev".device = "/dev/disk/by-uuid/b6b8e2b3-9db7-4693-8dac-1bd8aa50cd24";
+
+  boot.initrd.luks.devices."cryptdev" = {
+    device = "/dev/disk/by-uuid/b6b8e2b3-9db7-4693-8dac-1bd8aa50cd24";
+    allowDiscards = true; #enable fstrim on encrypted section (default:false) but this would be decrease security but probably would be okay for normal users who is not targetted. This option is incompatible with authenticated encryption
+  };
+
+
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/0e47f140-e01e-464c-aa98-0d9696bb4fdb";

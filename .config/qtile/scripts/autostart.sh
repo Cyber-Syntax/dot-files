@@ -5,7 +5,7 @@ picom -b & # compositor
 numlockx on &
 nm-applet & # network manager applet
 setxkbmap tr &
-polkit &
+#polkit & # not work probably need to define on nix or need to install package
 gammastep & # redshift alternative (works wayland and xorg)
 python3 /home/developer/Documents/repository/WallpaperChanger/main.py & 
 keepassxc & # password manager

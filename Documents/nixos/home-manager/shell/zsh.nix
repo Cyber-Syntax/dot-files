@@ -13,13 +13,24 @@ home-manager.users.developer.programs.zsh = {
 
         autosuggestion.enable = true;
         autosuggestion.highlight = "bold,underline fg=white,bold";
-        autosuggestion.strategy = [ "history" ]; # default
+#NOTE: stable 24.05 not use this 
+        #autosuggestion.strategy = [ "history" ]; # default
         syntaxHighlighting.enable = true;
         history.path = "$HOME/.histfile";
         history.save = 10000;
         history.size = 10000;
 
         plugins = [
+#TODO: add this after qtile build issue solved
+          # {
+          #   name = "zsh-syntax-highlighting";
+          #   src = pkgs.fetchFromGitHub {
+          #     owner = "zsh-users";
+          #     repo = "zsh-syntax-highlighting";
+          #     rev = "0.8.0";
+          #     sha256 = "iJdWopZwHpSyYl5/FQXEW7gl/SrKaYDEtTH9cGP7iPo=";
+          #   };
+          # }
           {
             name = "zsh-autosuggestions";
             src = pkgs.fetchFromGitHub {
@@ -38,7 +49,8 @@ home-manager.users.developer.programs.zsh = {
               sha256 = "fJX748lwVP1+GF/aIl1J3c6XAy/AtYCpEHsP8weUNo0=";
             };
           }
-          #NOTE: They are already included via .zshrc and I don't see any benefit of using as plugin.
+          #TODO: switch to plugins instead of .zshrc for more easy way to declare nixos
+
           # {
           #   name = "powerlevel10k-config";
           #   src = ./.;
@@ -73,18 +85,34 @@ home-manager.users.developer.programs.zsh = {
           bare-cmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
           bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
         # git aliases
-          gitst = "git status";
-          gitbr = "git branch";
-          gitchk = "checkout";
-          gitcmt = "commit";
-          gitdf = "diff";
+          gst = "git status";
+          gbr = "git branch";
+          gck = "checkout";
+          gcm = "commit";
+          gdif = "diff";
           adog = "log --all --decorate --oneline --graph";
-          sudov ="sudo -v";
-          ll = "ls -alh";
-          la = "ls -A";
-          l = "ls -CF";
           # others
           icat = "kitten icat"; # kitty terminal image preview
+          # neovim
+          n="nvim -c 'Telescope oldfiles'";
+          # general
+          tp = "trash-put";
+          c = "clear";
+          h = "history";
+          ff = "fastfetch";
+          grep="grep --color=auto";
+          sudov ="sudo -v";
+          e = "eza -F --all";
+          e2 = "eza -F --all --long --sort=size --total-size --tree --level=2 ";
+          e3 = "eza -F --all --long --sort=size --total-size --tree --level=3 ";
+          ee = "eza -F --all --long --sort=size --total-size --group";
+          
+          # ls="ls --color=auto";
+          # ll = "ls -alh";
+          # la = "ls -A";
+          # lh = "ls --human-readable --size -1 -S --classify";
+          # l = "ls -CF";
+          duh = "du -sh * | sort -h";
         };
 
         initExtra = ''

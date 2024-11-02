@@ -19,18 +19,21 @@
     # Home-Manager used via nix builds. 
       ./../../home-manager/shell/zsh.nix
       ./../../home-manager/gtk/gtk.nix
-      ./../../home-manager/browser/firefox.nix
+     # ./../../home-manager/browser/firefox.nix
       #./home-manager/neovim.nix # chadrc error. 
      
     # Overlays
-      ./../../overlays/brave.nix
+    #  ./../../overlays/brave.nix
+    #NOTE: used unstable ollama for stable 24.05
+    #BUG: 
+      #./../../overlays/ollama.nix
       
       #TODO: use this if flake won't work.
       #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
  
     # desktop modules
       ./../../modules/desktopModules/nvidia.nix
-      ./../../modules/desktopModules/ollama.nix
+      #./../../modules/desktopModules/ollama.nix
 
     ];
 
@@ -44,6 +47,7 @@
     hosts = {
       "192.168.1.60" = ["nextcloud"];
       "192.168.1.107" = ["laptop"];
+      "192.168.1.58" = ["phone"];
     };
     
     ### FIREWALL 

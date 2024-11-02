@@ -53,7 +53,8 @@
       smartd.enable = true;
       
       # Fuse filesystem support like bash '/bin/bash' 
-      envfs.enable = true;
+#BUG: cause issue on stable?
+      #envfs.enable = true;
 
       # Sound
       pipewire = {

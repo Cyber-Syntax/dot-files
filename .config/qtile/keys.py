@@ -28,7 +28,7 @@ keys = [
 
     ## Custom Rofi Scripts ##
         Key([mod], "r", lazy.spawn(os.path.expanduser("~/.config/rofi/launchers/type-3/launcher.sh")), desc="Spawn a command using a prompt widget"),
-        Key([mod], "x", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu/type-2/powermenu.sh")), desc="Spawn a command using a prompt widget"),
+        Key([mod], "x", lazy.spawn(os.path.expanduser("~/.config/rofi/powermenu/type-6/powermenu.sh")), desc="Spawn a command using a prompt widget"),
         Key([mod], "m", lazy.spawn("pactl set-default-sink $(pactl list short sinks |awk '{print $2}' | rofi -dmenu)"), desc="Spawn a command using a prompt widget"),
 
     ## i3lock ##

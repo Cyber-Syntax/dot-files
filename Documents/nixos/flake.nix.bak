@@ -1,19 +1,18 @@
 {
-#TEST: Lets stick with unstable for now, maybe we would get stay on 24.11 after it released
-#NOTE: If something goes wrong, we can pin old version and update others
+#TESTING: downgrading to stable
   inputs = {
-      # nixpkgs = {
-      #   url = "github:NixOS/nixpkgs/nixos-24.05";
-      # };
       nixpkgs = {
+        url = "github:NixOS/nixpkgs/nixos-24.05";
+      };
+      nixpkgs-unstable = {
         url = "github:NixOS/nixpkgs/nixos-unstable";
       };
       nixos-hardware = {
         url = "github:NixOS/nixos-hardware/master";
       };
       home-manager = {
-        url = "github:nix-community/home-manager";
-        #url = "github:nix-community/home-manager/release-24.05";
+        #url = "github:nix-community/home-manager";
+        url = "github:nix-community/home-manager/release-24.05";
         inputs.nixpkgs.follows = "nixpkgs";
       };
       firefox-addons = {
@@ -29,13 +28,11 @@
 
 #TODO: Clear indentinations
 #add sops-nix later here
-  outputs = { 
-  nixpkgs, 
-  #nixpkgs-unstable, 
-  nixos-hardware, home-manager, firefox-addons, ... }@inputs:
+  outputs = { nixpkgs, nixpkgs-unstable, nixos-hardware, home-manager, firefox-addons, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      unstable = import nixpkgs-unstable { inherit system; };
       #nixos-hardware = inputs.nixos-hardware.nixosModules;
       home-manager = inputs.home-manager.nixosModules.home-manager;
       #sops-nix = inputs.sops-nix.nixosModules.sops;
@@ -52,11 +49,6 @@
           #TODO: change this version after you change stateVersion
           version = "24.05";
           specialArgs = {
-            # unstable = import nixpkgs-unstable { 
-            #   inherit system;
-            #   config.allowUnfree = true;
-            # };
-
             inherit
               inputs
               system
@@ -78,7 +70,7 @@
               #./cachix.nix 
               ];
               home-manager = {
-                backupFileExtension = "bak92";
+                backupFileExtension = "bak33";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];
@@ -100,12 +92,15 @@
         "nixos" = createSystem {
           name = "developer";
           config = ./hosts/desktop/configuration.nix;
+          #base = ../../etc/nixos/hosts/developer/base.nix;
           home = ./hosts/desktop/home.nix;
+          #system = ../../etc/nixos/hosts/developer/system.nix;
           #extraModules = [ nixos-hardware.common-cpu-amd ];
         };
         "laptop" = createSystem {
           name = "developer";
           config = ./hosts/laptop/configuration.nix;
+          #base = ./hosts/laptop/base.nix;
           home = ./hosts/laptop/home.nix;
           #system = ./hosts/laptop/system.nix;
           #extraModules = [nixos-hardware.common-cpu-intel nixos-hardware.common-pc-laptop];

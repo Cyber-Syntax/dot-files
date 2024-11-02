@@ -4,12 +4,16 @@
 #TESTING: using inputs instead of nur first?
 #NOTE: inputs already using nur?
 
+#TODO: change firefox unstable package if not use unstable version
+
 {
   home-manager.users.developer.programs.firefox = {
     enable = true;
+    #NOTE: not available on 24.05??
     languagePacks = [
       "en-US"
     ];
+
     # nativeMessagingHosts = [
     #     #TODO: is setup needed for keepassxc-browser ??
     # ];
@@ -36,6 +40,14 @@
           "privacy.globalprivacycontrol.enabled" = true;
           "privacy.query_stripping.enabled.pbmode" = true;
           "privacy.webrtc.globalMuteToggles" = true;
+          # #TODO: add these after you handle migrating stable
+#TODO:: 1. enable av1Support for firefox somewhere here, probably about:config setting
+          # # This will enable nvidia gpu usage on firefox. Probably decode for netflix, youtube etc.
+          "media.ffmpeg.vaapi.enabled" = true;
+          "media.rdd-ffmpeg.enabled" = true;
+          # "media.av1.enabled" = cfg.firefox.av1Support;
+          "gfx.x11-egl.force-enabled" = true;
+          "widget.dmabuf.force-enabled" = true;
         };
         search = {
           force = true;
@@ -101,7 +113,7 @@
             id = 1;
           };
           personal = {
-            color = "blue";
+            color = "yellow";
             icon = "fingerprint";
             id = 2;
           };
@@ -111,7 +123,7 @@
             id = 3;
           };
           learn = {
-            color = "turquoise";
+            color = "blue";
             icon = "fence";
             id = 4;
           };
@@ -228,12 +240,12 @@
       };
       HardwareAcceleration = true;
       Homepage = {
-        URL = "about:newtab";
+        URL = "about:preferences#containers";
         Locked = false;
         StartPage = "homepage";
-        Additional = [
-        "about:preferences#containers"
-        ];
+        # Additional = [
+        # "about:newtab"
+        # ];
       };
       NoDefaultBookmarks = true;
       PasswordManagerEnabled = false;

@@ -1,20 +1,18 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 {
   boot = {
-    #TODO: Testing suspend problem on qtile with this option
-    #kernelParams = [ "nvidia-drm.modeset=1" ];
-    kernelPackages = pkgs.linuxPackages_latest; # Use latest stable Linux
+#TESTING: sddm with stable kernel
+#TEST: testing unstable latest linux kernel
+    kernelPackages = pkgs.linuxPackages_latest; # Use latest 6.11 or 6.11.4, mostly stable
     loader = {
       systemd-boot = {
         enable = true;
-        #timeout = 5;
         #defaultKernelOptions = [ "quiet" ];
         configurationLimit = 50;
       };
 
       efi = {
         canTouchEfiVariables = true;
-        #systemPartition = "/boot";
       };
     };
 

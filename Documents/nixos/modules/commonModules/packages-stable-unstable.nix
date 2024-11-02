@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
+
 {
   nixpkgs.config.allowUnfree = true;
- 
-  environment.systemPackages = with pkgs; [
+
+  environment.systemPackages = (with pkgs; [
       xorg.setxkbmap
       xorg.xrandr
       xorg.xhost
@@ -46,11 +47,6 @@
       ## Productivity
         zoxide
         trash-cli
-        eza # modern ls
-        duf # modern du 
-        bat # modern cat
-        fd # modern find
-        tldr # modern man
         numlockx
       ## Development 
         # Coding
@@ -77,6 +73,7 @@
         home-manager
         nil # nix language server as lsp
         cargo # for rust and nil to work
+  ]) ++ (with unstable; [
     # Apps
       ## Pictures, Documents etc.
         feh
@@ -117,6 +114,6 @@
         ntfs3g
       ## My unfree apps
         obsidian
-        spotify
-  ];
+        spotify  
+  ]);
 }
