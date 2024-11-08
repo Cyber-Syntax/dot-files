@@ -75,15 +75,16 @@ home-manager.users.developer.programs.zsh = {
           del-gen = "sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations";
         # git bare repo
           bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
-          bare-st = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
-          bare-fetch = "git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo";
-          bare-reset = "git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo";
-          bare-pull = "git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo";
-          bare-single-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
-          bare-adog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
-          bare-add = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
-          bare-cmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
-          bare-push = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
+          bst = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
+          bfetch = "git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo";
+          breset = "git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo";
+          bpull = "git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo";
+          bsingle-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
+          badog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
+          badd = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
+          badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/Documents/screenloyout/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ";
+          bcmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
+          bpush = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
         # git aliases
           gst = "git status";
           gbr = "git branch";

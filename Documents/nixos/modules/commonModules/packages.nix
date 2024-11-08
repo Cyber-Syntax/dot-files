@@ -24,6 +24,7 @@
       ## Stats, system infos etc.
         lm_sensors
         fastfetch
+        powertop # battery usage etc.
         htop
       ## basic developer tools
         wget
@@ -57,8 +58,16 @@
           nodejs_22
           hugo
           go
-          lua 
-          lua-language-server
+          lua
+        ##NOTE: Defined on programs.nix for non-nix executables
+          # lua-language-server
+          # luarocks # for lua
+          # stylua # lua formatter
+          
+          # neovim
+            lazygit
+            gnumake
+            taskwarrior3 # version3
           #vscode-json-languageserver 
         ## AI
           python311Packages.litellm
