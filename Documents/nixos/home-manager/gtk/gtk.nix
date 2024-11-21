@@ -5,23 +5,25 @@
     enable = true;
 
     theme = {
-      name = "Materia-dark"; # Materia-light Materia-standard Materia-dark
-      package = pkgs.materia-theme;
+      name = "Nordic-Polar"; # old: Materia-dark Materia-light
+      package = pkgs.nordic; # old materia-theme
     };
+
     cursorTheme = {
       name = "Vimix-white-cursors";
       package = pkgs.vimix-cursors;
       size = 24;
     };
     font = {
-      name = "Roboto";
+      name = "Roboto Regular";
       size = 13;
       package = pkgs.roboto;
     };
     iconTheme = {
-      name = "Papirus";
-      package = pkgs.papirus-icon-theme;
+      name = "Nordic-green"; # old Papirus
+      package = pkgs.nordic; # old: papirus-icon-theme
     };
+
     gtk3.bookmarks = [
       "file:///home/developer/Downloads"
       "file:///home/developer/Pictures/"

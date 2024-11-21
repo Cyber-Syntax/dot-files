@@ -6,6 +6,11 @@ return {
     "nvim-lua/plenary.nvim", -- Neo-Tree dependencies
     "nvim-tree/nvim-web-devicons", -- Optional, for file icons
   },
+  -- opts = function(_, opts)
+  --   opts.open_files_do_not_replace_types = opts.open_files_do_not_replace_types
+  --     or { "terminal", "Trouble", "qf", "Outline", "trouble" }
+  --   table.insert(opts.open_files_do_not_replace_types, "edgy")
+  -- end,
   config = function()
     -- Setup neo-tree with custom options
     require("neo-tree").setup({
@@ -13,7 +18,7 @@ return {
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
-      open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
+      open_files_do_not_replace_types = { "terminal", "trouble", "qf", "Outline" }, -- when opening files, do not use windows containing these filetypes or buftypes
       sort_case_insensitive = false, -- used when sorting files and directories in the tree
       sort_function = nil, -- use a custom function for sorting files and directories in the tree
       -- sort_function = function (a,b)

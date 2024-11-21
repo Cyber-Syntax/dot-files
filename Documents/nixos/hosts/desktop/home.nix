@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, nixvim, ... }:
 
 {
   imports =
@@ -6,6 +6,8 @@
       #./../../home-manager/qtile.nix
       #./../../home-manager/firefox.nix
       #./../../home-manager/zsh.nix
+      # nixvim.homeManagerModules.nixvim
+      # ./../../modules/commonModules/nixvim/config/nixvim.nix
     ];
 
     home.username = "developer";
@@ -20,6 +22,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
+      lxappearance
       # # fonts
       # roboto
 

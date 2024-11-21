@@ -71,31 +71,31 @@
 #     };
 #   };
 
-#NOTE: only 24.05
-  hardware.opengl = { # hardware.opengl in 24.05 and older 
-    enable = true;
-#    extraPackages = with pkgs; [
-#TODO: add to laptop
-      # intel-media-driver # For Broadwell (2014) or newer processors. LIBVA_DRIVER_NAME=iHD
-      # intel-vaapi-driver # For older processors. LIBVA_DRIVER_NAME=i965
-#      nvidia-vaapi-driver
-#      libvdpau-va-gl
-#    ];
-  };
+##NOTE: only 24.05
+#  hardware.opengl = { # hardware.opengl in 24.05 and older 
+#    enable = true;
+##    extraPackages = with pkgs; [
+##TODO: add to laptop
+#      # intel-media-driver # For Broadwell (2014) or newer processors. LIBVA_DRIVER_NAME=iHD
+#      # intel-vaapi-driver # For older processors. LIBVA_DRIVER_NAME=i965
+##      nvidia-vaapi-driver
+##      libvdpau-va-gl
+##    ];
+#  };
 
 #TODO: learn later
 # environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; }; # Optionally, set the environment variable
 
 #TODO: add this on version 24.11
-#   hardware.graphics = {
-#       enable = true;
-# # #TESTING: new VA-API for nvidia. Setup:
-# # #TODO: https://github.com/elFarto/nvidia-vaapi-driver?tab=readme-ov-file#firefox
-# #       extraPackages = with pkgs; [
-# #         nvidia-vaapi-driver
-# #         libvdpau-va-gl 
-# #       ];
-#   };
+hardware.graphics = {
+    enable = true;
+ #TESTING: new VA-API for nvidia. Setup:
+ #TODO: https://github.com/elFarto/nvidia-vaapi-driver?tab=readme-ov-file#firefox
+       extraPackages = with pkgs; [
+         nvidia-vaapi-driver
+         libvdpau-va-gl 
+       ];
+};
 
 #   environment.variables = {
 #     # Required to run the correct GBM backend for nvidia GPUs on wayland

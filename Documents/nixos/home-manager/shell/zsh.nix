@@ -96,6 +96,8 @@ home-manager.users.developer.programs.zsh = {
           icat = "kitten icat"; # kitty terminal image preview
           # neovim
           n="nvim -c 'Telescope oldfiles'";
+          #TESTING:
+          nlv="NVIM_APPNAME=nvim.lazyvim nvim -c 'Telescope oldfiles'";
           # general
           tp = "trash-put";
           c = "clear";

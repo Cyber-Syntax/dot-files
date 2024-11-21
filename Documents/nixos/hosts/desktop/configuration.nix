@@ -1,129 +1,147 @@
 { ... }:
 
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
+  imports = [
+    ./hardware-configuration.nix
     # common modules 
-      ./../../modules/commonModules/boot.nix
-      ./../../modules/commonModules/qtile.nix
-      ./../../modules/commonModules/i18n.nix
-      ./../../modules/commonModules/neovim.nix
-      ./../../modules/commonModules/fonts.nix
-      ./../../modules/commonModules/programs.nix
-      ./../../modules/commonModules/security.nix
-      ./../../modules/commonModules/services.nix
-      ./../../modules/commonModules/appimages.nix
-      ./../../modules/commonModules/packages.nix
-      ./../../modules/commonModules/nix.nix
+    ./../../modules/commonModules/boot.nix
+    ./../../modules/commonModules/qtile.nix
+    ./../../modules/commonModules/i18n.nix
+    ./../../modules/commonModules/fonts.nix
+    ./../../modules/commonModules/programs.nix
+    ./../../modules/commonModules/security.nix
+    ./../../modules/commonModules/services.nix
+    ./../../modules/commonModules/appimages.nix
+    ./../../modules/commonModules/packages.nix
+    ./../../modules/commonModules/nix.nix
+    
+    # ./../../modules/commonModules/neovim.nix
+
     # Home-Manager used via nix builds. 
-      ./../../home-manager/shell/zsh.nix
-      ./../../home-manager/gtk/gtk.nix
-     # ./../../home-manager/browser/firefox.nix
-      #./home-manager/neovim.nix # chadrc error. 
-     
+    ./../../home-manager/shell/zsh.nix
+    ./../../home-manager/gtk/gtk.nix
+    ./../../home-manager/browser/firefox.nix
+    
+    #TESTING: as a home-manager module 
+    ./../../modules/commonModules/nixvim/config/nixvim.nix
+    
+    #TEST: basic one
+    # ./../../modules/commonModules/nixvim/backup/nixvim.nix
+
     # Overlays
-    #  ./../../overlays/brave.nix
-    #NOTE: used unstable ollama for stable 24.05
-    #BUG: 
-      #./../../overlays/ollama.nix
-      
-      #TODO: use this if flake won't work.
-      #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
- 
+    ./../../overlays/brave.nix
+
+    #TODO: use this if flake won't work.
+    #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
+
     # desktop modules
-      ./../../modules/desktopModules/nvidia.nix
-      #./../../modules/desktopModules/ollama.nix
+    ./../../modules/desktopModules/nvidia.nix
+    ./../../modules/desktopModules/ollama.nix
+  ];
 
-    ];
+  ### Windows dualboot time date problem solve:
+  #time.hardwareClockInLocalTime = true; # Didn't solve superProductivity date/time issue
 
-### NETWORK
+  ### NETWORK
   networking = {
     # Enable the NetworkManager
     networkmanager.enable = true;
     # Define your hostname.
     hostName = "nixos";
-    
+
     hosts = {
-      "192.168.1.60" = ["nextcloud"];
-      "192.168.1.107" = ["laptop"];
-      "192.168.1.58" = ["phone"];
+      "192.168.1.60" = [ "nextcloud" ];
+      "192.168.1.107" = [ "laptop" ];
+      "192.168.1.58" = [ "phone" ];
     };
-    
+
     ### FIREWALL 
-      firewall = {
+    firewall = {
       enable = true;
-      allowPing = false; # decline ICMP pings 
+      allowPing = false; # decline ICMP pings
       # allow syncthing
-      allowedTCPPorts = [ 8384 22000];
-      allowedUDPPorts = [ 22000 21027 ];
+      allowedTCPPorts = [
+        8384
+        22000
+      ];
+      allowedUDPPorts = [
+        22000
+        21027
+      ];
       # allowedUDPPortRanges = [
       #   { from = 4000; to = 4007; }
       #   { from = 8000; to = 8010; }
       # ];
       #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
-      extraCommands = '' 
-          iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
-          iptables -A nixos-fw -p tcp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
-        '';
+      extraCommands = ''
+        iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
+        iptables -A nixos-fw -p tcp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
+      '';
     };
   };
 
-#performance cause problem with amd 2600x CPU. amd_pstate driver is not supported with this CPU.(Zen+)
-# only zen2 and newer support this amd_pstate driver.
-# TODO: testing common-cpu-amd on flakes
-powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
+  #performance cause problem with amd 2600x CPU. amd_pstate driver is not supported with this CPU.(Zen+)
+  # only zen2 and newer support this amd_pstate driver.
+  # TODO: testing common-cpu-amd on flakes
+  powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
 
-users.users.developer = {
-  isNormalUser = true;
-  description = "developer";
-  extraGroups = [ "networkmanager" "wheel" "libvirtd" "video" "kvm"];
-};
-
-### Virtulization
-virtualisation.libvirtd.enable = true;
-programs.virt-manager.enable = true;
-
-services = {
-  syncthing = {
-    enable = true;
-    user = "developer";
-    #group = "developer";
-    #dataDir = "/home/developer/.local/share/syncthing";
-    configDir = "/home/developer/.config/syncthing";
-  };
-
-  borgbackup.jobs."home-backup" = {
-    paths = "/home/developer/";
-    exclude = [
-      ".cache"
-      "*/cache2" # firefox
-      "*/Cache"
-      ".config/Slack/logs"
-      ".config/Code/CachedData"
-      ".container-diff"
-      ".npm/_cacache"
-      "*/node_modules"
-      "*/bower_components"
-      "*/_build"
-      "*/.tox"
-      "*/venv"
-      "*/.venv"
-      "~/Downloads"
+  users.users.developer = {
+    isNormalUser = true;
+    description = "developer";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+      "video"
+      "kvm"
     ];
-    encryption.mode = "none";
-    repo = "/mnt/backups/borgbackup/home-nixos";
-    compression = "zstd,15";
-    prune.keep = { #prune and keep only 13 backups
-      daily = 7;
-      weekly = 4;
-      monthly = 2;
-    };
-    persistentTimer = true; # similar anacron, if missed the last start time, start backup
-    startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
   };
-    
-};
+
+  ### Virtulization
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  services = {
+    syncthing = {
+      enable = true;
+      user = "developer";
+      #group = "developer";
+      #dataDir = "/home/developer/.local/share/syncthing";
+      configDir = "/home/developer/.config/syncthing";
+    };
+
+    borgbackup.jobs."home-backup" = {
+      paths = "/home/developer/";
+      exclude = [
+        ".cache"
+        "*/cache2" # firefox
+        "*/Cache"
+        ".config/Slack/logs"
+        ".config/Code/CachedData"
+        ".container-diff"
+        ".npm/_cacache"
+        "*/node_modules"
+        "*/bower_components"
+        "*/_build"
+        "*/.tox"
+        "*/venv"
+        "*/.venv"
+        "~/Downloads"
+      ];
+      encryption.mode = "none";
+      repo = "/mnt/backups/borgbackup/home-nixos";
+      compression = "zstd,15";
+      prune.keep = {
+        # prune and keep only 13 backups
+        daily = 7;
+        weekly = 4;
+        monthly = 2;
+      };
+      persistentTimer = true; # similar anacron, if missed the last start time, start backup
+      startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
+    };
+
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -141,4 +159,3 @@ services = {
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 }
-

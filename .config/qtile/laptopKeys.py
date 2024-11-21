@@ -23,30 +23,15 @@ keys = [
     # terminal
     Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
     # brave browser
-    Key(
-        [mod],
-        "less",
-        lazy.spawn(os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")),
-        desc="Launch brave",
-    ),
+    # Key([mod], "less", lazy.spawn(os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")), desc="Launch brave"),
+    # firefox
+    Key([mod], "less", lazy.spawn("firefox"), desc="Launch firefox"),
     # siyuan
-    Key(
-        [mod],
-        "s",
-        lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")),
-        desc="Launch siyuan",
-    ),
+    # Key([mod], "s", lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")), desc="Launch siyuan"),
     # folder
     Key([mod], "z", lazy.spawn("pcmanfm"), desc="Launch pcmanfm"),
     # custom spotify via chromium `chromium --user-data-dir=.config/spotify --app=https://open.spotify.com/`
-    Key(
-        [mod],
-        "v",
-        lazy.spawn(
-            "chromium --user-data-dir=.config/spotify --app=https://open.spotify.com/"
-        ),
-        desc="Launch spotify",
-    ),
+    # Key([mod], "v", lazy.spawn("chromium --user-data-dir=.config/spotify --app=https://open.spotify.com/"), desc="Launch spotify"),
     ## Custom Rofi Scripts ##
     Key(
         [mod],
@@ -89,18 +74,18 @@ keys = [
     # Cycle only if there are window in the group (e.g skip empty groups)
     Key([mod], 49, lazy.screen.next_group(skip_empty=True), desc="Move to next group"),
     # Key([mod, "shift"], "Tab", lazy.screen.prev_group(skip_empty=True), desc="Move to previous group"),
-    ## Change focus of windows when layout is Max
+    # Change focus of windows when layout is Max
     Key(
         [mod, "control"],
         "Tab",
         lazy.layout.next(),
         desc="Move window focus to other window",
     ),
-    ## cycle through the groups with the same screen_affinity
-    ## focus window up or down
+    # cycle through the groups with the same screen_affinity
+    # focus window up or down
     Key([mod], "d", lazy.layout.down()),
     Key([mod], "a", lazy.layout.up()),
-    ## change window location up or down
+    # change window location up or down
     Key([mod], "w", lazy.layout.shuffle_down()),
     Key([mod], "e", lazy.layout.shuffle_up()),
     # ## 2 monitor setup
