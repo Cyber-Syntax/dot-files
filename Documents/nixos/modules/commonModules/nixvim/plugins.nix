@@ -40,8 +40,8 @@
       #   img_dir = "images",
       #   img_name = function() return os.date('%Y-%m-%d-%H-%M-%S') end, -- Example result: "2021-04-13-10-04-18"
       # },
-
     };
+
     barbar.enable = true; # this is for tab view for buffers
 
     indent-blankline.enable = true;
@@ -141,6 +141,7 @@
     nvim-colorizer.enable = true;
     neo-tree = {
       enable = true; # File explorer
+
       filesystem = {
         followCurrentFile.enabled = true; # This will find and focus the file in the active buffer every time
         bindToCwd = false;
@@ -150,8 +151,9 @@
           visible = true;
           hideDotfiles = false;
           hideGitignored = false;
-          hideHidden = false;
+          hideHidden = true;
           hideByPattern = [
+            # Making their color like comments but still show them.
             #"*.meta"
             # "*/src/*/tsconfig.json"
           ];
@@ -165,11 +167,14 @@
             # "thumbs.db"
           ];
           neverShowByPattern = [
+            # delete from seeing completely. autoExpandWidth issue solve.
             # ".null-ls_*"
+            "*sync-conflict*" # syncthing conflict files is to long. It's make so big neo-tree with autoExpandWidth
           ];
           forceVisibleInEmptyFolder = false; # default:false
         };
       };
+
       defaultComponentConfigs.indent.withExpanders = true; # default:null, if nil and file nesting is enabled, will enable expanders
       window.width = 30;
       window.popup.size.width = "50%";
