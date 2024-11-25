@@ -2,17 +2,7 @@
 
 ## New
 
-### test1
-
 ![qtile_rice_hyprland](/.config/qtile/docs/src/assets/img/2024-11-25-15-00-51.png)
-
-### test2
-
-![qtile_rice_hyprland](/dotfiles/.config/qtile/docs/src/assets/img/2024-11-25-15-00-51.png)
-
-### test3
-
-![qtile_rice_hyprland](/assets/img/2024-11-25-15-00-51.png)
 
 ## Old
 
