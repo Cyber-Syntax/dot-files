@@ -2,7 +2,7 @@
 
 ## New
 
-![qtile_rice_hyprland](/assets/img/2024-11-25-14-55-40.png)
+![qtile_rice_hyprland](/src/assets/img/2024-11-25-15-00-51.png)
 
 ## Old
 

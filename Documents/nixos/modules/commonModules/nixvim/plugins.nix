@@ -24,7 +24,7 @@
             "assets"
             "img"
           ];
-          imgDirTxt = "/assets/img";
+          imgDirTxt = "/src/assets/img";
           # imgName = {
           #   __raw = "function() return os.date('%Y-%m-%d-%H-%M-%S') end";
           # };
