@@ -5,37 +5,42 @@
     clipboard-image = {
       enable = true;
       clipboardPackage = pkgs.xclip; # X11
-
+      default = {
+        affix = "<\n  %s\n>";
+        #   affix = "![]({img_path})"; # used markdown, default: "{img_path}"
+        imgDir = "img";
+        #   imgDirTxt = "img";
+        imgName = {
+          __raw = "function() return os.date('%Y-%m-%d-%H-%M-%S') end";
+        };
+        # imgHandler =
+      };
+      #NOTE: Current commented options not work for clipboard-image, probably writing something wrong because default seems work.
       filetypes = {
         markdown = {
-          affix = "![]({img_path})";
+          # affix = "![]({img_path})";
           imgDir = [
             "src"
             "assets"
             "img"
           ];
           imgDirTxt = "/assets/img";
-          #   imgName = {
-          #     __raw = "function() return os.date('%Y-%m-%d-%H-%M-%S') end";
-          #   };
-          imgHandler = ''
-            function(img)
-              local script = string.format('./image_compressor.sh "%s"', img.path)
-              os.execute(script)
-            end
-          '';
+          # imgName = {
+          #   __raw = "function() return os.date('%Y-%m-%d-%H-%M-%S') end";
+          # };
+          # imgHandler = ''
+          #   function(img)
+          #     local script = string.format('./image_compressor.sh "%s"', img.path)
+          #     os.execute(script)
+          #   end
+          # '';
         };
       };
-
       # default = {
-      #   affix = "![]({img_path})"; # used markdown, default: "{img_path}"
-      #   imgDir = "img";
-      #   imgDirTxt = "img";
-      #   imgName = {
-      #     __raw = "function() return os.date('%Y-%m-%d-%H-%M-%S') end";
-      #   };
-      #   # imgHandler =
-      # };
+      #   img_dir = "images",
+      #   img_name = function() return os.date('%Y-%m-%d-%H-%M-%S') end, -- Example result: "2021-04-13-10-04-18"
+      # },
+
     };
     barbar.enable = true; # this is for tab view for buffers
 
