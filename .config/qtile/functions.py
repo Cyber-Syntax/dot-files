@@ -2,41 +2,50 @@ from libqtile.lazy import lazy
 from libqtile import hook
 from libqtile import qtile
 from libqtile.backend.base import Window
+
 # qtile cmd-obj -o group 4 -f toscreen # focus from command line
+
+
+@hook.subscribe.resume
+def lock_on_resume():
+    subprocess.run("i3lock --p")
+    logger.warn("Resuming from sleep")
 
 
 @hook.subscribe.client_new
 def idle_dialogues(window):
-    if ((window.window.get_name() == 'Search Dialog') or
-       (window.window.get_name() == 'Module') or
-       (window.window.get_name() == 'Goto') or
-       (window.window.get_name() == 'IDLE Preferences')):
+    if (
+        (window.window.get_name() == "Search Dialog")
+        or (window.window.get_name() == "Module")
+        or (window.window.get_name() == "Goto")
+        or (window.window.get_name() == "IDLE Preferences")
+    ):
         window.floating = True
 
 
 @hook.subscribe.client_new
 def floating_dialogs(window):
-    dialog = window.window.get_wm_type() == 'dialog'
+    dialog = window.window.get_wm_type() == "dialog"
     transient = window.window.get_wm_transient_for()
     if dialog or transient:
         window.floating = True
 
 
-APP = "superproductivity"
-
-
-@hook.subscribe.client_urgent_hint_changed
-def follow_url(client: Window) -> None:
-    """If superproductivity is flagged as urgent, focus it"""
-
-    wm_class: list | None = client.get_wm_class()
-
-    for item in wm_class:
-        match item:
-            case item if item.lower() in APP and client.group is not None:
-                qtile.current_screen.set_group(client.group)
-                client.group.focus(client)
-                return
+# APP = "superproductivity"
+#
+#
+# @hook.subscribe.client_urgent_hint_changed
+# def follow_url(client: Window) -> None:
+#     """If superproductivity is flagged as urgent, focus it"""
+#
+#     wm_class: list | None = client.get_wm_class()
+#
+#     for item in wm_class:
+#         match item:
+#             case item if item.lower() in APP and client.group is not None:
+#                 qtile.current_screen.set_group(client.group)
+#                 client.group.focus(client)
+#                 return
 
 
 # 2 monitor setup
@@ -91,20 +100,20 @@ def send_left(qtile):
     # screen_affinity = qtile.current_screen.group.screen_affinity
     #
     if qtile.current_screen.index == DP_4:
-        qtile.current_window.togroup(
-            qtile.screens[0].group.name, switch_group=False)
+        qtile.current_window.togroup(qtile.screens[0].group.name, switch_group=False)
         qtile.focus_screen(0)
 
- # if screen_affinity == 2: # DP-2
-    #     qtile.current_window.togroup(qtile.screens[1].group.name, switch_group=False)
-    #     qtile.focus_screen(1)
-    # elif screen_affinity == 0: # DP-0
-    #     qtile.current_window.togroup(qtile.screens[2].group.name, switch_group=False)
-    #     qtile.focus_screen(2)
-    # else:                       # DP_4
-    #     qtile.current_window.togroup(qtile.screens[0].group.name, switch_group=False)
-    #     qtile.focus_screen(0)
-    #
+
+# if screen_affinity == 2: # DP-2
+#     qtile.current_window.togroup(qtile.screens[1].group.name, switch_group=False)
+#     qtile.focus_screen(1)
+# elif screen_affinity == 0: # DP-0
+#     qtile.current_window.togroup(qtile.screens[2].group.name, switch_group=False)
+#     qtile.focus_screen(2)
+# else:                       # DP_4
+#     qtile.current_window.togroup(qtile.screens[0].group.name, switch_group=False)
+#     qtile.focus_screen(0)
+#
 
 
 @lazy.function
@@ -114,8 +123,7 @@ def send_right(qtile):
     #
 
     if qtile.current_screen.index == DP_2:
-        qtile.current_window.togroup(
-            qtile.screens[1].group.name, switch_group=False)
+        qtile.current_window.togroup(qtile.screens[1].group.name, switch_group=False)
         qtile.focus_screen(1)
 
     # 3 monitor setup
@@ -171,6 +179,8 @@ def focus_right_mon(qtile):
     # else:
     #     qtile.focus_screen(qtile.current_screen.next_group)
     #
+
+
 ## ./2 monitor setup ##
 
 # Common group functions
@@ -182,11 +192,11 @@ def cycle_groups(qtile):
     current_group_index = qtile.groups.index(qtile.current_group)
     next_group_index = current_group_index
 
-# Check if the current group name is odd or even
+    # Check if the current group name is odd or even
     current_group_name = qtile.current_group.name
     is_odd_group = int(current_group_name) % 2 != 0
 
-# Loop through the groups until we find the desired group
+    # Loop through the groups until we find the desired group
     while True:
         # Get the next group name
         next_group_index = (next_group_index + 1) % len(qtile.groups)
@@ -198,8 +208,8 @@ def cycle_groups(qtile):
 
         if not is_odd_group and int(next_group_name) % 2 == 0:
             break
-# Lets get back to the first group when we reach the last group
-# if 5 -> 1, 6 -> 2
+        # Lets get back to the first group when we reach the last group
+        # if 5 -> 1, 6 -> 2
 
         if next_group_index == 6:
             # -1 = refers to the group 1, 0 refers to the group 2
@@ -221,8 +231,11 @@ def cycle_groups_reverse(qtile):
     group_nums = [int(group.name) for group in qtile.groups]
 
     # Filter for odd or even groups based on the current group
-    filtered_nums = [num for num in group_nums if num % 2 != 0] if is_odd else [
-        num for num in group_nums if num % 2 == 0]
+    filtered_nums = (
+        [num for num in group_nums if num % 2 != 0]
+        if is_odd
+        else [num for num in group_nums if num % 2 == 0]
+    )
 
     # Sort in descending order
     filtered_nums.sort(reverse=True)
@@ -234,8 +247,9 @@ def cycle_groups_reverse(qtile):
     next_group_num = filtered_nums[(current_index + 1) % len(filtered_nums)]
 
     # Find the qtile group object with this number
-    next_group = next(group for group in qtile.groups if int(
-        group.name) == next_group_num)
+    next_group = next(
+        group for group in qtile.groups if int(group.name) == next_group_num
+    )
 
     # Switch to the next group
     next_group.toscreen()

@@ -19,7 +19,7 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs"; #BUG: angular-language-server not found error.
     };
     #TODO: Learn secrets management later
     # sops-nix = {
@@ -88,7 +88,7 @@
                 #./cachix.nix
               ];
               home-manager = {
-                backupFileExtension = "bak6";
+                backupFileExtension = "bak3";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];

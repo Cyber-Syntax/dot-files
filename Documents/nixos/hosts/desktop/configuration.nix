@@ -3,40 +3,19 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # common modules 
-    ./../../modules/commonModules/boot.nix
-    ./../../modules/commonModules/qtile.nix
-    ./../../modules/commonModules/i18n.nix
-    ./../../modules/commonModules/fonts.nix
-    ./../../modules/commonModules/programs.nix
-    ./../../modules/commonModules/security.nix
-    ./../../modules/commonModules/services.nix
-    ./../../modules/commonModules/appimages.nix
-    ./../../modules/commonModules/packages.nix
-    ./../../modules/commonModules/nix.nix
-    
-    # ./../../modules/commonModules/neovim.nix
 
-    # Home-Manager used via nix builds. 
-    ./../../home-manager/shell/zsh.nix
-    ./../../home-manager/gtk/gtk.nix
-    ./../../home-manager/browser/firefox.nix
-    
-    #TESTING: as a home-manager module 
-    ./../../modules/commonModules/nixvim/config/nixvim.nix
-    
-    #TEST: basic one
-    # ./../../modules/commonModules/nixvim/backup/nixvim.nix
+    #TESTING: migrating the folder hiararchy e.g default.nix
+    ./../../modules/commonModules/default.nix
 
-    # Overlays
-    ./../../overlays/brave.nix
+    #TESTING: xdg added newly it can be cause issues!!
+    ./../../home-manager/default.nix
+
+    ./../../overlays/default.nix
 
     #TODO: use this if flake won't work.
     #inputs.nixos-hardware.outputs.nixosModules.common-cpu-amd
 
-    # desktop modules
-    ./../../modules/desktopModules/nvidia.nix
-    ./../../modules/desktopModules/ollama.nix
+    ./../../modules/desktopModules/default.nix
   ];
 
   ### Windows dualboot time date problem solve:
