@@ -39,3 +39,10 @@
     (import ./overlay3)
   ];
 }
+
+#NOTE: kernel overlay
+
+  # boot.kernelPackages = pkgs.linuxPackages_6_1; # Has no effect on the issue
+  nixpkgs.overlays = [
+    (self: super: { linuxPackages = super.linuxPackages_6_1; })
+  ];

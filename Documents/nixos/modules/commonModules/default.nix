@@ -10,6 +10,7 @@
     ./packages
     ./programs
     ./qtile
+    ./sddm
     ./security
     ./services
   ];

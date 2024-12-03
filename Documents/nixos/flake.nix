@@ -3,14 +3,13 @@
     #TODO: Switch 24.11 after nixvim published 24.11 because it would broke
     #Branches for nixpkgs= nixpkgs:master, nixos-unstable:unstable
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
+      url = "github:NixOS/nixpkgs/nixos-24.11";
     };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
-      #url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs"; # Use the above nixpkgs version
     };
     firefox-addons = {
@@ -18,7 +17,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-24.11";
       # inputs.nixpkgs.follows = "nixpkgs"; #BUG: angular-language-server not found error.
     };
     #TODO: Learn secrets management later
@@ -88,7 +87,7 @@
                 #./cachix.nix
               ];
               home-manager = {
-                backupFileExtension = "bak4";
+                backupFileExtension = "bak888";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];

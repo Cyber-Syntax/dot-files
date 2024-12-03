@@ -1,26 +1,21 @@
 {
   config,
   pkgs,
-  lib,
-  unstable,
   ...
 }:
-#TEST: normal stable nvidia, stable linux kernel
-
-#TODO: handle nvidia version via unstable pkgs instead specific
-
 #BUG: display manager not start after open, propriety 560.34 or even all other extras commented.
 # try to use manually module adding but not worked either.
 
+#BUG: 24.11 error: Package ‘nvidia-x11-560.35.03-6.12.1’ in  is marked as broken, refusing to evaluate.
 {
 
   # boot = {
-  #     #NOTE: If you encounter the problem of booting to text mode you might try adding the Nvidia kernel module manually with: 
+  #     #NOTE: If you encounter the problem of booting to text mode you might try adding the Nvidia kernel module manually with:
   #       initrd.kernelModules = [ "nvidia" ];
   #       extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
   #
-  #     #NOTE: "nvidia-drm.modeset=1" add this if modeset not enabled 
+  #     #NOTE: "nvidia-drm.modeset=1" add this if modeset not enabled
   #     # it probably need to be added because nvidia.modesetting true option.
   #     # Check: /etc/modules-load.d/nixos.conf
   #
@@ -67,28 +62,6 @@
     '';
   };
 
-  # #TEST: picom solve tearing?? X11
-  #   services.picom = {
-  #     enable = true;
-  #     inactiveOpacity = 0.8;
-  #     settings = {
-  #       "unredir-if-possible" = true;
-  #       "focus-exclude" = "name = 'slock'";
-  #     };
-  #   };
-
-  ##NOTE: only 24.05
-  #  hardware.opengl = { # hardware.opengl in 24.05 and older 
-  #    enable = true;
-  ##    extraPackages = with pkgs; [
-  ##TODO: add to laptop
-  #      # intel-media-driver # For Broadwell (2014) or newer processors. LIBVA_DRIVER_NAME=iHD
-  #      # intel-vaapi-driver # For older processors. LIBVA_DRIVER_NAME=i965
-  ##      nvidia-vaapi-driver
-  ##      libvdpau-va-gl
-  ##    ];
-  #  };
-
   #TODO: learn later
   # environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; }; # Optionally, set the environment variable
 
@@ -97,10 +70,10 @@
     enable = true;
     #TESTING: new VA-API for nvidia. Setup:
     #TODO: https://github.com/elFarto/nvidia-vaapi-driver?tab=readme-ov-file#firefox
-    extraPackages = with pkgs; [
-      nvidia-vaapi-driver
-      libvdpau-va-gl
-    ];
+    # extraPackages = with pkgs; [
+    #   nvidia-vaapi-driver
+    #   libvdpau-va-gl
+    # ];
   };
 
   #   environment.variables = {
@@ -121,11 +94,15 @@
     nvidiaSettings = true;
     modesetting.enable = false;
     #dynamicBoost.enable = true;
+    #NOTE: 560.35.03-6.12.1 was in use before package written. (e.g default nixos setting on unstable)
+    #NOTE: Production:550.135 24.11 for now.
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  #   hardware.nvidia.package = 
+  #NOTE: Specific nvidia version
+  #   hardware.nvidia.package =
   # #    let
-  #     #Fixes framebuffer with linux 6.11 
+  #     #Fixes framebuffer with linux 6.11
   # #      fbdev_linux_611_patch = pkgs.fetchpatch {
   # #        url = "https://patch-diff.githubusercontent.com/raw/NVIDIA/open-gpu-kernel-modules/pull/692.patch";
   # #        hash = "sha256-OYw8TsHDpBE5DBzdZCBT45+AiznzO9SfECz5/uXN5Uc=";

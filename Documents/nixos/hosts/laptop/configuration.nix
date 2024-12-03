@@ -45,43 +45,17 @@
     cbatticon # battery icon
   ];
 
-  ### NETWORK
+  #iptables -A nixos-fw -p udp --source 192.168.1.39 --dport 1:65535 -j nixos-fw-accept || true
   networking = {
-    # Enable the NetworkManager
-    networkmanager.enable = true;
-    # Define your hostname.
     hostName = "nixosLaptop";
 
-    hosts = {
-      "192.168.1.60" = [ "nextcloud" ];
-      "192.168.1.39" = [ "nixos" ];
-      "192.168.1.58" = [ "phone" ];
-    };
-    ### FIREWALL 
-    firewall = {
-      enable = true;
-      allowPing = false; # decline ICMP pings
-      # allow syncthing
-      allowedTCPPorts = [
-        8384
-        22000
-      ];
-      allowedUDPPorts = [
-        22000
-        21027
-      ];
-      # allowedUDPPortRanges = [
-      #   { from = 4000; to = 4007; }
-      #   { from = 8000; to = 8010; }
-      # ];
-
-      # Allow my laptop to connect to my desktop 192.168.1.107
-      #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
-      extraCommands = ''
-        iptables -A nixos-fw -p udp --source 192.168.1.39 --dport 1:65535 -j nixos-fw-accept || true
-        iptables -A nixos-fw -p tcp --source 192.168.1.39 --dport 1:65535 -j nixos-fw-accept || true
-      '';
-    };
+    #TODO: Enable after default 22 port is rejected
+    #iptables -A INPUT -p tcp -s 192.168.1.39/24 --dport 22 -j ACCEPT
+    # firewall = {
+    #   extraCommands = ''
+    #     iptables -I INPUT -p tcp --dport 22 -s 192.168.1.39 -j ACCEPT
+    #   '';
+    # };
   };
 
   users.users.developer = {
