@@ -29,7 +29,7 @@
       "file:///home/developer/Pictures/"
       "file:///home/developer/Documents"
       "file:///home/developer/Documents/app_backups/"
-      "file:///home/developer/Documents/school/2023-2024/"
+      "file:///home/developer/Documents/school/2025/"
       "file:///home/developer/Documents/mysql/"
       "file:///home/developer/Documents/personal/"
       "file:///home/developer/Documents/personal/"
@@ -47,6 +47,6 @@
       gtk-application-prefer-dark-theme = 1;
     };
 
-  }; #./gtk
+  }; # ./gtk
 
 }

@@ -2,35 +2,55 @@
 
 {
   home-manager.users.developer.xdg = {
+    enable = true;
+    mime = {
       enable = true;
-      mime = {
-        enable = true;
-      };
-      
-      portal = {
-        enable = true;
-          xdgOpenUsePortal = true; # resolves bugs involving programs opening inside FHS envs or with unexpected env vars set from wrappers.
-          extraPortals = [
-            pkgs.xdg-desktop-portal-gtk
-            #pkgs.xdg-desktop-portal-hyprland # if persist with this window manager 
+    };
+    portal = {
+      enable = true;
+      xdgOpenUsePortal = true; # resolves bugs involving programs opening inside FHS envs or with unexpected env vars set from wrappers.
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+
+      config = {
+        common = {
+          default = [
+            "gtk"
           ];
-          
-          config = {
-            common = {
-              default = [
-                "gtk"
-              ];
-            };          
-          };
-      };
-
-      mimeApps = {
-        enable = true;
-      };
-
-      userDirs = {
-        enable = true;
-        createDirectories = true;
+        };
       };
     };
+
+    #TODO: add new defaultApplications:
+    #
+    # inode/directory
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "application/pdf" = [
+          "org.gnome.Evince.desktop"
+          "com.github.xournalpp.xournalpp.desktop"
+        ];
+        "x-scheme-handler/https" = [
+          "firefox.desktop"
+          "brave-browser.desktop"
+          "chromium-browser.desktop"
+        ];
+        "image/png" = [
+          "feh.desktop"
+          "gimp.desktop"
+        ];
+        "image/jpg" = [
+          "feh.desktop"
+          "gimp.desktop"
+        ];
+      };
+    };
+
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
+  };
 }
