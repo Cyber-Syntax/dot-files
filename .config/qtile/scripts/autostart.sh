@@ -9,8 +9,6 @@ setxkbmap tr &
 gammastep & # redshift alternative (works wayland and xorg)
 python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
 keepassxc & # password manager
-#TEST:
-TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage & # task app
 syncthingtray &
 
 #TESTING: handle inside python if this is not work
@@ -18,6 +16,7 @@ syncthingtray &
 if [ $(hostname) == "nixos" ]; then
   xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
   xset s off & # disable screen saver
+  TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage & # task app
   #sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout scripts
   printf "Desktop detected\n"
 elif [ $(hostname) == "nixosLaptop" ]; then

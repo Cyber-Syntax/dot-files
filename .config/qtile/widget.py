@@ -7,7 +7,6 @@ import os
 from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
 
-
 from variables import *
 
 # HACK: mpris2 popup is not working need to fix it later.

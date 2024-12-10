@@ -1,5 +1,4 @@
 { pkgs, ... }:
-
 {
   imports = [
     ./hardware-configuration.nix
@@ -18,25 +17,6 @@
 
   ];
 
-  services = {
-    libinput = {
-      enable = true; # for syncaptics touchpads
-
-      touchpad = {
-        #tappingButtonMap = "lmr"; # left middle right, this probably not compatible with tapping: "Set the button mapping for 1/2/3-finger taps"
-        accelProfile = "adaptive"; # default work for thinkpad for now
-        tapping = true;
-        #naturalScrolling = true;
-        # defualt:true,, pressing the left and right buttons simultaneously produces a middle mouse button click.
-        middleEmulation = false;
-        scrollMethod = "twofinger";
-        disableWhileTyping = true;
-        sendEventsMode = "disabled-on-external-mouse";
-        tappingDragLock = true; # default, tap and drag like shift behavior on keyboards but this will make it with two tap
-        #clickMethod = "buttonareas"; #default: "buttonareas" other: "clickfinger"
-      };
-    };
-  };
   # Luks encryption support
   boot.initrd.systemd.enable = true;
 
@@ -81,15 +61,33 @@
   # powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
 
   services = {
-    # THIS IS NOT WORKING on i5-13th gen yet
+    #NOTE: THIS IS NOT WORKING on i5-13th gen yet
     #throttled.enable = true; # fix for intel cpu throttling on thinkpads
+
+    libinput = {
+      enable = true; # for syncaptics touchpads
+
+      touchpad = {
+        #tappingButtonMap = "lmr"; # left middle right, this probably not compatible with tapping: "Set the button mapping for 1/2/3-finger taps"
+        accelProfile = "adaptive"; # default work for thinkpad for now
+        tapping = true;
+        #naturalScrolling = true;
+        # defualt:true,, pressing the left and right buttons simultaneously produces a middle mouse button click.
+        middleEmulation = false;
+        scrollMethod = "twofinger";
+        disableWhileTyping = true;
+        sendEventsMode = "disabled-on-external-mouse";
+        tappingDragLock = true; # default, tap and drag like shift behavior on keyboards but this will make it with two tap
+        #clickMethod = "buttonareas"; #default: "buttonareas" other: "clickfinger"
+      };
+    };
 
     tlp = {
       enable = true;
       settings = {
         TLP_ENABLE = 1; # This is default to 1 but just to be sure
         # Enable debug to see if tlp is working correctly
-        #TLP_DEBUG="arg bat disk lock nm path pm ps rf run sysfs udev usb"; 
+        #TLP_DEBUG="arg bat disk lock nm path pm ps rf run sysfs udev usb";
         START_CHARGE_THRESH_BAT0 = 85;
         STOP_CHARGE_THRESH_BAT0 = 95;
         # thinkpad drivers
@@ -105,15 +103,15 @@
         PLATFORM_PROFILE_ON_AC = "balanced"; # low-power balanced performance.
         PLATFORM_PROFILE_ON_BAT = "low-power";
 
-        # default performance balance_performance balance_power power 
-        # #save more balance_power 
+        # default performance balance_performance balance_power power
+        # #save more balance_power
         # 12th gen and above refuses to activate turbo boost on battery power mode
         #TEST: if turbo boost is not working on battery change to balance_power
         CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-        # 12th gen and above refuses to activate turbo boost on battery 
+        # 12th gen and above refuses to activate turbo boost on battery
         CPU_ENERGY_PERF_POLICY_ON_BAT = "power"; # balance
 
-        #TESTING: cpu boost maybe decrease scalin_max_freq, 
+        #TESTING: cpu boost maybe decrease scalin_max_freq,
         #if that's happen do not disable this on battery.
         CPU_BOOST_ON_AC = 1;
         CPU_HWP_DYN_BOOST_ON_AC = 1;
@@ -121,8 +119,8 @@
         CPU_BOOST_ON_BAT = 0;
         CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
-        #NOTE: intel_pstate scaling driver is support only powersave and performance 
-        #on Sandy Bridge or newer hardwares. 
+        #NOTE: intel_pstate scaling driver is support only powersave and performance
+        #on Sandy Bridge or newer hardwares.
         CPU_SCALING_GOVERNOR_ON_AC = "performance";
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
@@ -301,7 +299,7 @@
       #       "tcp://192.168.1.45:22000"
       #     ];
       #     id = "WNMYT36-42FPWK";
-      #   };    
+      #   };
       # };
 
       #NOTE: I already setup manually on network but maybe this would be useful
@@ -315,7 +313,7 @@
   services.blueman.enable = true; # gui
   hardware.bluetooth = {
     enable = true;
-    #powerOnBoot = true; 
+    #powerOnBoot = true;
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket"; # enable A2DP for modern headsets
