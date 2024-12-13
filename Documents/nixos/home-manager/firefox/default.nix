@@ -44,6 +44,7 @@
           #TODO:: 1. enable av1Support for firefox somewhere here, probably about:config setting
           # # This will enable nvidia gpu usage on firefox. Probably decode for netflix, youtube etc.
           "media.ffmpeg.vaapi.enabled" = true;
+          "media.hardware-video-decoding.force-enabled" = true;
           "media.rdd-ffmpeg.enabled" = true;
           # "media.av1.enabled" = cfg.firefox.av1Support;
           "gfx.x11-egl.force-enabled" = true;
@@ -106,7 +107,7 @@
           #Bionify # not in nur-expressions
         ];
 
-        ## nur version extension implement 
+        ## nur version extension implement
         # extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         #     ublock-origin
         #     noscript
@@ -189,7 +190,7 @@
         # Valid strings for installation_mode are "allowed", "blocked",
         # "force_installed" and "normal_installed".
         ExtensionSettings = {
-          # Linguist 
+          # Linguist
           "{e5b6e4ac-ec96-44f5-b257-e4d3c8291b41}" = {
             installation_mode = "normal_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/linguist-translator/latest.xpi";
@@ -225,7 +226,7 @@
           #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/noscript/latest.xpi";
           #   installation_mode = "normal_installed";
           # };
-          #       # firefox containers  
+          #       # firefox containers
           # "@testpilot-containers" = {
           #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/testpilot-containers/latest.xpi";
           #   installation_mode = "normal_installed";

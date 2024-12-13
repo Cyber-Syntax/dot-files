@@ -62,7 +62,11 @@
 
   services = {
     #NOTE: THIS IS NOT WORKING on i5-13th gen yet
-    #throttled.enable = true; # fix for intel cpu throttling on thinkpads
+    #NOTE: https://github.com/erpalma/throttled/issues?q=13th
+    #TEST: some of the user tested and used but have issue with tlp.
+
+    #TESTING: Lets try to test this one
+    throttled.enable = true; # fix for intel cpu throttling on thinkpads
 
     libinput = {
       enable = true; # for syncaptics touchpads

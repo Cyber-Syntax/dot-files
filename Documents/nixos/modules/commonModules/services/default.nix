@@ -43,8 +43,8 @@
       settings.PasswordAuthentication = false;
 
       openFirewall = true; # default
-      # ports = [ 
-      #   22 
+      # ports = [
+      #   22
       # ];
       # settings.AllowUsers = [
       #
@@ -62,9 +62,19 @@
     printing.enable = false;
     fstrim.enable = true;
     fwupd.enable = true;
+
+    #TEST: Disable uefi update via fwupd
+    # environment.etc."fwupd/uefi_capsule.conf" = lib.mkForce {
+    #   source = pkgs.writeText "uefi_capsule.conf" ''
+    #     [uefi_capsule]
+    #     OverrideESPMountPoint=${config.boot.loader.efi.efiSysMountPoint}
+    #     DisableCapsuleUpdateOnDisk=true
+    #   '';
+    # };
+
     smartd.enable = true;
 
-    # Fuse filesystem support like bash '/bin/bash' 
+    # Fuse filesystem support like bash '/bin/bash'
     # prefer to use env instead of bin
     #TESTING
     envfs.enable = true;

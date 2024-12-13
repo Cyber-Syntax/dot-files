@@ -68,31 +68,50 @@
   #TODO: add this on version 24.11
   hardware.graphics = {
     enable = true;
+
+    # # Vulkan
+    # driSupport = true;
+
     #TESTING: new VA-API for nvidia. Setup:
     #TODO: https://github.com/elFarto/nvidia-vaapi-driver?tab=readme-ov-file#firefox
-    # extraPackages = with pkgs; [
-    #   nvidia-vaapi-driver
-    #   libvdpau-va-gl
-    # ];
+    extraPackages = with pkgs; [
+      nvidia-vaapi-driver
+      libvdpau-va-gl
+      vaapiVdpau
+    ];
   };
 
-  #   environment.variables = {
-  #     # Required to run the correct GBM backend for nvidia GPUs on wayland
-  # #    GBM_BACKEND = "nvidia-drm";
-  #     # Apparently, without this nouveau may attempt to be used instead
-  #     # (despite it being blacklisted)
-  # #    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-  #     # Hardware cursors are currently broken on nvidia
-  # #    WLR_NO_HARDWARE_CURSORS = "1";
-  #   };
+  #TEST: later test
+  environment.systemPackages = with pkgs; [
+    nvidia-vaapi-driver
+    # egl-wayland
+  ];
+
+  environment.variables = {
+    # Required to run the correct GBM backend for nvidia GPUs on wayland
+    GBM_BACKEND = "nvidia-drm";
+    # Apparently, without this nouveau may attempt to be used instead
+    # (despite it being blacklisted)
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    LIBVA_DRIVER_NAME = "nvidia";
+    # # Hardware cursors are currently broken on nvidia
+    # WLR_NO_HARDWARE_CURSORS = "1";
+  };
 
   hardware.nvidia = {
     #  forceFullCompositionPipeline = true; # Fix tearing
-    open = false; # nvidia-open for turing and above
-    powerManagement.enable = false;
+    #TESTING: testing open and nvidia-vaapi-driver usage for 1080p on firefox or chromium
+    open = true; # nvidia-open for turing and above
+
+    # NVreg_PreserveVideoMemoryAllocations=1
+    powerManagement.enable = true;
+
     powerManagement.finegrained = false; # (Turing and newer) Turns off GPU when not in use. Need integrated gpu when offload nvidia
     nvidiaSettings = true;
-    modesetting.enable = false;
+
+    # nvidia-drm.modeset=1
+    modesetting.enable = true; # FIX: can be cause issue with qtile or sddm or even boot
     #dynamicBoost.enable = true;
     #NOTE: 560.35.03-6.12.1 was in use before package written. (e.g default nixos setting on unstable)
     #NOTE: Production:550.135 24.11 for now.
