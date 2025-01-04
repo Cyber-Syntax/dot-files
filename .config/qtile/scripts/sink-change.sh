@@ -11,9 +11,10 @@ running_sink=$(echo "$pactl_output" | grep "RUNNING" | cut -f 2)
 
 # Define sink available_sinks
 headset='alsa_output.usb-SteelSeries_Arctis_Pro_Wireless-00.stereo-game'
-DP_0='alsa_output.pci-0000_26_00.1.hdmi-stereo'
+DP_0='alsa_output.pci-0000_2b_00.1.hdmi-stereo'
 DP_1='alsa_output.pci-0000_26_00.1.hdmi-stereo-extra1'
 DP_2='alsa_output.pci-0000_2b_00.1.hdmi-stereo-extra1.2'
+DP_4='alsa_output.pci-0000_2b_00.1.hdmi-stereo'
 
 # Create a hash table to store the available sinks
 declare -A available_sinks
@@ -32,6 +33,8 @@ print_sink() {
         echo "DP-2"
     elif [ "$running_sink" = "$DP_0" ]; then
         echo "DP-0"
+    elif [ "$running_sink" = "$DP_4"]; then
+        echo "DP-4"
     fi
 }
 

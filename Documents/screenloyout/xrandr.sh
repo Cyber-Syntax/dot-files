@@ -23,7 +23,7 @@ monitor_right="DP-4" # 119.88
 #--output $monitor_left --mode 1920x1080 --pos 0x0 --rate 75 --rotate normal --left-of $monitor_center \
 # Define the display configurations
 xrandr --output $monitor_left --primary --rate 143.97 --mode 2560x1440 --rotate normal \
-       --output $monitor_right --mode 1920x1080 --rate 144 --rotate normal --right-of $monitor_left \
+       --output $monitor_right --mode 1920x1080 --rate 60 --rotate normal --right-of $monitor_left \
        # --output $monitor_right --off \
        # --output $monitor_left --off \
        # --output DP-3 --off \

@@ -1,26 +1,31 @@
 #!/usr/bin/env bash
-
-COLORSCHEME=Mocha
-
-### AUTOSTART PROGRAMS ###
-##Not work on nixos
-#run "eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)" & 
-xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
-xset s off & # disable screen saver
-# ### setup screensaver
-# ##Disable beep
-# xset b off &
+COLORSCHEME=Nord
 
 picom -b & # compositor
 numlockx on &
 nm-applet & # network manager applet
-#lxpolkit & # polkit agent
 setxkbmap tr &
-polkit &
+#polkit & # not work probably need to define on nix or need to install package
 gammastep & # redshift alternative (works wayland and xorg)
-/home/developer/Documents/appimages/super-productivity.AppImage &
-python3 /home/developer/Documents/repository/WallpaperChanger/main.py & 
-sh /home/developer/Documents/screenloyout/xrandr.sh & # My screen layout script
+python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
 keepassxc & # password manager
-syncthing-tray & # syncthing tray app
-nextcloud & # nextcloud client
+syncthingtray &
+
+#TESTING: handle inside python if this is not work
+#Laptop statement is worked.
+if [ $(hostname) == "nixos" ]; then
+  xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
+  xset s off & # disable screen saver
+  TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage & # task app
+  sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout scripts
+  printf "Desktop detected\n"
+elif [ $(hostname) == "nixosLaptop" ]; then
+  cbatticon & # battery icon
+  #TODO: use this if cbat not necessary
+  #sh ./../scripts/battery-warn.sh
+fi
+
+#nextcloud & # nextcloud client
+#sh /home/developer/Documents/scripts/fedora-server/wake_fedora.sh & # Wake up Fedora Server everytime
+#thunderbird & # email client
+#birdtray & # birdtray for thunderbird

@@ -1,493 +1,290 @@
-from libqtile import bar, extension, hook, layout, qtile
-from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
+from libqtile import bar, qtile
+from libqtile.config import Screen
+
 from libqtile.lazy import lazy
-import os
 import colors
-import subprocess
-### qtile extras
+import os
 from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
-#from qtile_extras.widget.groupbox2 import GroupBoxRule
-from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
 
-colors = colors.Mocha
+from variables import *
 
-# Defaul widget settings
-widget_defaults = dict(
-    font="JetBrains Mono Bold",
-    fontsize=16,
-    foreground=colors[7],
-    background=colors[0],
-    padding=1,
-)
+# HACK: mpris2 popup is not working need to fix it later.
+# from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
 
-decoration_group = {
-        "decorations": [
-            RectDecoration(colour="#181825", radius=10, filled=True, padding_y=4, group=True)
-        ],
-        "padding": 3,
+colors = colors.Nord
+
+
+class WidgetTweaker:
+    def __init__(self, func):
+        self.format = func
+
+
+@WidgetTweaker
+def currentLayout(output):
+    return output.capitalize()
+
+
+# qtile-extras definitions
+decorations = {
+    "BorderDecoration": {
+        "border_width": widget_decoration_border_width,
+        "colour": widget_decoration_border_color
+        + format(int(widget_decoration_border_opacity * 255), "02x"),
+        "padding_x": widget_decoration_border_padding_x,
+        "padding_y": widget_decoration_border_padding_y,
+    },
+    "PowerLineDecoration": {
+        "path": widget_decoration_powerline_path,
+        "size": widget_decoration_powerline_size,
+        "padding_x": widget_decoration_powerline_padding_x,
+        "padding_y": widget_decoration_powerline_padding_y,
+    },
+    "RectDecoration": {
+        "group": True,
+        "filled": True,
+        "colour": widget_decoration_rect_color
+        + format(int(widget_decoration_rect_opacity * 255), "02x"),
+        "line_width": widget_decoration_rect_border_width,
+        "line_colour": widget_decoration_rect_border_color,
+        "padding_x": widget_decoration_rect_padding_x,
+        "padding_y": widget_decoration_rect_padding_y,
+        "radius": widget_decoration_rect_radius,
+    },
 }
+
+decoration = [
+    getattr(widget.decorations, widget_decoration)(**decorations[widget_decoration])
+]
+
+widget_defaults = dict(
+    font=bar_font,
+    foreground=bar_foreground_color,
+    fontsize=bar_fontsize,
+    padding=widget_padding,
+    decorations=decoration,
+)
 
 extension_defaults = widget_defaults.copy()
 
-# Pin apps to the bar
-pinned_apps = [
-    #("", "flatpak run net.minetest.Minetest"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/telegram/Telegram")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/ungoogled-chromium/ungoogled-chromium")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/nuclear/nuclear")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/tutanota/tutanota")),
-    #("", "pcmanfm"),
-    #("", os.path.expanduser("~/Documents/appimages/siyuan.AppImage")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/freetube/freetube")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/syncthing-tray/syncthing-tray")),
-    #("", "firefox"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")),
-    #("", "kitty"),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/flameshot/flameshot")),
-    #("", os.path.expanduser("~/Documents/appimages/appman_apps/keepassxc/keepassxc")),
-    ("", "keepassxc"),
-]
+sep = [widget.WindowName(foreground="#00000000", fmt="", decorations=[])]
+left_offset = [widget.Spacer(length=widget_left_offset, decorations=[])]
+right_offset = [widget.Spacer(length=widget_right_offset, decorations=[])]
+space = widget.Spacer(length=widget_gap, decorations=[])
 
-
-# Textbox widget to start pinned apps
-app_widgets = [
-    widget.TextBox(
-        text=" {} ".format(app_name),
-        fontsize=16,
-        foreground="#f8f8f2",
-        background=colors[0],
-        mouse_callbacks={'Button1': lazy.spawn(app_cmd)}
-    )
-    for app_name, app_cmd in pinned_apps
-]
-def set_label(rule, box):
-    if box.focused:
-        rule.text = "◉"
-    elif box.occupied:
-        rule.text = "◎"
-    else:
-        rule.text = "○"
-
-    return True
-
-## Screens ##
-screens = [
-    # Primary monitor
-    Screen(
-        top=bar.Bar(
-            widgets=[
-                widget.Spacer(length = 8),
-                #*app_widgets,
-                widget.Spacer(length = 8),
-                ## groups, e.g workspaces
-                widget.GroupBox(
-                         # DP-2: 2,4,6,8
-                         visible_groups=['2', '4', '6'],
-                         fontsize = 15,
-                         margin_y = 5,
-                         margin_x = 5,
-                         padding_y = 0,
-                         padding_x = 1,
-                         borderwidth = 3,
-                         active = colors[3],
-                         inactive = colors[2],
-                         rounded = True,
-                         highlight_color = colors[0],
-                         highlight_method = "line",
-                         this_current_screen_border = colors[7],
-                         this_screen_border = colors [4],
-                         other_current_screen_border = colors[7],
-                         other_screen_border = colors[4],
-                        **decoration_group,
-                        #rules = [GroupBoxRule().when(func=set_label)]
-
-                         ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                #         ),
-                widget.Spacer(length = 8),
-                widget.WindowTabs(
-                    fmt = '{}',
-                    foreground = colors[7],
-                    background = colors[0],
-                    separator = '  ',
-                    selected = ('<b><span color="#8BE9FD">  ', '</span></b>'),
-                    **decoration_group,
-                ),                
-                widget.Spacer(length = 8),                
-                widget.Mpris2(
-                    fmt = '{}',
-                    format = '{xesam:title} - {xesam:artist}',
-                    foreground = colors[7],
-                    paused_text = ' {track}',
-                    playing_text = ' {track}',
-                    scroll_fixed_width = False,
-                    max_chars = 200,
-                    separator = ', ',
-                    stopped_text = '',
-                    width=200,
-                    #popup_layout = COMPACT_LAYOUT,
-                    **decoration_group,
-                ),
-                    # Not work on arch for now, developers didn't add some modules to main arch repo yet.
-                # widget.PulseVolume(
-                #     foreground = colors[1],
-                #     fmt = ' {}',
-                #     mouse_callbacks = {'Button3': lambda: qtile.spawn('pavucontrol')},
-                #     ),
-                widget.Spacer(length = 8),
-                widget.CPU(
-                        format = ' {freq_current}GHz {load_percent}%',
-                        foreground = colors[4],
-                        **decoration_group,
-                        ),
-                widget.Spacer(length = 8),
-                widget.ThermalSensor(
-                            tag_sensor='Tctl',
-                            foreground = colors[4],
-                            fmt = ' {}',
-                            update_interval = 2,
-                            threshold = 60,
-                            foreground_alert='ff6000',
-                            **decoration_group,
-                            ),
- 
-                widget.Spacer(length = 8),
-                widget.NvidiaSensors(
-                            foreground = 'ffffff',
-                            fmt = ' {}',
-                            format = '{temp}°C {fan_speed} {perf}',
-                            update_interval = 2,
-                            threshold = 60,
-                            foreground_alert='ff6000',
-                            **decoration_group,
-                            ),
-                widget.Spacer(length = 8),
-                widget.Memory(
-                        foreground = colors[8],
-                        measure_mem='G',
-                        #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
-                        format = '{MemUsed:.0f}{mm}/{MemTotal:.0f}{mm}',
-                        fmt = ' {}',
-                        **decoration_group,
-                        ),
-                widget.Spacer(length = 8),
-                widget.DF(
-                    update_interval = 60,
-                    foreground = colors[5],
-                    partition = '/',
-                    format = '{r:.0f}%',
-                    fmt = ' {}',
-                    visible_on_warn = False,
-                    **decoration_group,
-                    ),
-                widget.Spacer(length = 8),
-                widget.DF(
-                    update_interval = 60,
-                    foreground = colors[5],
-                    partition = '/home',
-                    format = '{r:.0f}%',
-                    fmt = ' {}',
-                    visible_on_warn = False,
-                    **decoration_group,
-                    ),
-
-                widget.Spacer(length = 8),
-                widget.DF(
-                    update_interval = 60,
-                    foreground = colors[5],
-                    partition = '/nix',
-                    format = '{r:.0f}%',
-                    fmt = ' {}',
-                    visible_on_warn = False,
-                    **decoration_group,
-                    ),
-                widget.Spacer(length = 8),
-                widget.DF(
-                    update_interval = 60,
-                    foreground = colors[5],
-                    partition = '/mnt/backups',
-                    format = '{r:.0f}%',
-                    fmt = ' {}',
-                    visible_on_warn = False,
-                    **decoration_group,
-                    ),         
-                widget.Spacer(length = 8),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                # ),
-
- #               widget.Spacer(length = 8),
-                # # TODO: Debug
-                # widget.CheckUpdates(
-                #     fmt = '{}',
-                #     distro = 'Arch',
-                #     update_interval = 60,
-                #     colour_have_updates = colors[6],
-                #     colour_no_updates = colors[7],
-                #     fontsize = 15,
-                #     display_format = 'Arch:{updates}',
-                #     no_update_string = '',
-                # ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                # ),
-
-# Work on nixos, not on arch
-                widget.Volume(
-                            foreground = colors[1],
-                            fmt = '🔈{}',
-                            emoji = False,
-                            check_mute_string = '[off]', # '' icon not working
-                    mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
-                    **decoration_group,
-                ),
-                # widget.Spacer(length = 8),
-
-# # Custom volume widget
-#                  widget.GenPollText(
-#                     update_interval=1,
-#    func=lambda: subprocess.check_output("~/.config/qtile/scripts/sink-change.sh --status", shell=True, text=True),
-#                     # call script when clicked
-#                     mouse_callbacks={'Button1': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')}
-# ),
-
-                # # # TODO: Not working on pipewire arch
-                # widget.Volume(
-                #         foreground = colors[7],
-                #         cardid = 0,
-                #         channel = "Master",
-                #         get_volume_command = "os.path.expanduser('~/.config/qtile/scripts/sink-change.sh --status')",
-                #         #get_volume_command = "",
-                #         device = "default",
-                #         fmt = ' {}',
-                #         #emoji = False,
-                #         update_interval = 0.2,
-                #         volume_app = "pavucontrol",
-                #         mouse_callbacks = {'Button3': lambda: qtile.spawn('kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"')},
-                #         ),
-                
-                widget.Spacer(length = 8),
-                widget.Clock(
-                        foreground = colors[8],
-                        format = "  %A %d/%m/%y %H:%M",
-                        **decoration_group,
-                        #mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')}, 
-                        ),
-            widget.Spacer(length = 8),
-            widget.Systray(                        
-                        **decoration_group,
-                             ),
-            widget.TextBox(
-                        text = '|',
-                        font = "Ubuntu Mono",
-                        foreground = colors[1],
-                        padding = 2,
-                        fontsize = 14
-                        ),
-                widget.CurrentLayoutIcon(
-                        foreground = colors[1],
-                        padding = 4,
-                        scale = 0.6
-                        ),
-                # widget.TextBox(
-                #         text = '|',
-                #         font = "Ubuntu Mono",
-                #         foreground = colors[1],
-                #         padding = 2,
-                #         fontsize = 14
-                #         ),      
-                # # New custom widget to call my xrandr.sh script via mouse callback
-                # widget.TextBox(
-                #     text=" ",
-                #     fontsize=16,
-                #     foreground="#f8f8f2",
-                #     background=colors[0],
-                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr.sh"))}                    
-                # ),
-                # widget.Spacer(length = 8),
-                # # New custom widget to call my xrandr-movie.sh script via mouse callback
-                # widget.TextBox(
-                #     text=" ",
-                #     fontsize=16,
-                #     foreground="#f8f8f2",
-                #     background=colors[0],
-                #     mouse_callbacks={'Button1': lazy.spawn(os.path.expanduser("~/Documents/screenloyout/xrandr-movie.sh"))}                    
-                # ),
-            ],
-            size=30  # Fix: Move the positional argument before the keyword argument
-        )
+left = [
+    # "pyxdg" package is needed for wayland for TaskList
+    widget.TaskList(
+        border="#414868",  # border clour
+        highlight_method="block",
+        # foreground=colors[1],
+        # background=colors[0],
+        max_title_with=80,
+        txt_minimized="",
+        txt_floating="",
+        txt_maximized="",
+        # FIX: get only app names instead of webpage names etc., not work
+        # parse_text=lambda text: "|" + text,
+        # parse_text=my_func,
+        spacing=1,
+        icon_size=20,
+        border_width=0,
+        fontsize=13,  # Do not change! Cause issue with specified widget_defaults
+        stretch=False,
+        # margin_x=0,
+        # margin_y=0,
+        padding_x=5,
+        padding_y=5,
+        hide_crash=True,
+        decorations=[
+            getattr(widget.decorations, widget_decoration)(
+                **decorations[widget_decoration] | {"extrawidth": 4}
+            )
+        ],
     ),
-  #    # DP-0: left monitor
-    Screen(
-        top=bar.Bar(
-            widgets=[
-                ## groups, e.g workspaces
-                widget.GroupBox(
-                         #visible_groups=visible_groups,
-                        visible_groups=['1', '3', '5'],
-                         fontsize = 15,
-                         margin_y = 5,
-                         margin_x = 5,
-                         padding_y = 0,
-                         padding_x = 1,
-                         borderwidth = 3,
-                         active = colors[3],
-                         inactive = colors[2],
-                         rounded = True,
-                         highlight_color = colors[0],
-                         highlight_method = "line",
-                         this_current_screen_border = colors[7],
-                         this_screen_border = colors [4],
-                         other_current_screen_border = colors[7],
-                         other_screen_border = colors[4],
-                        **decoration_group,
-                         ),
-                widget.Spacer(length = 8),
-                widget.WindowTabs(
-                    fmt = '{}',
-                    foreground = colors[7],
-                    separator = ' | ',
-                    selected = ('<b><span color="#8BE9FD">   ', '</span></b>'),
-                    **decoration_group,
-                ),
-                widget.Spacer(length = 8),
-                widget.Clock(
-                        foreground = colors[8],
-                        format = "  %A %d/%m/%y %H:%M",
-                        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-                        **decoration_group,
-                        ),
-                widget.Spacer(length = 8),
-                widget.CurrentLayoutIcon(
-                        foreground = colors[1],
-                        padding = 4,
-                        scale = 0.6
-                        ),
-            ],
-            size=29
-        )
-    ),
-#    ./end-DP-0
 ]
 
-   # no longer used monitor
-    # # HDMI-0: right monitor
-    # Screen(
-    #     top=bar.Bar(
-    #         widgets=[
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #                     ),
-    #             widget.WindowTabs(
-    #                 fmt = '{}',
-    #                 foreground = colors[7],
-    #                 separator = ' | ',
-    #                 selected = ('<b><span color="#8BE9FD">    ', '</span></b>'),
-    #             ),
-    #             widget.Spacer(length = 8),
-    #             widget.CPU(
-    #                     format = ' {load_percent}%',
-    #                     foreground = colors[4],
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.ThermalSensor(
-    #                         tag_sensor='Tctl',
-    #                         foreground = colors[4],
-    #                         fmt = ' {}',
-    #                         update_interval = 2,
-    #                         threshold = 60,
-    #                         foreground_alert='ff6000',
-    #                         ),
-    #             widget.Spacer(length = 8),
-    #             widget.NvidiaSensors(
-    #                         foreground = 'ffffff',
-    #                         fmt = ' {}',
-    #                         update_interval = 2,
-    #                         threshold = 60,
-    #                         foreground_alert='ff6000',
-    #                         ),
-    #             widget.Spacer(length = 8),
-    #             widget.Memory(
-    #                     foreground = colors[8],
-    #                     measure_mem='G',
-    #                     #mouse_callbacks = {'Button1': lambda: qtile.spawn(terminal + ' -e htop')},
-    #                     format = '{MemPercent}% - {MemUsed: .0f}{mm}/{MemTotal: .0f}{mm}',
-    #                     fmt = ' {}',
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.DF(
-    #                     update_interval = 60,
-    #                     foreground = colors[5],
-    #                     partition = '/',
-    #                     format = '{r:.0f}%',
-    #                     fmt = ' {}',
-    #                     visible_on_warn = False,
-    #                     ),
-    #             widget.Spacer(length = 8),
-    #             widget.DF(
-    #                 update_interval = 60,
-    #                 foreground = colors[5],
-    #                 partition = '/home',
-    #                 format = '{r:.0f}%',
-    #                 fmt = ' {}',
-    #                 visible_on_warn = False,
-    #                 ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #             ),
-    #                             widget.Spacer(length = 8),
-    #             widget.Clock(
-    #                     foreground = colors[8],
-    #                     format = "  %A %d/%m/%y %H:%M",
-    #                     mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
-    #                     ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #                     ),
-    #             widget.CurrentLayoutIcon(
-    #                     foreground = colors[1],
-    #                     padding = 4,
-    #                     scale = 0.6
-    #                     ),
-    #             widget.CurrentLayout(
-    #                     foreground = colors[1],
-    #                     padding = 5
-    #                     ),
-    #             widget.TextBox(
-    #                     text = '|',
-    #                     font = "Ubuntu Mono",
-    #                     foreground = colors[1],
-    #                     padding = 2,
-    #                     fontsize = 14
-    #             ),
-    #         ],
-    #         size=20
-    #     )
+# FIX:
+# def my_func(text):
+#     for string in [" - Chromium", " - Firefox"]:
+#         text = text.replace(string, "")
+#     return text
+
+
+middle = [
+    space,
+    widget.GroupBox(
+        font=f"{bar_font} Bold",
+        disable_drag=True,
+        borderwidth=0,
+        fontsize=15,
+        inactive=nord_theme["disabled"],
+        active=bar_foreground_color,
+        block_highlight_text_color=nord_theme["accent"],
+        padding=7,
+        # fmt=groupBox,
+    ),
+]
+
+right = [
+    # widget.Volume(
+    #     step=2,
+    #     fmt=volume,
+    #     mouse_callbacks={
+    #         "Button1": lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    #     },
+    #     update_interval=0.01,
+    #     limit_max_volume=True,
+    #     volume_app="pavucontrol",
     # ),
+    space,
+    widget.Mpris2(
+        fmt="{}",
+        format=" {xesam:title} - {xesam:artist}",
+        # foreground=colors[7],
+        paused_text="  {track}",
+        playing_text="  {track}",
+        scroll_fixed_width=False,
+        max_chars=200,
+        separator=", ",
+        stopped_text="",
+        width=200,
+    ),
+    space,
+    widget.ThermalSensor(
+        tag_sensor="Tctl",
+        foreground=colors[4],
+        fmt=" {}",
+        update_interval=2,
+        threshold=60,
+        foreground_alert="ff6000",
+    ),
+    space,
+    widget.NvidiaSensors(
+        # foreground="ffffff",
+        fmt=" {}",
+        format="{temp}°C {fan_speed} {perf}",
+        update_interval=2,
+        threshold=60,
+        foreground_alert="ff6000",
+    ),
+    space,
+    widget.DF(
+        update_interval=60,
+        # foreground=colors[5],
+        partition="/",
+        format="({uf}{m}|{r:.0f}%)",
+        fmt=" {}",
+        measure="G",  # G,M,B
+        warn_space=4,  # warn if only 5GB or less space left
+        visible_on_warn=True,
+    ),
+    space,
+    widget.DF(
+        update_interval=60,
+        # foreground=colors[5],
+        partition="/home",
+        format="({uf}{m}|{r:.0f}%)",
+        fmt=" {}",
+        warn_space=20,
+        visible_on_warn=True,
+    ),
+    space,
+    widget.DF(
+        update_interval=60,
+        # foreground=colors[5],
+        partition="/nix",
+        format="({uf}{m}|{r:.0f}%)",
+        fmt=" {}",
+        warn_space=20,
+        visible_on_warn=True,
+    ),
+    space,
+    widget.DF(
+        update_interval=60,
+        # foreground=colors[5],
+        partition="/mnt/backups",
+        format="({uf}{m}|{r:.0f}%)",
+        fmt=" {}",
+        warn_space=10,
+        visible_on_warn=True,
+    ),
+    space,
+    widget.Volume(
+        fmt="{}",
+        emoji=True,
+        emoji_list=["🔇", "󰕿 ", "󰖀 ", "󰕾 "],
+        fontsize=20,
+        # theme_path="/home/developer/.config/qtile/icons/volume",
+        check_mute_string="[off]",  # '' icon not working
+        mouse_callbacks={
+            # Left click to change volume output
+            "Button1": lambda: qtile.spawn(
+                'kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'
+            ),
+            # Right click to open pavucontrol
+            "Button3": lambda: qtile.spawn("pavucontrol"),
+        },
+    ),
+    space,
+    widget.PulseVolumeExtra(
+        # theme_path="/home/developer/.config/qtile/icons/volume",
+        limit_normal=80,
+        limit_high=100,
+        limit_loud=101,
+    ),
+    widget.Clock(
+        format="%A %d %B %Y %H:%M",
+        # mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+    ),
+    space,
+    # widget.StatusNotifier(),
+    # NOTE: Systray would not able to handle transparent background some of the apps.
+    widget.Systray(
+        decorations=[
+            getattr(widget.decorations, widget_decoration)(
+                **decorations[widget_decoration] | {"extrawidth": 4}
+            )
+        ],
+    ),
+    space,
+    widget.CurrentLayoutIcon(
+        padding=10,
+        scale=0.6,
+    ),
+    space,
+    widget.TextBox(
+        "⏻",
+        fontsize=20,
+        decorations=[
+            getattr(widget.decorations, widget_decoration)(
+                **decorations[widget_decoration] | {"extrawidth": 3}
+            )
+        ],
+        mouse_callbacks={
+            # "Button1": lazy.spawn(powermenu)
+            "Button1": lazy.spawn(
+                os.path.expanduser("~/.config/rofi/powermenu/type-6/powermenu.sh")
+            ),
+        },
+    ),
+    space,
+]
 
+screens = [
+    Screen(
+        top=bar.Bar(
+            widgets=left_offset + left + sep + middle + sep + right + right_offset,
+            size=bar_size,
+            background=bar_background_color
+            + format(int(bar_background_opacity * 255), "02x"),
+            margin=[
+                bar_top_margin,
+                bar_right_margin,
+                bar_bottom_margin - layouts_margin,
+                bar_left_margin,
+            ],
+            opacity=bar_global_opacity,
+        ),
+    ),
+]
