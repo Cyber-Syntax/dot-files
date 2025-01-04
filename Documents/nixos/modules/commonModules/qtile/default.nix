@@ -9,6 +9,12 @@
   #     after = [ "graphical-session-pre.target" ];
   #   };
 
+  # #TODO: Wayland enable
+  # environment.variables = {
+  #   MOZ_DISABLE_RDD_SANDBOX = "1";
+  #   NIXOS_OZONE_WL = "1";
+  # };
+  #
   services = {
     xserver = {
       enable = true;

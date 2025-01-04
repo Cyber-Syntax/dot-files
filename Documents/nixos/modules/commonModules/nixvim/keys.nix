@@ -408,8 +408,25 @@
       options.desc = "LazyGit";
     }
 
+    # # terminal
+    # Ctrl + t
+    {
+      mode = "t";
+      key = "<Esc>";
+      action = "<C-\\><C-N>";
+      options.desc = "Exit Terminal Mode";
+      options.silent = true;
+    }
+
+    # {
+    #   mode = "n";
+    #   key = "<leader>t";
+    #   action = "<CMD>ToggleTerm<CR>";
+    #   options.desc = "Terminal";
+    # }
+
     # Windows
-    #TESTING: window focus keys 
+    #TESTING: window focus keys
     {
       key = "<C-a>";
       action = "<CMD>wincmd h<CR>";
@@ -508,7 +525,7 @@
       options.desc = "Buffer Close"; # BufferClose only on barbar.nvim
     }
 
-    ## bufferline.nvim 
+    ## bufferline.nvim
     # {
     #   mode = "n";
     #   key = "<leader>bd";

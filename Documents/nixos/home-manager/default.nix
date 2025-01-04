@@ -4,6 +4,8 @@
     ./firefox
     ./gtk
     ./zsh
-    ./xdg # portal-gtk
+
+    #TEST: send to nixos instead of home-manager
+    #    ./xdg # portal #BUG: -gtk not preset, not start auto
   ];
 }

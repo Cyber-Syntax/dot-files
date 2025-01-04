@@ -12,7 +12,7 @@
     xorg.xwininfo
     xorg.xinit
     xorg.xauth
-    # Main apps 
+    # Main apps
     vim
     ripgrep # for obsidian.nvim plugin
     networkmanagerapplet # for nm-applet
@@ -29,10 +29,11 @@
     ## basic developer tools
     wget
     git
+    gh # github cli
     ## Sound music etc.
     alsa-utils
     playerctl
-    #easyeffects
+    easyeffects
     pulseaudio
     pavucontrol
     ## theme
@@ -53,7 +54,7 @@
     fd # modern find
     tldr # modern man
     numlockx
-    ## Development 
+    ## Development
     # Coding
     nodejs_22
     hugo
@@ -84,6 +85,9 @@
     xdotool
     # Nixos
     nix-prefetch # get hash from github branches
+    nix-prefetch-git
+    nix-prefetch-github
+    nurl
     home-manager
     nil # nix language server as lsp
     cargo # for rust and nil to work
@@ -110,7 +114,7 @@
     rclone
     borgbackup
     syncthingtray
-    ## Browser    
+    ## Browser
     brave
     firefox
     ungoogled-chromium
@@ -120,14 +124,18 @@
     signal-desktop
     ## Terminal
     kitty
+
     ## My best apps
+    #TEST: unstable version is in use
     freetube
+
     ## for windows
     ntfs3g
     ## My unfree apps
     obsidian
     spotify
     # Test
+    traceroute
     btop
     bash-completion
     bashInteractive

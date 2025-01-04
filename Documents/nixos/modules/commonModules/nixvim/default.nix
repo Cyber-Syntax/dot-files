@@ -28,11 +28,23 @@
     };
 
     colorschemes = {
+      # gruvbox = {
+      #   enable = true;
+      # };
+      #dracula = {};
+      #onedark
+      # vscode = {
+      #   enable = true;
+      # };
       nord = {
         enable = true;
         settings = {
+          contrast = false;
           borders = true;
-          disable_background = true;
+          disable_background = false;
+          cursorline_transparent = false;
+          enable_sidebar_background = false;
+          uniform_diff_background = false;
           italic = true;
         };
       }; # ./nord

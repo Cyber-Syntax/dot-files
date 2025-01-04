@@ -1,11 +1,11 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs-unstable, ... }:
 
 {
   services = {
     ollama = {
       enable = true;
       acceleration = "cuda"; # enable nvidia cuda, or rocm
-      package = pkgs.ollama;
+      package = pkgs-unstable.ollama;
 
       models = "/home/ollama/models";
       home = "/home/ollama";

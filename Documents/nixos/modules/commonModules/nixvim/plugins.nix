@@ -107,6 +107,20 @@
       markBranch = true;
     };
 
+    #terminal
+    toggleterm = {
+      enable = true;
+      settings = {
+        direction = "horizontal";
+        float_opts = {
+          border = "curved";
+          height = 30;
+          width = 130;
+        };
+        open_mapping = "[[<c-t>]]";
+      };
+    };
+
     hop.enable = true;
     illuminate.enable = true;
     lazygit.enable = true;
@@ -131,7 +145,6 @@
     };
 
     noice.enable = true;
-    #TESTING: 
     notify = {
       enable = true;
       maxWidth = 50;
@@ -163,7 +176,7 @@
           # files/folders never show
           neverShow = [
             # example
-            #".DS_Store" 
+            #".DS_Store"
             # "thumbs.db"
           ];
           neverShowByPattern = [
@@ -212,7 +225,7 @@
     vim-surround.enable = true;
     web-devicons.enable = true;
 
-    ### Find ### 
+    ### Find ###
     fzf-lua = {
       enable = true;
       keymaps = {

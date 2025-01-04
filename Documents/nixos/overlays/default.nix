@@ -2,5 +2,6 @@
 {
   imports = [
     ./brave
+    # ./super-productivity
   ];
 }

@@ -2,6 +2,9 @@
   inputs = {
     #TODO: Switch 24.11 after nixvim published 24.11 because it would broke
     #Branches for nixpkgs= nixpkgs:master, nixos-unstable:unstable
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-24.11";
     };
@@ -31,7 +34,7 @@
   outputs =
     {
       nixpkgs,
-      #nixpkgs-unstable,
+      nixpkgs-unstable,
       nixos-hardware,
       home-manager,
       firefox-addons,
@@ -41,6 +44,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+
       #nixos-hardware = inputs.nixos-hardware.nixosModules;
       home-manager = inputs.home-manager.nixosModules.home-manager;
       #sops-nix = inputs.sops-nix.nixosModules.sops;
@@ -60,10 +64,10 @@
           #TODO: change this version after you change stateVersion
           version = "24.05";
           specialArgs = {
-            # unstable = import nixpkgs-unstable {
-            #   inherit system;
-            #   config.allowUnfree = true;
-            # };
+            pkgs-unstable = import nixpkgs-unstable {
+              inherit system;
+              config.allowUnfree = true;
+            };
 
             inherit
               inputs

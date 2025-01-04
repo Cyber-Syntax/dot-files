@@ -3,10 +3,10 @@ set -x # Enable verbose output for debugging
 
 export DISPLAY=":0"
 
-#monitor_center="DP-2"
-monitor_center="HDMI-0"
-#rate=143.97
-rate=120
+monitor_center="DP-4"
+# monitor_center="HDMI-0"
+rate=143.97
+# rate=120
 
 # Check if "None-1-1" is a connected output
 if xrandr | grep -q "None-1-1 connected"; then

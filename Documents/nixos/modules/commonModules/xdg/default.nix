@@ -1,11 +1,7 @@
 { pkgs, ... }:
 
 {
-  home-manager.users.developer.xdg = {
-    enable = true;
-    mime = {
-      enable = true;
-    };
+  xdg = {
     portal = {
       enable = true;
       xdgOpenUsePortal = true; # resolves bugs involving programs opening inside FHS envs or with unexpected env vars set from wrappers.
@@ -26,12 +22,12 @@
           ];
         };
       };
+
     };
 
     #TODO: add new defaultApplications:
-    #
     # inode/directory
-    mimeApps = {
+    mime = {
       enable = true;
       defaultApplications = {
         "application/pdf" = [
@@ -54,9 +50,5 @@
       };
     };
 
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
   };
 }

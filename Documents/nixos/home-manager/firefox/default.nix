@@ -101,7 +101,7 @@
           privacy-badger
           darkreader
           multi-account-containers
-          vimium
+          # vimium
           #cookie-autodelete # choose multi-account-containers or this
           #Linguist # not in nur-expressions
           #Bionify # not in nur-expressions

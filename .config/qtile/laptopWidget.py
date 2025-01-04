@@ -140,10 +140,10 @@ right = [
     space,
     widget.Mpris2(
         fmt="{}",
-        format="{xesam:title} - {xesam:artist}",
+        format=" {xesam:title} - {xesam:artist}",
         # foreground=colors[7],
-        paused_text=" {track}",
-        playing_text=" {track}",
+        paused_text="  {track}",
+        playing_text="  {track}",
         scroll_fixed_width=False,
         max_chars=200,
         separator=", ",

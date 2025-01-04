@@ -3,43 +3,34 @@
   pkgs,
   ...
 }:
-#BUG: display manager not start after open, propriety 560.34 or even all other extras commented.
-# try to use manually module adding but not worked either.
 
-#BUG: 24.11 error: Package ‘nvidia-x11-560.35.03-6.12.1’ in  is marked as broken, refusing to evaluate.
 {
 
   # boot = {
-  #     #NOTE: If you encounter the problem of booting to text mode you might try adding the Nvidia kernel module manually with:
-  #       initrd.kernelModules = [ "nvidia" ];
-  #       extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  #   #NOTE: If you encounter the problem of booting to text mode you might try adding the Nvidia kernel module manually with:
+  #   initrd.kernelModules = [ "nvidia" ];
+  #   extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  #
+  #   # Check: /etc/modules-load.d/nixos.conf
+  #
+  #   kernelParams = [ ];
+  #
+  #   #   extraModprobeConfig =
+  #   #     "options nvidia "
+  #   #     + lib.concatStringsSep " " [
+  #   # nvidia assume that by default your CPU does not support PAT,
+  #   # but this is effectively never the case in 2023
+  #   #       "NVreg_UsePageAttributeTable=1"
+  #   # This is sometimes needed for ddc/ci support, see
+  #   # https://www.ddcutil.com/nvidia/
+  #   #
+  #   # Current monitor does not support it, but this is useful for
+  #   # the future
+  #   #       "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
+  #   #   ];
+  # };
 
-  #
-  #     #NOTE: "nvidia-drm.modeset=1" add this if modeset not enabled
-  #     # it probably need to be added because nvidia.modesetting true option.
-  #     # Check: /etc/modules-load.d/nixos.conf
-  #
-  #    kernelParams = [ "nvidia_drm.fbdev=1" ];
-  # #TESTING: testing latest linux version from nixpkgs-unstable: 6.11.4
-  #  #   kernelPackages = unstable.linuxPackages_latest;
-  #
-  #
-  #  #   extraModprobeConfig =
-  #  #     "options nvidia "
-  #  #     + lib.concatStringsSep " " [
-  #         # nvidia assume that by default your CPU does not support PAT,
-  #         # but this is effectively never the case in 2023
-  #  #       "NVreg_UsePageAttributeTable=1"
-  #         # This is sometimes needed for ddc/ci support, see
-  #         # https://www.ddcutil.com/nvidia/
-  #         #
-  #         # Current monitor does not support it, but this is useful for
-  #         # the future
-  #  #       "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
-  #  #   ];
-  #   };
-
-  #TODO Learn later how to fix for ollama is not seeing the GPU ??
+  #TODO: Learn later how to fix for ollama is not seeing the GPU ?
   #powerManagement.powerUpCommands = "rmmod nvidia_uvm && modprobe nvidia_uvm"; # This will executed after boot and resume from suspend but ollama still cause this issue because it's sometimes disable nvidia for saving power?
 
   services.xserver = {
@@ -50,16 +41,15 @@
       #"fbdev"
     ];
 
-    #NOTE: I find a setting for that on hardware.nvidia
-    screenSection = ''
-      Option         "metamodes" "2560x1440_144 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
-      Option         "SLI" "Off"
-      Option         "MultiGPU" "Off"
-      Option         "BaseMosaic" "off"
-      SubSection     "Display"
-          Depth       24
-      EndSubSection
-    '';
+    # screenSection = ''
+    #   Option         "metamodes" "2560x1440_144 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
+    #   Option         "SLI" "Off"
+    #   Option         "MultiGPU" "Off"
+    #   Option         "BaseMosaic" "off"
+    #   SubSection     "Display"
+    #       Depth       24
+    #   EndSubSection
+    # '';
   };
 
   #TODO: learn later
@@ -95,30 +85,37 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     MOZ_DISABLE_RDD_SANDBOX = "1";
     LIBVA_DRIVER_NAME = "nvidia";
+
+    #TODO: test wayland later
     # # Hardware cursors are currently broken on nvidia
     # WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   hardware.nvidia = {
-    #  forceFullCompositionPipeline = true; # Fix tearing
+    forceFullCompositionPipeline = true; # fix tearing
+    nvidiaSettings = false;
+
     #TESTING: testing open and nvidia-vaapi-driver usage for 1080p on firefox or chromium
     open = true; # nvidia-open for turing and above
 
+    # systemctl list-unit-files | grep nvidia
     # NVreg_PreserveVideoMemoryAllocations=1
+    # enable nvidia-resume, nvidia-hibernation, nvidia-suspend services.
     powerManagement.enable = true;
 
-    powerManagement.finegrained = false; # (Turing and newer) Turns off GPU when not in use. Need integrated gpu when offload nvidia
-    nvidiaSettings = true;
+    powerManagement.finegrained = false; # (Turing and newer) Turns off GPU when not in use. ?? Need integrated gpu when offload nvidia???
 
-    # nvidia-drm.modeset=1
-    modesetting.enable = true; # FIX: can be cause issue with qtile or sddm or even boot
-    #dynamicBoost.enable = true;
-    #NOTE: 560.35.03-6.12.1 was in use before package written. (e.g default nixos setting on unstable)
-    #NOTE: Production:550.135 24.11 for now.
+    #NOTE: nvidia option on xserver probably adding this by default because it's boot with nvidia-drm.modeset=1 on boot.
+    modesetting.enable = true;
+    # dynamicBoost.enable = true;
+    # 560.35.03-6.12.1 was in use before package written. (e.g default nixos setting on unstable)
+    # Production:550.135 and 6.12.6 24.11 for now.
+    # Production: 565.77-6.12.4 saw that later
+    # 04-01-25: Production:
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  #NOTE: Specific nvidia version
+  # Specific nvidia version
   #   hardware.nvidia.package =
   # #    let
   #     #Fixes framebuffer with linux 6.11

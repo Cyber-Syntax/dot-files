@@ -1,7 +1,6 @@
 [global]
   monitor = 0
 
-
   notification_limit = 0
 
   progress_bar = true
@@ -75,5 +74,4 @@
     summary = *superproductivity*
     urgency = critical
     script = ~/.config/qtile/scripts/notification-focus.sh
-
 

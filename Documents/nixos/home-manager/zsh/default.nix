@@ -16,7 +16,7 @@
 
     autosuggestion.enable = true;
     autosuggestion.highlight = "bold,underline fg=white,bold";
-    #NOTE: stable 24.05 not use this 
+    #NOTE: stable 24.05 not use this
     #autosuggestion.strategy = [ "history" ]; # default
     syntaxHighlighting.enable = true;
     history.path = "$HOME/.histfile";
@@ -68,14 +68,15 @@
 
     shellAliases = {
       # nixos
-      switch-upgrade = "sudo nixos-rebuild switch --upgrade"; # NOTE: this not needed when using flake
-      switch = "sudo nixos-rebuild switch";
       flake-update = "sudo nix flake update"; # NOTE: this is going to be used for updating packages instead of switch-upgrade
       switch-nixos = "sudo nixos-rebuild switch --flake .#nixos";
+      upgrade-nixos = "sudo nixos-rebuild switch --recreate-lock-file --flake .#nixos";
       switch-laptop = "sudo nixos-rebuild switch --flake .#laptop";
+      upgrade-laptop = "sudo nixos-rebuild switch --recreate-lock-file --flake .#laptop";
       ll-nix = "ll /nix/var/nix/profiles";
       switch-gen = "sudo nix-env --profile /nix/var/nix/profiles/system --switch-generation";
       del-gen = "sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations";
+
       # git bare repo
       bare = "git --git-dir=$HOME/dotfiles --work-tree=$HOME";
       bst = "git --git-dir=$HOME/dotfiles --work-tree=$HOME status";
@@ -88,15 +89,18 @@
       badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/Documents/screenloyout/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ";
       bcmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
       bpush = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
+
       # git aliases
       gst = "git status";
       gbr = "git branch";
-      gck = "checkout";
-      gcm = "commit";
-      gdif = "diff";
+      gcko = "git checkout";
+      gcmt = "git commit -am";
+      gdf = "git diff";
       adog = "log --all --decorate --oneline --graph";
+
       # others
       icat = "kitten icat"; # kitty terminal image preview
+
       # neovim
       n = "nvim -c 'FzfLua oldfiles'"; # old: Telescope oldfiles
       #TESTING:

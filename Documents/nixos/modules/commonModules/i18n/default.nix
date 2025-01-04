@@ -15,4 +15,10 @@
     LC_TELEPHONE = "tr_TR.UTF-8";
     LC_TIME = "tr_TR.UTF-8";
   };
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "en_US/ISO-8859-1"
+    "tr_TR.UTF-8/UTF-8"
+    "tr_TR/ISO-8859-9"
+  ];
 }
