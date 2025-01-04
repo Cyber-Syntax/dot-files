@@ -38,7 +38,9 @@
   #performance cause problem with amd 2600x CPU. amd_pstate driver is not supported with this CPU.(Zen+)
   # only zen2 and newer support this amd_pstate driver.
   # TODO: testing common-cpu-amd on flakes
-  powerManagement.cpuFreqGovernor = "ondemand"; # ondemand, performance, powersave
+  # cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_available_governors
+  # performance, powersave on my cpu AMD Ryzen 5 5600X
+  powerManagement.cpuFreqGovernor = "performance"; # ondemand, performance, powersave
 
   users.users.developer = {
     isNormalUser = true;
