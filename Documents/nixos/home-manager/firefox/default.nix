@@ -40,13 +40,11 @@
           "privacy.globalprivacycontrol.enabled" = true;
           "privacy.query_stripping.enabled.pbmode" = true;
           "privacy.webrtc.globalMuteToggles" = true;
-          # #TODO: add these after you handle migrating stable
-          #TODO:: 1. enable av1Support for firefox somewhere here, probably about:config setting
-          # # This will enable nvidia gpu usage on firefox. Probably decode for netflix, youtube etc.
           "media.ffmpeg.vaapi.enabled" = true;
           "media.hardware-video-decoding.force-enabled" = true;
           "media.rdd-ffmpeg.enabled" = true;
-          # "media.av1.enabled" = cfg.firefox.av1Support;
+          # Disable because 2000 series turing not able to decode AV1
+          "media.av1.enabled" = false;
           "gfx.x11-egl.force-enabled" = true;
           "widget.dmabuf.force-enabled" = true;
         };

@@ -42,10 +42,10 @@
           name,
           config,
           home,
-          extraModules ? [ ],
+          extraModules,
         }:
         let
-          version = "24.05";
+          version = "24.11";
           specialArgs = {
             pkgs-unstable = import nixpkgs-unstable {
               inherit system;
@@ -68,7 +68,7 @@
             {
               # imports = [ ./cachix.nix ];
               home-manager = {
-                backupFileExtension = "bak0";
+                backupFileExtension = "bak7";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];
@@ -89,8 +89,10 @@
           config = ./hosts/desktop/configuration.nix;
           home = ./hosts/desktop/home.nix;
           extraModules = [
-            nixos-hardware.common-cpu-amd
-            nixos-hardware.common-ssd
+            # nixos-hardware.common-gpu-nvidia-turing
+            # nixos-hardware.common-cpu-amd-pstate
+            # nixos-hardware.common-cpu-amd-zenpower
+            # nixos-hardware.common-pc-ssd # fstrim only..
           ];
         };
         "laptop" = createSystem {
@@ -98,9 +100,11 @@
           config = ./hosts/laptop/configuration.nix;
           home = ./hosts/laptop/home.nix;
           extraModules = [
-            nixos-hardware.common-cpu-intel
-            nixos-hardware.common-pc-laptop
-            nixos-hardware.common-ssd
+            #NOTE: there are no difference via current config of mine
+            #TODO: only intel gpu, need to find name on the laptop
+            # nixos-hardware.common-cpu-intel
+            # nixos-hardware.common-pc-laptop
+            # nixos-hardware.common-pc-ssd
           ];
         };
       };

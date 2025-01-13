@@ -1,6 +1,5 @@
 {
   inputs = {
-    #TODO: Switch 24.11 after nixvim published 24.11 because it would broke
     #Branches for nixpkgs= nixpkgs:master, nixos-unstable:unstable
     nixpkgs-unstable = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -21,7 +20,6 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim/nixos-24.11";
-      # inputs.nixpkgs.follows = "nixpkgs"; #BUG: angular-language-server not found error.
     };
     #TODO: Learn secrets management later
     # sops-nix = {
@@ -62,7 +60,7 @@
         }:
         let
           #TODO: change this version after you change stateVersion
-          version = "24.05";
+          version = "24.11";
           specialArgs = {
             pkgs-unstable = import nixpkgs-unstable {
               inherit system;
@@ -91,7 +89,7 @@
                 #./cachix.nix
               ];
               home-manager = {
-                backupFileExtension = "bak11";
+                backupFileExtension = "bak2";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];

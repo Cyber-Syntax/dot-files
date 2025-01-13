@@ -64,6 +64,12 @@
     #   };
     # };
 
+    # git
+    lazygit.enable = true;
+    fugitive = {
+      enable = true;
+    };
+
     gitsigns = {
       enable = true;
       settings = {
@@ -123,7 +129,8 @@
 
     hop.enable = true;
     illuminate.enable = true;
-    lazygit.enable = true;
+
+    # others
     nvim-lightbulb.enable = true;
     lualine = {
       enable = true;

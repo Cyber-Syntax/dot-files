@@ -1,9 +1,7 @@
 { pkgs, unstable, ... }:
 {
   boot = {
-    #TESTING: sddm with stable kernel
-    #TEST: testing unstable latest linux kernel
-    kernelPackages = pkgs.linuxPackages_latest; # Use latest 6.11 or 6.11.4, mostly stable
+    kernelPackages = pkgs.linuxPackages_latest; # Use latest production
     # kernelParams = [ "preempt=full" ];
     loader = {
       systemd-boot = {

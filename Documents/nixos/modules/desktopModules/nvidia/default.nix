@@ -55,7 +55,6 @@
   #TODO: learn later
   # environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; }; # Optionally, set the environment variable
 
-  #TODO: add this on version 24.11
   hardware.graphics = {
     enable = true;
 
@@ -86,16 +85,24 @@
     MOZ_DISABLE_RDD_SANDBOX = "1";
     LIBVA_DRIVER_NAME = "nvidia";
 
-    #TODO: test wayland later
-    # # Hardware cursors are currently broken on nvidia
+    # Hardware cursors are currently broken on nvidia
     # WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   hardware.nvidia = {
-    forceFullCompositionPipeline = true; # fix tearing
+    # Production:550.135 and 6.12.6 24.11 for now.
+    # Production: 565.77-6.12.4 saw that later
+    # 04-01-25: Production: 550.135
+    # 05-01-25 latest : 565.77 latest stable
+    #BUG: 550.135 nvidia-open has suspend black screen issue.
+    #NOTE: 565.77 still has issue but able to see cursor and black screen and quit qtile to see display-manager
+    # but picom get %99 cpu usage after that, therefore it is still issue
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
+
+    # fix tearing
+    forceFullCompositionPipeline = true;
     nvidiaSettings = false;
 
-    #TESTING: testing open and nvidia-vaapi-driver usage for 1080p on firefox or chromium
     open = true; # nvidia-open for turing and above
 
     # systemctl list-unit-files | grep nvidia
@@ -103,16 +110,13 @@
     # enable nvidia-resume, nvidia-hibernation, nvidia-suspend services.
     powerManagement.enable = true;
 
-    powerManagement.finegrained = false; # (Turing and newer) Turns off GPU when not in use. ?? Need integrated gpu when offload nvidia???
+    # (Turing and newer) Turns off GPU when not in use. ?? Need integrated gpu when offload nvidia???
+    powerManagement.finegrained = false;
 
     #NOTE: nvidia option on xserver probably adding this by default because it's boot with nvidia-drm.modeset=1 on boot.
     modesetting.enable = true;
     # dynamicBoost.enable = true;
-    # 560.35.03-6.12.1 was in use before package written. (e.g default nixos setting on unstable)
-    # Production:550.135 and 6.12.6 24.11 for now.
-    # Production: 565.77-6.12.4 saw that later
-    # 04-01-25: Production:
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+
   };
 
   # Specific nvidia version

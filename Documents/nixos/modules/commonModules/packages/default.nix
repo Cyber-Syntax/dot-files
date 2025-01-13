@@ -57,6 +57,7 @@
     ## Development
     # Coding
     nodejs_22
+    yarn
     hugo
     go
     lua
@@ -140,5 +141,6 @@
     bash-completion
     bashInteractive
     nix-bash-completions
+
   ];
 }

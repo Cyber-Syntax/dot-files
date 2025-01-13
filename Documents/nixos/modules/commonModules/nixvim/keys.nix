@@ -214,13 +214,8 @@
       action = "<CMD>noh<CR><ESC>";
       options.desc = "Normal mode and clear highlight";
     }
-    {
-      mode = "n";
-      key = "<ESC>";
-      action = "<CMD>noh<CR><ESC>";
-      options.desc = "Normal mode and clear highlight";
-    }
-    # useful
+
+    # useful quit neovim
     {
       mode = "n";
       key = "<leader>qq";
@@ -416,6 +411,7 @@
       action = "<C-\\><C-N>";
       options.desc = "Exit Terminal Mode";
       options.silent = true;
+      #options.noremap = true;
     }
 
     # {
