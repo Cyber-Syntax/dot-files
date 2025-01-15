@@ -89,7 +89,7 @@
                 #./cachix.nix
               ];
               home-manager = {
-                backupFileExtension = "bak2";
+                backupFileExtension = "bak0";
                 extraSpecialArgs = specialArgs;
                 users.${name} = {
                   imports = [ home ];

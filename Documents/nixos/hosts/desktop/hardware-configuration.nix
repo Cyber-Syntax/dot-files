@@ -44,6 +44,7 @@
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/b3d10b34-ffb6-4d33-b996-e1e46f9f19aa";
     fsType = "ext4";
+    neededForBoot = true;
     options = [ "noatime" ]; # "x-initrd.mount" -> already added by default
   };
 

@@ -65,8 +65,8 @@
     #NOTE: https://github.com/erpalma/throttled/issues?q=13th
     #TEST: some of the user tested and used but have issue with tlp.
 
-    #TESTING: Lets try to test this one
-    throttled.enable = true; # fix for intel cpu throttling on thinkpads
+    #BUG: i5-1335U not supported yet.
+    # throttled.enable = true; # fix for intel cpu throttling on thinkpads
 
     libinput = {
       enable = true; # for syncaptics touchpads

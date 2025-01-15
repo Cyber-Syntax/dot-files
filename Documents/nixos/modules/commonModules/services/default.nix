@@ -37,7 +37,7 @@
     };
 
     openssh = {
-      enable = false;
+      enable = true;
       startWhenNeeded = true;
       settings.PermitRootLogin = "no"; # prohibit-password
       settings.PasswordAuthentication = false;

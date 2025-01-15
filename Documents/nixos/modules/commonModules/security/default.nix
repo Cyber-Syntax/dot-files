@@ -5,7 +5,7 @@
     # Enable the NetworkManager
     networkmanager.enable = true;
     # Define your hostname.
-    #TESTING: 
+    #TESTING:
     hosts = {
       "192.168.1.60" = [ "nextcloud" ];
       "192.168.1.107" = [ "laptop" ];
@@ -13,7 +13,7 @@
       "192.168.1.58" = [ "phone" ];
     };
 
-    ### FIREWALL 
+    ### FIREWALL
     firewall = {
       enable = true;
       allowPing = false; # decline ICMP pings
@@ -31,7 +31,7 @@
       #   { from = 4000; to = 4007; }
       #   { from = 8000; to = 8010; }
       # ];
-      #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true 
+      #iptables -D nixos-fw -p tcp --source 192.0.2.0/24 --dport 1714:1764 -j nixos-fw-accept || true
       # iptables -A nixos-fw -p udp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true # SiYuan
       # iptables -A nixos-fw -p tcp --source 192.168.1.107 --dport 1:65535 -j nixos-fw-accept || true
       #TESTING: Enable ssh only from local machines (192.168.1.39/24)
@@ -41,7 +41,7 @@
       # reject 22 port which is ssh
       #iptables -A INPUT -p tcp --dport 22 -j REJECT
       #enable if working remotely
-      #iptables -I INPUT -p tcp --dport 22 -j ACCEPT 
+      #iptables -I INPUT -p tcp --dport 22 -j ACCEPT
       #TODO: after test, enable eextraCommands from machines nix settings
       #iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
       extraCommands = ''
@@ -56,6 +56,10 @@
 
         # Allow established sessions to receive traffic
         iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+        # Allow SSH from local network (192.168.1.0/24)
+        iptables -A INPUT -p tcp --source 192.168.1.0/24 --dport 22 -j ACCEPT
+
       '';
     };
   };

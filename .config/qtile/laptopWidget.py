@@ -194,7 +194,7 @@ right = [
     widget.DF(
         update_interval=60,
         # foreground=colors[5],
-        partition="/mnt/backups",
+        partition="/backup",
         format="({uf}{m}|{r:.0f}%)",
         fmt=" {}",
         warn_space=10,
@@ -238,6 +238,8 @@ right = [
             )
         ],
     ),
+    space,
+    widget.Bluetooth(),
     space,
     widget.CurrentLayoutIcon(
         padding=10,
