@@ -5,5 +5,6 @@
     # ./libvirt
     ./nvidia
     ./ollama
+    ./amd-cpu.nix
   ];
 }

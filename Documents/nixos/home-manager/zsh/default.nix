@@ -71,6 +71,8 @@
       #TESTING: stable version need test which I am not sure is it work
       stable-flu = "sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware";
       all-flu = "sudo nix flake update"; # NOTE: this is going to be used for updating packages instead of switch-upgrade
+      boot-nixos = "sudo nixos-rebuild boot --flake .#nixos";
+      boot-laptop = "sudo nixos-rebuild boot --flake .#laptop";
       switch-nixos = "sudo nixos-rebuild switch --flake .#nixos";
       upgrade-nixos = "sudo nixos-rebuild switch --recreate-lock-file --flake .#nixos";
       switch-laptop = "sudo nixos-rebuild switch --flake .#laptop";

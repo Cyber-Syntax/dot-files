@@ -168,7 +168,8 @@ tooltip label {
 }
 
 /* -- Temperature Module (cpu-temp) -- */
-#custom-cpu-temp {
+#custom-cpu-temp,
+#custom-cpu-zen-temp {
   background: @memory; /* Nord orange */
   color: @module-fg;
   border-radius: 6px;

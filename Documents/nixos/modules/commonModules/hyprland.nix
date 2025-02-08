@@ -4,6 +4,9 @@
 # https://github.com/iSparsh/gross
 # https://github.com/saimoomedits/eww-widgets/blob/main/README.md
 # https://github.com/Aylur/dotfiles
+
+#TODO: hyprland plugins
+#https://hyprland.org/plugins/
 {
 
   #TODO: https://discourse.nixos.org/t/guide-to-installing-qt-theme/35523/2
@@ -60,7 +63,7 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     _JAVA_AWT_WM_NONREPARENTING = "1";
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    WLR_NO_HARDWARE_CURSORS = "1";
+    # WLR_NO_HARDWARE_CURSORS = "1";
   };
   environment.systemPackages = with pkgs; [
     waybar

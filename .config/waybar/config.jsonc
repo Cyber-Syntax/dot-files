@@ -6,54 +6,6 @@
   "gtk-layer-shell": true,
   "height": 37,
 
-  // === Positions ===
-
-  "modules-left": [
-//"custom/paddw",
-    "hyprland/workspaces",  // workspaces
-//"custom/paddw",
-  "wlr/taskbar",
-"custom/paddw",
-    //"custom/ws",            // window icon
-    //"custom/paddw",
-    "hyprland/window"       // window title
-  ],
-
-  "modules-center": [
-  "custom/paddc",
-    "custom/storage",
-  "custom/paddw",
-    "custom/cpu-temp",       
-  "custom/paddw",
-    "clock#time",           
-  "custom/paddw",
-    "clock#date",          
-  "custom/paddw",
-    "network",          
-  "custom/paddw"
-  ],
-
-  "modules-right": [
-
-    "custom/media",         // media info
-"custom/paddw",
-    "privacy",
-"custom/paddw",
-    "tray",
-"custom/paddw",
-    "pulseaudio",           // output device
-"custom/paddw",
-    "bluetooth",
-"custom/paddw",
-    // "backlight",            // brightness
-    "custom/backlight",     // brightness
-"custom/paddw",
-    "battery",              // battery
-"custom/paddw",
-    "idle_inhibitor",
-"custom/paddw",
-    "custom/power"          // power button
-  ],
    // === Modules ===
   "wlr/taskbar": {
     "format": "{icon}",
@@ -217,7 +169,12 @@
       "Authenticate": "  Authenticate"
     }
   },
-
+  "custom/cpu-zen-temp": {
+        "exec": "sensors | grep 'Tdie:' | awk '{print $2}' ",
+        "format": "<span font='Font Awesome 5 Free 9'>{icon}</span>🌡 {}",
+        "interval": 5,
+        "on-click": "kitty -e 'watch -n1 sensors'"
+  },
   "custom/cpu-temp": {
         "exec": "sensors | grep 'Package id 0:' | awk '{print $4}'",
         "format": "<span font='Font Awesome 5 Free 9'>{icon}</span>🌡 {}",
@@ -274,7 +231,7 @@
   },
 
   "idle_inhibitor": {
-    "format": "{icon}",
+    "format": " : {icon}",
 
     "format-icons": {
       "activated": " ", // prevent locking screen
@@ -291,11 +248,11 @@
     "tooltip": true,
     "tooltip-format": "Standard Time: {:%I:%M %p}",
     "min-length": 6,
-    "max-length": 6
+    "max-length": 10
   },
 
   "clock#date": {
-    "format": "󰨳 {:%d-%m}",
+    "format": "󰨳 {:%A,%d-%m-%Y}",
     "tooltip-format": "<tt>{calendar}</tt>",
 
     "calendar": {
@@ -307,7 +264,7 @@
         "months": 
           "<span color='#b4befe'><b>{}</b></span>",
         "weekdays": 
-          "<span color='#a6adc8' font='7'>{}</span>",
+          "<span color='#a6adc8' font='11'>{}</span>",
         "today": 
           "<span color='#f38ba8'><b>{}</b></span>"
       }
@@ -319,7 +276,7 @@
     },
 
     "min-length": 8,
-    "max-length": 8
+    "max-length": 30
   },
 
   "network": {

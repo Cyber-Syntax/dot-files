@@ -86,29 +86,6 @@
     # MOZ_DISABLE_RDD_SANDBOX = "1";
     # WLR_NO_HARDWARE_CURSORS = "1";
 
-    #TESTING:
-    # direct can be cause issue, change the egl if you encounter.
-    # but seems like this is needed when used on nvidia-open?
-    NVD_BACKEND = "direct"; # for nvidia-vaapi-driver.
-    NVD_LOG = "1";
-
-    #nixos_ozone already handle this
-    # ELECTRON_OZONE_PLATFORM_HINT = "auto"; # for obsidian etc.
-
-    #Default wayland variables
-    TERMINAL = "kitty";
-    QT_QPA_PLATFORMTHEME = "gtk3";
-    QT_SCALE_FACTOR = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    WLR_DRM_DEVICES = "/dev/dri/card1"; # before = "/dev/dri/card1:/dev/dri/card0"
-    CLUTTER_BACKEND = "wayland";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
-    # WLR_RENDERER = "vulkan"; # I don't play games
-    __NV_PRIME_RENDER_OFFLOAD = "1";
-    GTK_USE_PORTAL = "1";
-    NIXOS_XDG_OPEN_USE_PORTAL = "1";
-
     #NOTE: I don't think that's necessasry for now
     # XDG_CACHE_HOME = "\${HOME}/.cache";
     # XDG_CONFIG_HOME = "\${HOME}/.config";
