@@ -22,7 +22,7 @@
         "modules-right": ["idle_inhibitor", "disk#d2", "disk", "cpu", "memory","pulseaudio"]
     },
     {
-        "output": "DP-2",
+        "output": "eDP-1",
         "include": [
             "~/.config/waybar/default-modules.json"
         ],
@@ -30,7 +30,7 @@
         "position": "top",
         "spacing": 4,
         "modules-left": ["hyprland/workspaces", "custom/icon1", "custom/icon2", "custom/icon3"],
-        "modules-center": ["custom/media", "hyprland/window", "clock", "tray", "custom/dnf-update-status" ],
-        "modules-right": [ "custom/sink-status", "pulseaudio"]
+        "modules-center": ["hyprland/window", "clock", "tray"],
+        "modules-right": ["custom/sink-status","tempature","idle_inhibitor", "disk#d2", "disk", "cpu", "memory","battery", pulseaudio"]
     }
 ]

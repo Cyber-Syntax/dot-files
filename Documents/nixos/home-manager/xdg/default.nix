@@ -21,9 +21,9 @@
           "org.freedesktop.impl.portal.FileChooser" = [
             "lxde"
           ];
-          "org.freedesktop.impl.portal.Secret" = [
-            "gnome-keyring"
-          ];
+          # "org.freedesktop.impl.portal.Secret" = [
+          #   "gnome-keyring"
+          # ];
         };
       };
     };

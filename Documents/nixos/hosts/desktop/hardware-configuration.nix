@@ -26,8 +26,25 @@
     "kvm-amd"
     # "amd-pstate" # built-in now, no need module
     "zenpower"
+    #For wayland
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
   ];
-  boot.kernelParams = [ "initcall_blacklist=acpi_cpufreq_init" ];
+  #TESTING: wayland hyprland
+  boot.extraModprobeConfig = ''
+    options nvidia-drm modeset=1
+  '';
+  boot.kernelParams = [
+    "initcall_blacklist=acpi_cpufreq_init"
+    #TESTING: for hyprland wayland
+    "nvidia.NVreg_CheckPCIConfigSpace=0"
+    "nvidia.NVreg_EnablePCIeGen3=1"
+    "nvidia.NVreg_UsePageAttributeTable=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "nvidia_drm.modeset=1"
+  ];
   boot.extraModulePackages = [ config.boot.kernelPackages.zenpower ];
   boot.blacklistedKernelModules = [ "k10temp" ];
 

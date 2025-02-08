@@ -1,0 +1,126 @@
+{
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    // "height": 30, // Waybar height (to be removed for auto height)
+    "margin": "0 20 0 20",
+    // "width": 1280, // Waybar width
+    // Choose the order of the modules
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock", "custom/spotify" ],
+    "modules-right": ["tray","custom/temperature", "network", "pulseaudio", "backlight", "battery"],
+
+    //***************************
+    //*  Modules configuration  *
+    //***************************
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "format-icons": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": ""
+        }
+    },
+    "hyprland/window": {
+        "max-length": 60,
+        "tooltip": false
+    },
+    "clock": {
+        "timezone": "Europe/Istanbul",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%A %d/%m/%y %H:%M}"
+    },
+
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "reverse-scrolling": 1,
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": "婢 {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["奄", "奔", "墳"]
+        },
+        "on-click": "pavucontrol",
+        "min-length": 13,
+    },
+    "custom/temperature": {
+        "exec": "sensors | grep 'Package id 0:' | awk '{print $4}'",
+        "format": "<span font='Font Awesome 5 Free 9'>{icon}</span>  {}",
+        "format-icons": ["🌡"],
+        "interval": 5,
+        "on-click": "kitty -e 'watch -n1 sensors'"
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{percent}% {icon}",
+        "format-icons": ["🔆","","",""],
+        "min-length": 7,
+    },
+    "battery": {
+        "states": {
+            "warning": 20,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "<span font='Font Awesome 5 Free'></span>  <span font='Font Awesome 5 Free 11'>{icon}</span>  {capacity}% - {time}",
+        "format-full": "<span font='Font Awesome 5 Free'></span>  <span font='Font Awesome 5 Free 11'>{icon}</span>  Charged",
+        //"format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""],
+	"on-update": "$HOME/.config/waybar/scripts/check_battery.sh",
+    },
+    "network": {
+        "format": "{icon}",
+        "format-alt": "{ipaddr}/{cidr} {icon}",
+        "format-alt-click": "click-right",
+        "format-wifi": "<span font='Font Awesome 5 Free 10'></span> ({signalStrength}%)",
+        "format-ethernet": " ",
+        "format-disconnected": "⚠ Disconnected",
+        //"on-click": "kitty -e ~/sway/scripts/network-manager",
+        // "on-click": "gnome-control-center wifi",
+        "tooltip": false
+    },
+    "custom/bluetooth_devices": {
+      "exec": "$HOME/.config/waybar/scripts/bluetooth_devices.sh",
+      "return-type": "json",
+      "format": "{}",
+      "justify": "center",
+      "rotate": 90,
+      "interval": 5,
+      "on-click": "blueman-manager"
+    },
+    "custom/spotify": {
+        "format": " {}",
+        "max-length": 40,
+        "interval": 30, // Remove this if your script is endless and write in loop
+        "exec": "$HOME/.config/waybar/scripts/mediaplayer.sh 2> /dev/null", // Script in resources folder
+        "exec-if": "pgrep spotify"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 0,
+        "show-passive-items": "true"
+    },
+  "custom/powermenu": {
+    "on-click": "~/.config/rofi/powermenu/type-6/powermenu.sh",
+    "format": "",
+    "tooltip": false
+  }
+}

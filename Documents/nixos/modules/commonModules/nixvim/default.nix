@@ -2,7 +2,7 @@
 ## Credits:
 # Main setup from @fred-drake.
 #https://github.com/fred-drake/neovim
-# Me "Cyber-Syntax" make some changes to make it like LazyVim.
+# Me "Cyber-Syntax": I made some changes to make it like LazyVim.
 
 {
   imports = [
@@ -31,10 +31,12 @@
       # gruvbox = {
       #   enable = true;
       # };
-      #dracula = {};
       #onedark
       # vscode = {
       #   enable = true;
+      #   settings = {
+      #     disable_nvimtree_bg = true; # already default
+      #   };
       # };
       nord = {
         enable = true;

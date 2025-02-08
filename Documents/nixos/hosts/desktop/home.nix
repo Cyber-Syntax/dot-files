@@ -73,11 +73,63 @@
   #  /etc/profiles/per-user/developer/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
-    # GTK_THEME = "Materia-dark";
+    #Default enabled on hyprland.nix for general
+    # NIXOS_OZONE_WL = "1"; # # Enable wayland for chromium-based apps (VSCode Discord Brave)
+    # MOZ_ENABLE_WAYLAND = "1";
+    # XDG_SESSION_TYPE = "wayland";
+    # XDG_CURRENT_DESKTOP = "Hyprland";
+    # XDG_SESSION_DESKTOP = "Hyprland";
+    # SDL_VIDEODRIVER = "wayland";
+    # QT_QPA_PLATFORM = "wayland";
+    # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    # _JAVA_AWT_WM_NONREPARENTING = "1";
+    # MOZ_DISABLE_RDD_SANDBOX = "1";
+    # WLR_NO_HARDWARE_CURSORS = "1";
+
+    #TESTING:
+    # direct can be cause issue, change the egl if you encounter.
+    # but seems like this is needed when used on nvidia-open?
+    NVD_BACKEND = "direct"; # for nvidia-vaapi-driver.
+    NVD_LOG = "1";
+
+    #nixos_ozone already handle this
+    # ELECTRON_OZONE_PLATFORM_HINT = "auto"; # for obsidian etc.
+
+    #Default wayland variables
+    TERMINAL = "kitty";
+    QT_QPA_PLATFORMTHEME = "gtk3";
+    QT_SCALE_FACTOR = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    WLR_DRM_DEVICES = "/dev/dri/card1"; # before = "/dev/dri/card1:/dev/dri/card0"
+    CLUTTER_BACKEND = "wayland";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+    # WLR_RENDERER = "vulkan"; # I don't play games
+    __NV_PRIME_RENDER_OFFLOAD = "1";
+    GTK_USE_PORTAL = "1";
+    NIXOS_XDG_OPEN_USE_PORTAL = "1";
+
+    #NOTE: I don't think that's necessasry for now
+    # XDG_CACHE_HOME = "\${HOME}/.cache";
+    # XDG_CONFIG_HOME = "\${HOME}/.config";
+    # XDG_BIN_HOME = "\${HOME}/.local/bin";
+    # XDG_DATA_HOME = "\${HOME}/.local/share";
+    # GBM_BACKEND = "nvidia-drm";
+    # WINEARCH = "win64";
+    # WINEPREFIX = "$HOME/.wine";
+    # __GL_GSYNC_ALLOWED = "0";
+    # GDK_BACKEND = "wayland";
+    # WLR_DRM_NO_ATOMIC = "1";
+    # WLR_BACKEND = "auto";
+    # GBM_BACKEND = "nvidia";
+    # __GLX_RENDERER = "nvidia";
+    # _JAVA_AWT_WM_NONEREPARENTING = "1";
+    # DISABLE_QT5_COMPAT = "0";
+    # QT_STYLE_OVERRIDE = "kvantum";
+    # GTK_THEME = "Adwaita-dark";
+
   };
 
-  #
   # home-manager.useUserPackages = false;
   #
   # Let Home Manager install and manage itself.

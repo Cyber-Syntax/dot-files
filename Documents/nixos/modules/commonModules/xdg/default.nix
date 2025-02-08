@@ -17,6 +17,7 @@
           "org.freedesktop.impl.portal.FileChooser" = [
             "lxde"
           ];
+          #TESTING: on wayland?
           "org.freedesktop.impl.portal.Secret" = [
             "gnome-keyring"
           ];

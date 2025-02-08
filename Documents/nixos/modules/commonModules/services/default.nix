@@ -55,7 +55,6 @@
       # ];
     };
 
-    gnome.gnome-keyring.enable = true;
     acpid.enable = true;
     dbus.enable = true;
     devmon.enable = true;

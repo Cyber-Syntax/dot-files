@@ -9,7 +9,8 @@
   programs = {
     dconf.enable = true;
     bash.completion.enable = true; # default:true
-
+    #https://github.com/Mic92/dotfiles/blob/1b76848e2b5951bc9041af95a834a08b68e146fd/nixos/modules/nix-ld.nix
+    # programs.nix-ld.package = self.inputs.nix-ld-rs.packages.${pkgs.hostPlatform.system}.nix-ld-rs;
     ##TEST:
     # # non-nix executables like lua-language-server etc.
     nix-ld.enable = true;
@@ -37,9 +38,58 @@
       zlib
       # html
       prettierd # TODO: need setup on neovim
+      ## TODO: TEST later!!
+      # alsa-lib
+      # at-spi2-atk
+      # at-spi2-core
+      # atk
+      # cairo
+      # curl
+      # dbus
+      # expat
+      # fontconfig
+      # freetype
+      # fuse3
+      # gdk-pixbuf
+      # glib
+      # gtk3
+      # icu
+      # libGL
+      # libappindicator-gtk3
+      # libdrm
+      # libglvnd
+      # libnotify
+      # libpulseaudio
+      # libunwind
+      # libusb1
+      # libuuid
+      # libxkbcommon
+      # mesa
+      # nspr
+      # nss
+      # openssl
+      # pango
+      # pipewire
+      # stdenv.cc.cc
+      # systemd
+      # vulkan-loader
+      # xorg.libX11
+      # xorg.libXScrnSaver
+      # xorg.libXcomposite
+      # xorg.libXcursor
+      # xorg.libXdamage
+      # xorg.libXext
+      # xorg.libXfixes
+      # xorg.libXi
+      # xorg.libXrandr
+      # xorg.libXrender
+      # xorg.libXtst
+      # xorg.libxcb
+      # xorg.libxkbfile
+      # xorg.libxshmfence
+      # zlib
     ];
-
-    #TODO: tutanota-desktop fix needed
+    #FIX: tutanota
     seahorse = {
       enable = true;
     };

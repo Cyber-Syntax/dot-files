@@ -26,6 +26,7 @@
     "cryptd"
   ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelParams = [ "acpi_backlight=native" ];
   boot.extraModulePackages = [ ];
   #  boot.initrd.luks.devices."cryptdev".device = "/dev/disk/by-uuid/b6b8e2b3-9db7-4693-8dac-1bd8aa50cd24";
 
@@ -73,7 +74,11 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
-
+  #NOTE: webcam enabling
+  # hardware.ipu6 = {
+  #   enable = true;
+  #   platform = "ipu6ep"; # raptor lake
+  # };
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

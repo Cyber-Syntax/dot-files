@@ -13,6 +13,8 @@
     xorg.xinit
     xorg.xauth
     # Main apps
+    libsecret # for seahorse and gpg
+    pciutils
     vim
     ripgrep # for obsidian.nvim plugin
     networkmanagerapplet # for nm-applet
@@ -22,9 +24,9 @@
     xdg-desktop-portal
     xdg-desktop-portal-gtk
     ## Stats, system infos etc.
+    powertop
     lm_sensors
     fastfetch
-    powertop # battery usage etc.
     htop
     ## basic developer tools
     wget
@@ -127,7 +129,6 @@
     kitty
 
     ## My best apps
-    #TEST: unstable version is in use
     freetube
 
     ## for windows
@@ -141,6 +142,14 @@
     bash-completion
     bashInteractive
     nix-bash-completions
+    #FIX: gui not work anymore,
+    #TODO: not ask openvpn user password and name anymore
+    # current wireguard not work either
+    protonvpn-gui # cli not supported anymore
+    wireguard-tools
 
+    # manual setup without proton gui
+    networkmanager-openvpn
+    openvpn
   ];
 }

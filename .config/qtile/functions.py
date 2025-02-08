@@ -2,38 +2,34 @@ from libqtile.lazy import lazy
 from libqtile import hook
 from libqtile import qtile
 from libqtile.backend.base import Window
+import subprocess
+from libqtile.log_utils import logger
 
 # qtile cmd-obj -o group 4 -f toscreen # focus from command line
 
 
 @hook.subscribe.resume
 def lock_on_resume():
-    subprocess.run("i3lock --p")
-    logger.warn("Resuming from sleep")
-
+    subprocess.run(["i3lock"])  # Use list form for safer execution
+    logger.warning("Resuming from sleep")  # Changed to warning() from deprecated warn()
 
 @hook.subscribe.client_new
 def idle_dialogues(window):
-    if (
-        (window.window.get_name() == "Search Dialog")
-        or (window.window.get_name() == "Module")
-        or (window.window.get_name() == "Goto")
-        or (window.window.get_name() == "IDLE Preferences")
-    ):
+    # Use window.name instead of window.window.get_name()
+    if window.name in {"Search Dialog", "Module", "Goto", "IDLE Preferences"}:
         window.floating = True
 
-
-@hook.subscribe.client_new
-def floating_dialogs(window):
-    dialog = window.window.get_wm_type() == "dialog"
-    transient = window.window.get_wm_transient_for()
-    if dialog or transient:
-        window.floating = True
-
+# @hook.subscribe.client_new
+# def floating_dialogs(window):
+#     # Use Qtile's window properties instead of X11 direct access
+#     #FIX: AttributeError: <class 'libqtile.backend.x11.window.Window'> has no attribute wm_type
+#     dialog = "dialog" in window.wm_type  # Check if dialog is in WM_TYPE
+#     transient = window.transient_for()  # Check for transient parent
+#     if dialog or transient:
+#         window.floating = True
 
 # APP = "superproductivity"
-#
-#
+
 # @hook.subscribe.client_urgent_hint_changed
 # def follow_url(client: Window) -> None:
 #     """If superproductivity is flagged as urgent, focus it"""
@@ -46,7 +42,6 @@ def floating_dialogs(window):
 #                 qtile.current_screen.set_group(client.group)
 #                 client.group.focus(client)
 #                 return
-
 
 # 2 monitor setup
 DP_2 = 0

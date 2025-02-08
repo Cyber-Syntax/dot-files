@@ -117,6 +117,7 @@ keys = [
     Key([], "XF86Favorites", lazy.spawn("playerctl next")),
     Key([], "XF86Messenger", lazy.spawn("playerctl previous")),
     # brightness acpilight
+    #TESTING: acpilight command
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10")),
 ]

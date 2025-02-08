@@ -55,7 +55,6 @@
           group = "Database";
           icon = "";
         }
-
         # Keys with custom icons / labels
         {
           __unkeyed-1 = "<leader>e";
@@ -325,6 +324,12 @@
     {
       mode = "n";
       key = "<leader>ff";
+      action = "<CMD>lua require('fzf-lua').live_grep({ cwd = vim.loop.cwd() })<CR>";
+      options.desc = "Find Files";
+    }
+    {
+      mode = "n";
+      key = "<leader>fs";
       action = "<CMD>lua require('fzf-lua').files({ cwd = vim.loop.cwd() })<CR>";
       options.desc = "Find Files";
     }

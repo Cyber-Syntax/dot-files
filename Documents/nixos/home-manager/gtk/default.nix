@@ -1,6 +1,20 @@
 { pkgs, ... }:
 
 {
+  home-manager.users.developer.home.pointerCursor = {
+    gtk.enable = true;
+    # x11.enable = true;
+    package = pkgs.vimix-cursors;
+    name = "Vimix-white-cursors";
+    size = 24;
+
+    # hyprcursor = {
+    #   enable = true;
+    #   size = 24;
+    # };
+
+  };
+
   home-manager.users.developer.gtk = {
     enable = true;
 

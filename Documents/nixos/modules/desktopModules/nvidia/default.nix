@@ -57,23 +57,31 @@
 
   hardware.graphics = {
     enable = true;
-
+    enable32Bit = true;
     # # Vulkan
     # driSupport = true;
 
     #TESTING: new VA-API for nvidia. Setup:
     #TODO: https://github.com/elFarto/nvidia-vaapi-driver?tab=readme-ov-file#firefox
     extraPackages = with pkgs; [
-      nvidia-vaapi-driver
-      libvdpau-va-gl
-      vaapiVdpau
+      nvidia-vaapi-driver # A VA-API implementation using NVIDIA's NVDEC
+      libvdpau-va-gl # VDPAU driver with OpenGL/VAAPI backend
+      vaapiVdpau # VDPAU driver for the VA-API library
+      #TESTING:
+      libdrm # Direct Rendering Manager library and headers
+      libglvnd # The GL Vendor-Neutral Dispatch library
+      libva # An implementation for VA-API (Video Acceleration API)
+      libva-utils # A collection of utilities and examples for VA-API
+      libvdpau # Library to use the Video Decode and Presentation API for Unix (VDPAU)
+      vdpauinfo # Tool to query VDPAU abilities of the system
     ];
   };
 
-  #TEST: later test
   environment.systemPackages = with pkgs; [
-    nvidia-vaapi-driver
-    # egl-wayland
+    #TESTING:
+    egl-wayland
+    libva-utils # A collection of utilities and examples for VA-API
+    vdpauinfo # Tool to query VDPAU abilities of the system
   ];
 
   environment.variables = {
@@ -99,6 +107,7 @@
     # but picom get %99 cpu usage after that, therefore it is still issue
     package = config.boot.kernelPackages.nvidiaPackages.latest;
 
+    #TESTING: wayland hyprland...
     # fix tearing
     forceFullCompositionPipeline = true;
     nvidiaSettings = false;
