@@ -122,6 +122,11 @@
     #nixos_ozone already handle this
     # ELECTRON_OZONE_PLATFORM_HINT = "auto"; # for obsidian etc.
 
+    #disable hardware Acceleration on electron base app which cause issue on obsidian?
+    # Workaround, disable hardware Acceleration by their app settings
+    # NOTE: solved on obsidian and don't see any problem on FreeTube now.
+    # ELECTRON_DISABLE_HARDWARE_ACCELERATION = "1";
+
     #Default wayland variables
     QT_QPA_PLATFORMTHEME = "gtk3";
     QT_SCALE_FACTOR = "1";

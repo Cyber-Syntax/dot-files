@@ -67,7 +67,7 @@
   };
   environment.systemPackages = with pkgs; [
     waybar
-    eww
+    eww # bar
     swaybg # setting up wallpaper
     wl-clipboard
     cliphist # Wayland clipboard manager
@@ -89,6 +89,13 @@
     # grim # screenshots
     #wtype # xdtool alternative
     # pamixer # Pulseaudio command line mixer
+
+    # needed for kde file chooser on wayland
+    libsForQt5.qt5.qtwayland
+    # libsForQt5.dolphin # dolphin is so big, don't bother with it on laptop
+    #later if needed
+    # kdePackages.dolphin
+    # kdePackages.qtwayland
   ];
 
   xdg = {

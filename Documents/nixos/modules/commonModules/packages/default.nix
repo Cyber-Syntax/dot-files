@@ -3,15 +3,6 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    xorg.setxkbmap
-    xorg.xrandr
-    xorg.xhost
-    xorg.xev
-    xorg.xkbcomp
-    xorg.xkill
-    xorg.xwininfo
-    xorg.xinit
-    xorg.xauth
     # Main apps
     libsecret # for seahorse and gpg
     pciutils
@@ -41,11 +32,9 @@
     ## theme
     materia-theme
     ## X11, window manager
-    i3lock
     rofi
     dunst
     gammastep
-    picom
     xclip # for copy paste in neovim
     ## Productivity
     zoxide
@@ -67,6 +56,8 @@
     lazygit
     gnumake
     #vscode-json-languageserver
+    nil # nix language server as lsp
+    cargo # for rust and nil to work
     lua-language-server
     bash-language-server
     luarocks # for lua
@@ -75,25 +66,18 @@
     ruff # python linter
     pylint # static code analysis tool for python
     ## AI
-    python311Packages.litellm
-    python311Packages.tokenizers
     python3
     ### Development for compiling
     clang
     libgcc
-    libstdcxx5 # for litellm
     ### encryption
     openssl
-    ### other
-    xdotool
     # Nixos
     nix-prefetch # get hash from github branches
     nix-prefetch-git
     nix-prefetch-github
     nurl
     home-manager
-    nil # nix language server as lsp
-    cargo # for rust and nil to work
     # Apps
     ## Pictures, Documents etc.
     feh
@@ -105,16 +89,16 @@
     xournalpp
     pcmanfm
     ## email
+    # birdtray # tray for thunderbird
     thunderbird
     tutanota-desktop
-    birdtray
     ## Nextcloud packages
     nextcloud-client
     wakeonlan
     ## Disk
     gparted
     ## backup
-    rclone
+    # rclone
     borgbackup
     syncthingtray
     ## Browser
@@ -127,12 +111,11 @@
     signal-desktop
     ## Terminal
     kitty
-
     ## My best apps
     freetube
-
     ## for windows
     ntfs3g
+
     ## My unfree apps
     obsidian
     spotify

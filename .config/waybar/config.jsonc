@@ -323,6 +323,21 @@
         "exec-if": "pgrep spotify"
   },
 
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "dynamic-order": ["artist", "album", "position", "length"],
+    "dynamic-importance-order": ["artist", "album", "position", "length"],
+    "player-icons": {
+      "default": " ",
+      "mpv": "🎵"
+    },
+    "status-icons": {
+      "paused": "⏸"
+    },
+    "ignored-players": ["firefox"]
+  },
+
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "󰝟 {volume}%",

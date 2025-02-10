@@ -209,7 +209,9 @@ tooltip label {
 }
 
 /* -- Tray Module -- */
-#tray {
+#tray,
+#custom-media,
+#mpris {
   background: #3b4252; /* Dark gray */
   color: @module-fg;
   border-radius: 6px;

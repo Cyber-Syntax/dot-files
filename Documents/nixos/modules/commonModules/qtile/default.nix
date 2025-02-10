@@ -1,13 +1,21 @@
 { pkgs, ... }:
 
 {
-  # systemd.user.targets.qtile-session = {
-  #     description = "Qtile compositor session";
-  #     documentation = [ "man:systemd.special(7)" ];
-  #     bindsTo = [ "graphical-session.target" ];
-  #     wants = [ "graphical-session-pre.target" ];
-  #     after = [ "graphical-session-pre.target" ];
-  #   };
+
+  environment.systemPackages = with pkgs; [
+    xorg.setxkbmap
+    xorg.xrandr
+    xorg.xhost
+    xorg.xev
+    xorg.xkbcomp
+    xorg.xkill
+    xorg.xwininfo
+    xorg.xinit
+    xorg.xauth
+    i3lock
+    picom
+    xdotool # command for mouse binds etc.
+  ];
 
   services.udev.packages = [
     (pkgs.writeTextFile {

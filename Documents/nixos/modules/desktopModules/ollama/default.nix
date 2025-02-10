@@ -1,6 +1,17 @@
-{ lib, pkgs-unstable, ... }:
+{
+  lib,
+  pkgs-unstable,
+  pkgs,
+  ...
+}:
 
 {
+  environment.systemPackages = with pkgs; [
+    python312Packages.litellm
+    python312Packages.tokenizers
+    libstdcxx5 # for litellm
+  ];
+
   services = {
     ollama = {
       enable = true;

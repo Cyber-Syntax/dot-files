@@ -15,7 +15,7 @@
             "gtk"
           ];
           "org.freedesktop.impl.portal.FileChooser" = [
-            "lxde"
+            "kde"
           ];
           #TESTING: on wayland?
           "org.freedesktop.impl.portal.Secret" = [

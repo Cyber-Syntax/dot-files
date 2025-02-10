@@ -27,7 +27,7 @@
             "clock#date",
         ],
         "modules-right": [
-              "custom/media",         // media info
+              "mpris",
           "custom/paddw",
               "privacy",
           "custom/paddw",
@@ -72,7 +72,7 @@
           "custom/paddw"
         ],
         "modules-right": [
-              "custom/media",         // media info
+              "mpris",
           "custom/paddw",
               "privacy",
           "custom/paddw",
