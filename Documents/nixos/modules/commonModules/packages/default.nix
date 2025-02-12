@@ -113,8 +113,6 @@
     kitty
     ## My best apps
     freetube
-    ## for windows
-    ntfs3g
 
     ## My unfree apps
     obsidian

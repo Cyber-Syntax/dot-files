@@ -326,8 +326,8 @@
   "mpris": {
     "format": "{player_icon} {dynamic}",
     "format-paused": "{status_icon} <i>{dynamic}</i>",
-    "dynamic-order": ["artist", "album", "position", "length"],
-    "dynamic-importance-order": ["artist", "album", "position", "length"],
+    "dynamic-order": ["artist", "album", "position"],
+    "dynamic-importance-order": ["artist", "album", "position"],
     "player-icons": {
       "default": " ",
       "mpv": "🎵"

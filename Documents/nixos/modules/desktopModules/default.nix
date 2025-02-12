@@ -6,5 +6,6 @@
     ./nvidia
     ./ollama
     ./amd-cpu.nix
+    ./packages
   ];
 }

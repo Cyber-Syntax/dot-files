@@ -12,6 +12,7 @@
   ];
   services.gnome.gnome-keyring.enable = true;
   services.gnome.at-spi2-core.enable = true;
+
   # services.power-profiles-daemon.enable = lib.mkForce false;
   security = {
     # https://www.reddit.com/r/NixOS/comments/lsbo9a/people_using_sshagent_how_do_you_unlock_it_on/?context=3

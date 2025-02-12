@@ -90,7 +90,7 @@
       bsingle-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
       badog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
       badd = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
-      badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/Documents/screenloyout/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ";
+      badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/";
       bcmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
       bpush = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
 
