@@ -16,7 +16,7 @@ if [ $(hostname) == "nixos" ]; then
   xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
   xset s off & # disable screen saver
   TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage & # task app
-  sh /home/developer/Documents/screenloyout/asus_only.sh & # My screen layout scripts
+  sh /home/developer/Documents/scripts/screenloyout/asus_only.sh & # My screen layout scripts
   keepassxc & # password manager
  elif [ $(hostname) == "nixosLaptop" ]; then
   cbatticon & # battery notification, systray app

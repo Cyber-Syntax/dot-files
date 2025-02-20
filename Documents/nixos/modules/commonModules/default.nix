@@ -14,10 +14,5 @@
     ./security
     ./services
     ./xdg
-    # ./qtile
-    #TESTING:
-    ./hyprland.nix
-    #FIX: qtile extras not work
-    # ./qtile-wayland
   ];
 }

@@ -1,37 +1,29 @@
-local wibox = require('wibox')
-local mat_list_item = require('widget.material.list-item')
-local mat_slider = require('widget.material.slider')
-local mat_icon = require('widget.material.icon')
-local icons = require('theme.icons')
-local watch = require('awful.widget.watch')
-local dpi = require('beautiful').xresources.apply_dpi
+local wibox = require("wibox")
+local gears = require("gears")
+local awful = require("awful")
+-- Ram Widget
+local ram_text = wibox.widget.textbox()
 
-local slider =
-  wibox.widget {
-  read_only = true,
-  widget = mat_slider
-}
+-- Update function
+local update_ram = function()
+	awful.spawn.easy_async_with_shell("free -h | awk '/Mem:/ {print $2, $3}'", function(stdout)
+		local total, used = stdout:match("(%S+)%s+(%S+)")
+		if total and used then
+			ram_text:set_markup_silently("󰘚 " .. used .. "/" .. total .. " ")
+		end
+	end)
+end
 
-watch(
-  'bash -c "free | grep -z Mem.*Swap.*"',
-  1,
-  function(_, stdout)
-    local total, used, free, shared, buff_cache, available, total_swap, used_swap, free_swap =
-      stdout:match('(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*(%d+)%s*Swap:%s*(%d+)%s*(%d+)%s*(%d+)')
-    slider:set_value(used / total * 100)
-    collectgarbage('collect')
-  end
-)
+-- Update every second
+gears.timer({
+	timeout = 1,
+	call_now = true,
+	callback = update_ram,
+})
 
-local ram_meter =
-  wibox.widget {
-  wibox.widget {
-    icon = icons.memory,
-    size = dpi(24),
-    widget = mat_icon
-  },
-  slider,
-  widget = mat_list_item
-}
+local ram_widget = wibox.widget({
+	layout = wibox.layout.flex.horizontal,
+	ram_text,
+})
 
-return ram_meter
+return ram_widget

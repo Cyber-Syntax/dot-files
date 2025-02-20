@@ -17,13 +17,14 @@
     # chat UI for ollama models
     open-webui = {
       enable = true;
-      # stateDir = "/home/developer/openwebui/";
+      # stateDir = "/home/developer/openwebui/"; # default: "/var/lib/open-webui"
+      #FIX: needed for nodejs build
       package = pkgs-unstable.open-webui;
       port = 4242; # default: port 8080
       host = "0.0.0.0"; # default: host "127.0.0.1"
       openFirewall = true;
       # prevent the secrets read on nix store:
-      # environmentFile = "/home/developer/openwebui/openWebuiSecrets/secret_key";
+      # environmentFile = "/var/lib/secrets/openWebuiSecrets";
       environment = {
         # DATA_DIR = "/data/open-webui";
         ANONYMIZED_TELEMETRY = "False";
@@ -31,6 +32,7 @@
         SCARF_NO_ANALYTICS = "True";
         WEBUI_AUTH = "False";
         OLLAMA_BASE_URL = "http://localhost:11434";
+        # OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
         # WEBUI_SECRET_KEY = "/home/developer/openwebui/openWebuiSecrets/secret_key";
       };
     };
@@ -52,6 +54,8 @@
       environmentVariables = {
         OLLAMA_LLM_LIBRARY = "gpu";
         CUDA_VISIBLE_DEVICES = "0";
+        OLLAMA_FLASH_ATTENTION = "1";
+        OLLAMA_KV_CACHE_TYPE = "f16"; # default f16 already
       };
     };
   };

@@ -5,5 +5,6 @@
     # freetube # Stable is up to date more than unstable..
     # super-productivity
     # obsidian
+    tutanota-desktop
   ];
 }

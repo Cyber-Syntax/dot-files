@@ -8,68 +8,51 @@ local tags = {
     icon = icons.chrome,
     type = 'chrome',
     defaultApp = apps.default.browser,
-    loyout =   awful.layout.suit.max,
     screen = 1
   },
   {
     icon = icons.code,
     type = 'code',
     defaultApp = apps.default.editor,
-    loyout =   awful.layout.suit.max,
+    screen = 1
+  },
+  {
+    icon = icons.social,
+    type = 'social',
+    defaultApp = apps.default.social,
+    screen = 1
+  },
+  {
+    icon = icons.game,
+    type = 'game',
+    defaultApp = apps.default.game,
+    screen = 1
+  },
+  {
+    icon = icons.folder,
+    type = 'files',
+    defaultApp = apps.default.files,
+    screen = 1
+  },
+  {
+    icon = icons.music,
+    type = 'music',
+    defaultApp = apps.default.music,
     screen = 1
   },
   {
     icon = icons.lab,
     type = 'any',
     defaultApp = apps.default.rofi,
-    loyout =   awful.layout.suit.max,
     screen = 1
-  },
-  -- {
-  --   icon = icons.folder,
-  --   type = 'files',
-  --   defaultApp = apps.default.files,
-  --   loyout =   awful.layout.suit.tile,
-  --   screen = 1
-  -- },
-  -- {
-  --   icon = icons.social,
-  --   type = 'social',
-  --   defaultApp = apps.default.rofi,
-  --   loyout =   awful.layout.suit.tile,
-  --   screen = 1
-  -- },
-  -- {
-  --   icon = icons.music,
-  --   type = 'music',
-  --   defaultApp = apps.default.music,
-  --   loyout =   awful.layout.suit.tile,
-  --   screen = 1
-  -- },
-  -- {
-  --   icon = icons.game,
-  --   type = 'game',
-  --   defaultApp = apps.default.rofi,
-  --   loyout =   awful.layout.suit.floating,
-  --   screen = 1
-  -- },
+  }
 }
 
--- awful.layout.layouts = {
---   awful.layout.suit.tile,
---   awful.layout.suit.max,
---   awful.layout.suit.floating
--- }
-
--- Define layouts for new version
-local layouts = {
+awful.layout.layouts = {
   awful.layout.suit.tile,
-  awful.layout.suit.floating,
   awful.layout.suit.max,
+  awful.layout.suit.floating
 }
-
--- Set the default layout
-awful.layout.append_default_layouts(layouts)
 
 awful.screen.connect_for_each_screen(
   function(s)
@@ -79,7 +62,7 @@ awful.screen.connect_for_each_screen(
         {
           icon = tag.icon,
           icon_only = true,
-          layout = tag.loyout, -- default: awful.layout.suit.tile
+          layout = awful.layout.suit.tile,
           gap_single_client = false,
           gap = 4,
           screen = s,

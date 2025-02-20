@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 {
+  #TODO: setup xdg dirs
+  #https://nixos.wiki/wiki/Environment_variables
+
   home-manager.users.developer.xdg = {
     enable = true;
     mime = {

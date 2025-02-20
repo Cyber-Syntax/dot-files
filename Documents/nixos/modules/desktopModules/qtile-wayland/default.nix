@@ -58,6 +58,7 @@
         enable = true;
         extraPackages =
           python3Packages: with python3Packages; [
+            #FIX: qtile-extras not be able to used on wayland
             qtile-extras
           ];
       };
@@ -84,7 +85,6 @@
     blueberry
     grim # screenshots
     wtype
-    gsettings-desktop-schemas
 
     libnotify
     pamixer
@@ -96,10 +96,10 @@
     # gtk3 themes
     gsettings-desktop-schemas
     #wayland dependencies
-    # wlroots
-    # # pywlroots
-    # pywayland
-    # python-xkbcommon
+    wlroots_0_18
+    python312Packages.pywlroots
+    python312Packages.pywayland
+    python312Packages.xkbcommon
 
     # screen brightness
     # brightnessctl

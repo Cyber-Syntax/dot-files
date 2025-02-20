@@ -49,6 +49,8 @@ def get_hostname():
 
 hostname = get_hostname()
 
+from variables import *
+
 if hostname == "nixos":
     from widget import *
     from keys import *
@@ -86,14 +88,14 @@ groups = [
         screen_affinity=0,
         layout="monadtall",
         matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))],
-        label="",
+        label="",
     ),
     Group(
         "4",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^superproductivity$"))],
-        label="",
+        label="",
     ),
     Group(
         "5",

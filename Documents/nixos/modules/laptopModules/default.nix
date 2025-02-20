@@ -9,5 +9,6 @@
     # ./tlp
     #TESTING: auto-cpufreq
     ./battery
+    ./hyprland
   ];
 }

@@ -34,6 +34,7 @@
     ## X11, window manager
     rofi
     dunst
+    #FIX: wayland is not work on gammastep
     gammastep
     xclip # for copy paste in neovim
     ## Productivity
@@ -47,7 +48,8 @@
     numlockx
     ## Development
     # Coding
-    nodejs_22
+    # nodejs_22
+    nodePackages_latest.nodejs
     yarn
     hugo
     go
@@ -91,7 +93,6 @@
     ## email
     # birdtray # tray for thunderbird
     thunderbird
-    tutanota-desktop
     ## Nextcloud packages
     nextcloud-client
     wakeonlan
@@ -123,9 +124,8 @@
     bash-completion
     bashInteractive
     nix-bash-completions
-    #FIX: gui not work anymore,
-    #TODO: not ask openvpn user password and name anymore
-    # current wireguard not work either
+
+    #VPN works now with the below packages
     protonvpn-gui # cli not supported anymore
     wireguard-tools
 

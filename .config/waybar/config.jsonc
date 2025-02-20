@@ -181,9 +181,17 @@
         "interval": 5,
         "on-click": "kitty -e 'watch -n1 sensors'"
   },
+  
+  "temperature": {
+    "thermal-zone": 2,
+    "hwmon-path": "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input", // cpu Tcdie from zenpower
+    "critical-threshold": 80,
+    "format-critical": "{temperatureC}°C ",
+    "format": "{temperatureC}°C "
+  },
   "memory": {
     "states": {
-      "warning": 75,
+      "warning": 70,
       "critical": 90
     },
     "format": "󰘚 {percentage}%",
@@ -240,7 +248,7 @@
     "tooltip": true,
     "tooltip-format-activated": "Presentation Mode",
     "tooltip-format-deactivated": "Idle Mode",
-    "start-activated": false
+    "start-activated": true // Toggled on 
   },
 
   "clock#time": {

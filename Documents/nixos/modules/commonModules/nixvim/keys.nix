@@ -325,7 +325,7 @@
       mode = "n";
       key = "<leader>ff";
       action = "<CMD>lua require('fzf-lua').live_grep({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Find Files";
+      options.desc = "Grep/Search keyword";
     }
     {
       mode = "n";

@@ -7,7 +7,7 @@
       systemd-boot = {
         enable = true;
         #defaultKernelOptions = [ "quiet" ];
-        configurationLimit = 50;
+        configurationLimit = 30;
       };
 
       efi = {

@@ -58,7 +58,7 @@ local awesome_overrides =
     gears.shape.rounded_rect(cr, w, h, dpi(6))
   end
 
-  -- Layout (Tile, max, floating icons)
+  -- Layout
 
   theme.layout_max = theme.icons .. 'layouts/arrow-expand-all.png'
   theme.layout_tile = theme.icons .. 'layouts/view-quilt.png'
@@ -95,7 +95,7 @@ local awesome_overrides =
   theme.tasklist_fg_urgent = theme.fg_normal
   theme.tasklist_fg_normal = '#AAAAAA'
 
-  theme.icon_theme = 'Adwaita'
+  theme.icon_theme = 'Papirus-Dark'
 
   --Client
   theme.border_width = dpi(2)

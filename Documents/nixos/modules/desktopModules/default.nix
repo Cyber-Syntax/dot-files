@@ -7,5 +7,10 @@
     ./ollama
     ./amd-cpu.nix
     ./packages
+    ./corsair
+    # qtile alternative
+    ./qtile
+    #default awesome
+    ./awesome
   ];
 }

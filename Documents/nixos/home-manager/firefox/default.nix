@@ -50,9 +50,9 @@
         };
         search = {
           force = true;
-          default = "DuckDuckGo";
+          default = "brave";
           order = [
-            "Brave"
+            "brave"
             "Google"
           ];
           engines = {

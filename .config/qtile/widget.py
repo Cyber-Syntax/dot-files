@@ -4,6 +4,8 @@ from libqtile.config import Screen
 from libqtile.lazy import lazy
 import colors
 import os
+
+# from widget import widget
 from qtile_extras import widget
 from qtile_extras.widget.decorations import RectDecoration
 
@@ -72,8 +74,10 @@ left_offset = [widget.Spacer(length=widget_left_offset, decorations=[])]
 right_offset = [widget.Spacer(length=widget_right_offset, decorations=[])]
 space = widget.Spacer(length=widget_gap, decorations=[])
 
+
 def no_text(text):
     return ""
+
 
 left = [
     # "pyxdg" package is needed for wayland for TaskList
@@ -115,8 +119,6 @@ left = [
         ],
     ),
     space,
-
-
 ]
 # left = [
 #     # "pyxdg" package is needed for wayland for TaskList
@@ -147,8 +149,7 @@ left = [
 #     ),
 # ]
 
-middle = [
-]
+middle = []
 
 right = [
     # widget.Volume(

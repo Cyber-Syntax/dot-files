@@ -1,8 +1,8 @@
 #!/bin/sh
 # Define mount points to check
 mounts=("/" "/home" "/root" "/backup" "/nix")
-warning=20
-critical=10
+warning=10
+critical=5
 
 output=""
 tooltip=""
@@ -51,7 +51,8 @@ if [ -z "$output" ]; then
   output=" "
   tooltip="All mount points have sufficient free space."
 fi
-
+# # Output plain text for AwesomeWM
+# printf "%s\n" "${output}"
 # Output JSON formatted for waybar
 printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$output" "$tooltip" "$overall_class"
 
