@@ -13,7 +13,7 @@ local zen_cpu_temp = require("widget.temp.zen")
 local ram_meter = require("widget.ram.ram-meter")
 local storage_widget = require("widget.storage.disk")
 local mpris = require("widget.mediaplayer.sh")
-local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+local volume_widget = require("widget.volume-widget.volume")
 
 -- Titus - Horizontal Tray
 local systray = wibox.widget.systray()

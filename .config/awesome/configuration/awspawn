@@ -5,7 +5,7 @@
 #  and starts a new one.
 #  Only add applications/scripts without parameters here
 #  (if you want to apply parameters then use a script file!)
-
+#FIX: not work
 # List of applications to run
 APPS=(
     )

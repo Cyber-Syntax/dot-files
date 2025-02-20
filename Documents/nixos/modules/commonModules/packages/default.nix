@@ -132,5 +132,8 @@
     # manual setup without proton gui
     networkmanager-openvpn
     openvpn
+
+    #TESTING:
+    killall
   ];
 }
