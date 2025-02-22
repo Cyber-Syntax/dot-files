@@ -131,6 +131,19 @@
     illuminate.enable = true;
 
     # # AI
+    #TEST:
+    # copilot-cmp = {
+    #   enable = true;
+    #   # luaConfig = { };
+    #   settings = {
+    #     event = [
+    #       "InsertEnter"
+    #       "LspAttach"
+    #     ];
+    #     fix_pairs = true; # prevent this `print('hello` to happen when you want `print('h')`
+    #   };
+    # };
+
     #NOTE: LLM not came to 24.11 yet.
     # llm = {
     #   enable = true;

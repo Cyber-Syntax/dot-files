@@ -1,3 +1,15 @@
+---------------------------------------------------------------------------
+--
+--  mouse module for away, move & center cursor to the focused window
+--
+--  Copyright (c) 2021 basaran
+--  Licensed under GNU General Public License v2:
+--  https://opensource.org/licenses/GPL-2.0
+--
+--  ref: https://github.com/basaran/awesomewm-micky
+--
+---------------------------------------------------------------------------
+
 --------------------------------------------------------------> dependencies ;
 
 local gears = require("gears")
@@ -40,6 +52,9 @@ client.connect_signal("focus", function(c)
 
 	gears.timer.weak_start_new(0.15, function()
 		local client_under_mouse = mouse.current_client
+		if client_under_mouse == nil then
+			return false
+		end
 		local should_stay = set_contains(stay_classes, client_under_mouse.class)
 
 		if should_stay then

@@ -4,11 +4,13 @@ local awful = require("awful")
 
 -- Storage Widget
 local storage_text = wibox.widget.textbox()
-
 local cmd2 = [[sh /home/developer/.config/awesome/scripts/storage.sh]]
+local storage_listener
 
 awesome.connect_signal("exit", function()
-	awesome.kill(storage_listener, awesome.unix_signal.SIGTERM)
+	if storage_listener then
+		awesome.kill(storage_listener, awesome.unix_signal.SIGTERM)
+	end
 end)
 
 local update_storage = function()

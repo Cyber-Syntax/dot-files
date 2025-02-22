@@ -18,6 +18,7 @@ end
 gears.timer({
 	timeout = 1,
 	call_now = true,
+	autostart = true,
 	callback = update_ram,
 })
 

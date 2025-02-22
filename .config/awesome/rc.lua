@@ -46,15 +46,28 @@ _G.client.connect_signal("manage", function(c)
 	end
 end)
 
--- Enable sloppy focus, so that focus follows mouse.
---[[
-_G.client.connect_signal(
-  'mouse::enter',
-  function(c)
-    c:emit_signal('request::activate', 'mouse_enter', {raise = true})
-  end
-)
---]]
+-- Focus when url opened in default browser firefox by link
+client.connect_signal("property::urgent", function(c)
+	if c.class == "firefox" then
+		awful.client.urgent.jumpto(false)
+	end
+end)
+
+-- Focus urgent windows
+-- - e.g focus active windows when they send notification or change their window -
+client.connect_signal("property::urgent", function(c)
+	c:jump_to()
+end)
+
+-- Enable sloppy focus, so that focus follows mouse. (e.g force focus client under mouse)
+-- NOTE: if you want to hide cursor when it is not used in the future
+-- use `unclutter` package to hide it if you want
+
+client.connect_signal("mouse::enter", function(c)
+	if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and awful.client.focus.filter(c) then
+		client.focus = c
+	end
+end)
 
 -- Make the focused window have a glowing border
 _G.client.connect_signal("focus", function(c)
@@ -63,4 +76,3 @@ end)
 _G.client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
-

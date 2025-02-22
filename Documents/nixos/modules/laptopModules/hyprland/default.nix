@@ -20,27 +20,27 @@
     # initrd.kernelModules = [ "nvidia" ];
     # extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
-    # Check: /etc/modules-load.d/nixos.conf
-    extraModprobeConfig = ''
-      options nvidia-drm modeset=1
-    '';
-
-    kernelParams = [
-      "nvidia.NVreg_CheckPCIConfigSpace=0"
-      "nvidia.NVreg_EnablePCIeGen3=1"
-      "nvidia.NVreg_UsePageAttributeTable=1"
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia_drm.modeset=1"
-    ];
-
-    kernelModules = [
-      #NOTE: seems like this is used for closed source driver?
-      "nvidia"
-      "nvidia_modeset"
-      "nvidia_uvm"
-      "nvidia_drm"
-    ];
-
+    # # Check: /etc/modules-load.d/nixos.conf
+    # extraModprobeConfig = ''
+    #   options nvidia-drm modeset=1
+    # '';
+    #
+    # kernelParams = [
+    #   "nvidia.NVreg_CheckPCIConfigSpace=0"
+    #   "nvidia.NVreg_EnablePCIeGen3=1"
+    #   "nvidia.NVreg_UsePageAttributeTable=1"
+    #   "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    #   "nvidia_drm.modeset=1"
+    # ];
+    #
+    # kernelModules = [
+    #   #NOTE: seems like this is used for closed source driver?
+    #   "nvidia"
+    #   "nvidia_modeset"
+    #   "nvidia_uvm"
+    #   "nvidia_drm"
+    # ];
+    #
     #   extraModprobeConfig =
     #     "options nvidia "
     #     + lib.concatStringsSep " " [
@@ -94,8 +94,9 @@
   };
 
   environment.variables = {
-    # Required to run the correct GBM backend for nvidia GPUs on wayland
-    GBM_BACKEND = "nvidia-drm";
+    # # Required to run the correct GBM backend for nvidia GPUs on wayland
+    # GBM_BACKEND = "nvidia-drm";
+    # WLR_DRM_DEVICES = "/dev/dri/card1"; # before = "/dev/dri/card1:/dev/dri/card0"
     # Hardware cursors are currently broken on nvidia
     WLR_NO_HARDWARE_CURSORS = "1";
 
@@ -104,7 +105,6 @@
     QT_QPA_PLATFORMTHEME = "gtk3";
     QT_SCALE_FACTOR = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    WLR_DRM_DEVICES = "/dev/dri/card1"; # before = "/dev/dri/card1:/dev/dri/card0"
     CLUTTER_BACKEND = "wayland";
     __NV_PRIME_RENDER_OFFLOAD = "1";
     GTK_USE_PORTAL = "1";

@@ -10,9 +10,12 @@ local mat_icon = require("widget.material.icon")
 local dpi = require("beautiful").xresources.apply_dpi
 local icons = require("theme.icons")
 local zen_cpu_temp = require("widget.temp.zen")
+local gpu_temp = require("widget.temp.gpu")
 local ram_meter = require("widget.ram.ram-meter")
 local storage_widget = require("widget.storage.disk")
 local mpris = require("widget.mediaplayer.sh")
+-- local mpris2 = require("awesome-wm-widgets.mpris-widget")
+-- -- local spotify = require("widget.mediaplayer.spotify")
 local volume_widget = require("widget.volume-widget.volume")
 
 -- Titus - Horizontal Tray
@@ -86,6 +89,7 @@ local TopPanel = function(s)
 		top = dpi(32),
 	})
 
+	tbox_separator = wibox.widget.textbox(" | ")
 	panel:setup({
 		layout = wibox.layout.align.horizontal,
 		{
@@ -97,15 +101,35 @@ local TopPanel = function(s)
 		},
 		nil,
 		{
-			mpris,
 			storage_widget,
+			tbox_separator,
+			mpris,
+			-- mpris2({
+			-- 	font = "Noto Sans 9",
+			-- 	path_to_icons = "/home/developer/Pictures/icons",
+			-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+			-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+			-- 	stop_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+			-- 	library_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+			-- }),
+			--FIX: sp.sh: line 84: `sp-dbus': not a valid identifier
+			-- spotify({
+			-- 	font = "Noto Sans 9",
+			-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+			-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/pause.svg",
+			-- 	-- sp_bin = gears.filesystem.get_configuration_dir() .. "scripts/sp.sh",
+			-- 	sp_bin = "/home/developer/.config/awesome/scripts/sp.sh",
+			-- }),
+			tbox_separator,
 			ram_meter,
+			tbox_separator,
 			zen_cpu_temp,
+			tbox_separator,
+			gpu_temp,
+			tbox_separator,
 			layout = wibox.layout.fixed.horizontal,
 			wibox.container.margin(systray, dpi(3), dpi(3), dpi(6), dpi(3)),
-			-- Layout box
 			LayoutBox(s),
-			-- Clock
 			volume_widget({
 				widget_type = "icon_and_text",
 				device = "pipewire",

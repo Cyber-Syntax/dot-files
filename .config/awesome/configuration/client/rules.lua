@@ -25,33 +25,60 @@ awful.rules.rules = {
 			maximized_vertical = false,
 		},
 	},
-	{
-		rule_any = { name = { "QuakeTerminal" } },
-		properties = { skip_decoration = true },
-	},
 
 	-- keepassxc floating and centered
+	-- { rule = { name = "keepassxc" }, properties = { floating = true } },
+
 	{
-		rule = { class = "keepassxc" },
+		rule_any = {
+			class = { "keepassxc" },
+		},
 		properties = {
 			floating = true,
 			placement = awful.placement.centered,
 		},
+		callback = function(c)
+			naughty.notify({
+				text = "KeepassXC rule applied: class=" .. tostring(c.class) .. ", type=" .. tostring(c.type),
+			})
+		end,
 	},
-	-- Titlebars
+
+	-- 1 [Browser]
+	-- { rule = { class = "firefox" }, properties = { screen = 1, tag = 1, switchtotag = true } },
+	-- { rule = { instance = "firefox" }, properties = { screen = "DP-4", tag = "1" } },
 	{
-		rule_any = { type = { "dialog" }, class = { "Wicd-client.py", "calendar.google.com" } },
+		rule_any = {
+			class = {
+				"firefox",
+				"browser",
+				"brave",
+				"chromium",
+			},
+		},
+		properties = { screen = 1, tag = "1" },
+		-- properties = {
+		-- 	tag = screen[1].tags[1],
+		-- 	switch_to_tags = true,
+		-- },
+	},
+	-- 5 [superproductivity] -- Default start with this workspace.
+	{
+		rule_any = {
+			class = {
+				"superproductivity",
+			},
+		},
 		properties = {
-			placement = awful.placement.centered,
-			ontop = true,
-			floating = true,
-			drawBackdrop = true,
-			shape = function()
-				return function(cr, w, h)
-					gears.shape.rounded_rect(cr, w, h, 8)
-				end
-			end,
-			skip_decoration = true,
+			screen = 1,
+			tag = "5",
+			-- switchtotag = true,
+			-- urgency = "critical",
 		},
 	},
+
+	-- {
+	-- 	rule = { class = "superproductivity" },
+	-- 	properties = { screen = 1, tag = "5", switchtotag = true, urgency = "critical" },
+	-- },
 }

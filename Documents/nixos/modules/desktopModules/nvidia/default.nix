@@ -108,6 +108,7 @@
 
   };
   #TEST: fix 6.13.2 not build with 565.77
+  # linuxKernel.packages.linux_6_13.nvidia_x11_beta_open : 6.13.3-570.86.16
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
     version = "570.86.16"; # use new 570 drivers
     sha256_64bit = "sha256-RWPqS7ZUJH9JEAWlfHLGdqrNlavhaR1xMyzs8lJhy9U=";

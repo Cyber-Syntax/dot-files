@@ -15,7 +15,48 @@ local rofi_command = "env /usr/bin/rofi -dpi "
 
 -- Run once apps
 
-awful.spawn.with_shell("~/.config/awesome/scripts/autostart.sh")
+local naughty = require("naughty")
+
+awful.spawn.easy_async_with_shell(
+	"~/.config/awesome/scripts/autostart.sh",
+	function(stdout, stderr, exitreason, exitcode)
+		if exitcode ~= 0 then
+			naughty.notify({
+				preset = naughty.config.presets.critical,
+				title = "Autostart Script Error",
+				text = stderr or "Unknown error",
+			})
+		else
+			-- Optionally process stdout if needed
+			print("Autostart completed successfully:", stdout)
+		end
+	end
+)
+--
+--NOTE: async more better then spawn with shell?
+-- awful.spawn.with_shell("~/.config/awesome/scripts/autostart.sh")
+
+---- Function to run a command only once
+-- local function run_once(cmd)
+-- 	-- If the command has arguments, extract the first token as the process name.
+-- 	local findme = cmd
+-- 	local firstspace = cmd:find(" ")
+-- 	if firstspace then
+-- 		findme = cmd:sub(1, firstspace - 1)
+-- 	end
+-- 	awful.spawn.with_shell(string.format("pgrep -u $USER -x %s || (%s)", findme, cmd))
+-- end
+--
+-- -- List your startup commands here:
+-- run_once("sh /home/developer/Documents/scripts/screenloyout/asus_only.sh")
+-- run_once("python3 /home/developer/Documents/repository/WallpaperChanger/main.py")
+-- -- run_once("setxkbmap tr") -- set keyboard layout
+-- -- run_once("numlockx on") -- enable numlock
+-- -- run_once("nm-applet") -- network manager applet
+-- -- run_once("gammastep") -- redshift alternative (works on both Wayland and Xorg)
+-- -- run_once("syncthingtray") -- syncthing tray icon
+-- run_once("TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage")
+-- -- run_once("keepassxc")
 
 -- function run_once(cmd)
 -- 	findme = cmd
@@ -44,8 +85,8 @@ return {
 		screenshot = "flameshot screen -p ~/Pictures",
 		region_screenshot = "flameshot gui -p ~/Pictures",
 		delayed_screenshot = "flameshot screen -p ~/Pictures -d 5000",
-		editor = "gedit", -- gui text editor
-		social = "discord",
+		freetube = "freetube",
+		note = "obsidian",
 		game = rofi_command,
 		-- music = rofi_command,
 	},

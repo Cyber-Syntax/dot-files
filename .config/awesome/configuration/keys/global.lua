@@ -22,10 +22,6 @@ local globalKeys = awful.util.table.join(
 	awful.key({ modkey }, "m", function()
 		awful.spawn.with_shell("pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi -dmenu)")
 	end, { description = "applet", group = "rofi" }),
-	-- siyuan
-	awful.key({ modkey }, "s", function()
-		awful.spawn.with_shell("~/Documents/appimages/siyuan.AppImage")
-	end, { description = "siyuan", group = "awesome" }),
 	-- Focus for screen
 
 	awful.key({ modkey }, "d", function()

@@ -1,5 +1,3 @@
--- widget/zen-cpu-temp.lua
-
 local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
@@ -12,7 +10,7 @@ local update_cpu_temp = function()
 	awful.spawn.easy_async_with_shell("sensors | grep 'Tdie:' | awk '{print $2}'", function(stdout)
 		local temp = stdout:match("(%d+)")
 		if temp then
-			zen_cpu_temp_text:set_markup_silently("  " .. temp .. "°C ")
+			zen_cpu_temp_text:set_markup_silently(" " .. temp .. "°C ")
 		end
 	end)
 end
@@ -21,6 +19,7 @@ end
 gears.timer({
 	timeout = 1,
 	call_now = true,
+	autostart = true,
 	callback = update_cpu_temp,
 })
 

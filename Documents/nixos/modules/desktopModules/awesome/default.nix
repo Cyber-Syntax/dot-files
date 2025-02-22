@@ -31,6 +31,7 @@
     xdotool # command for mouse binds etc.
     #TESTING: are they necessasry?
     jq # for widget script
+    mpv
   ];
 
   # environment.pathsToLink = [ "/libexec" ]; # Links /libexec from derivations to /run/current-system/sw
@@ -52,7 +53,6 @@
       #   # theme = "where_is_my_sddm_theme";
       #   wayland.enable = false;
       # };
-
     };
 
     xserver = {
