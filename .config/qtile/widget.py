@@ -1,19 +1,29 @@
 from libqtile import bar, qtile
 from libqtile.config import Screen
-
 from libqtile.lazy import lazy
 import colors
 import os
-
-# from widget import widget
 from qtile_extras import widget
-from qtile_extras.widget.decorations import RectDecoration
+from qtile_extras.widget.decorations import (
+    RectDecoration,
+    BorderDecoration,
+    # GradientDecoration,
+    PowerLineDecoration,
+    # ImageDecoration,
+)
+from qtile_extras.widget.mixins import ExtendedPopupMixin, TooltipMixin
+from qtile_extras.popup.toolkit import (
+    PopupAbsoluteLayout,
+    # PopupRelativeLayout,
+)
+
+# # TESTING: add button
+# from modules.spawn_default_app import spawn_default_app
+
 
 from variables import *
 
-# HACK: mpris2 popup is not working need to fix it later.
-# from qtile_extras.popup.templates.mpris2 import COMPACT_LAYOUT, DEFAULT_LAYOUT
-
+terminal = "kitty"  # guess if None
 colors = colors.Nord
 
 
@@ -27,7 +37,38 @@ def currentLayout(output):
     return output.capitalize()
 
 
-# qtile-extras definitions
+# qtile extras setup
+VOLUME_NOTIFICATION = PopupRelativeLayout(
+    width=200,
+    height=50,
+    hide_on_mouse_leave=True,
+    controls=[
+        PopupText(
+            text="Volume:",
+            name="text",
+            pos_x=0.1,
+            pos_y=0.1,
+            height=0.2,
+            width=0.8,
+            v_align="middle",
+            h_align="center",
+        ),
+        PopupSlider(
+            name="volume",
+            pos_x=0.1,
+            pos_y=0.3,
+            width=0.8,
+            height=0.8,
+            colour_below="00ffff",
+            bar_border_size=2,
+            bar_border_margin=1,
+            bar_size=6,
+            marker_size=0,
+            end_margin=0,
+        ),
+    ],
+)
+
 decorations = {
     "BorderDecoration": {
         "border_width": widget_decoration_border_width,
@@ -119,54 +160,45 @@ left = [
         ],
     ),
     space,
+    # TODO: define default apps, handle groups not find problem
+    #    default_apps = ["firefox", "code", "nemo", None, None, "firefox", None, "discord", "pavucontrol", "terminator -e bpytop",]
+    # widget.TextBox(
+    #     " ",
+    #     fontsize=20,
+    #     decorations=[
+    #         getattr(widget.decorations, widget_decoration)(
+    #             **decorations[widget_decoration] | {"extrawidth": 3}
+    #         )
+    #     ],
+    #     mouse_callbacks={
+    #         "Button1": lazy.function(
+    #             spawn_default_app, groups, default_apps, unset_default_app=run_launcher
+    #         ),
+    #     },
+    # ),
 ]
-# left = [
-#     # "pyxdg" package is needed for wayland for TaskList
-#     widget.TaskList(
-#         border="#414868",  # border clour
-#         highlight_method="block",
-#         # foreground=colors[1],
-#         # background=colors[0],
-#         max_title_with=80,
-#         txt_minimized="",
-#         txt_floating="",
-#         txt_maximized="",
-#         spacing=1,
-#         icon_size=20,
-#         border_width=0,
-#         fontsize=13,  # Do not change! Cause issue with specified widget_defaults
-#         stretch=False,
-#         # margin_x=0,
-#         # margin_y=0,
-#         padding_x=5,
-#         padding_y=5,
-#         hide_crash=True,
-#         decorations=[
-#             getattr(widget.decorations, widget_decoration)(
-#                 **decorations[widget_decoration] | {"extrawidth": 4}
-#             )
-#         ],
-#     ),
-# ]
-
 middle = []
 
 right = [
-    # widget.Volume(
-    #     step=2,
-    #     fmt=volume,
-    #     mouse_callbacks={
-    #         "Button1": lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
-    #     },
-    #     update_interval=0.01,
-    #     limit_max_volume=True,
-    #     volume_app="pavucontrol",
-    # ),
+    space,
+    widget.PulseVolumeExtra(
+        fmt="{}",
+        decorations=[
+            getattr(widget.decorations, widget_decoration)(
+                **decorations[widget_decoration] | {"extrawidth": 4}
+            )
+        ],
+        theme_path="/home/developer/.config/qtile/icons/volume/",
+        icon_size=20,
+        limit_normal=80,
+        limit_high=100,
+        limit_loud=101,
+        mode="both",
+    ),
     space,
     widget.Mpris2(
         fmt="{}",
         format=" {xesam:title} - {xesam:artist}",
-        # foreground=colors[7],
         paused_text="  {track}",
         playing_text="  {track}",
         scroll_fixed_width=False,
@@ -183,20 +215,25 @@ right = [
         update_interval=2,
         threshold=60,
         foreground_alert="ff6000",
+        mouse_callbacks={
+            "Button1": lambda: qtile.spawn(terminal + " htop"),
+            "Button3": lambda: qtile.spawn(terminal + " btop"),
+        },
     ),
     space,
     widget.NvidiaSensors(
-        # foreground="ffffff",
         fmt=" {}",
         format="{temp}°C {fan_speed} {perf}",
         update_interval=2,
         threshold=60,
         foreground_alert="ff6000",
+        mouse_callbacks={
+            "Button1": lambda: qtile.spawn(terminal + " watch -n 2 'nvidia-smi'")
+        },
     ),
     space,
     widget.DF(
         update_interval=60,
-        # foreground=colors[5],
         partition="/",
         format="({uf}{m}|{r:.0f}%)",
         fmt=" {}",
@@ -207,7 +244,6 @@ right = [
     space,
     widget.DF(
         update_interval=60,
-        # foreground=colors[5],
         partition="/home",
         format="({uf}{m}|{r:.0f}%)",
         fmt=" {}",
@@ -217,7 +253,6 @@ right = [
     space,
     widget.DF(
         update_interval=60,
-        # foreground=colors[5],
         partition="/nix",
         format="({uf}{m}|{r:.0f}%)",
         fmt=" {}",
@@ -227,7 +262,6 @@ right = [
     space,
     widget.DF(
         update_interval=60,
-        # foreground=colors[5],
         partition="/mnt/backups",
         format="({uf}{m}|{r:.0f}%)",
         fmt=" {}",
@@ -235,29 +269,6 @@ right = [
         visible_on_warn=True,
     ),
     space,
-    widget.Volume(
-        fmt="{}",
-        emoji=True,
-        emoji_list=["🔇", "󰕿 ", "󰖀 ", "󰕾 "],
-        fontsize=20,
-        # theme_path="/home/developer/.config/qtile/icons/volume",
-        check_mute_string="[off]",  # '' icon not working
-        mouse_callbacks={
-            # Left click to change volume output
-            "Button1": lambda: qtile.spawn(
-                'kitty -- bash -c "~/.config/qtile/scripts/sink-change.sh --change"'
-            ),
-            # Right click to open pavucontrol
-            "Button3": lambda: qtile.spawn("pavucontrol"),
-        },
-    ),
-    space,
-    widget.PulseVolumeExtra(
-        # theme_path="/home/developer/.config/qtile/icons/volume",
-        limit_normal=80,
-        limit_high=100,
-        limit_loud=101,
-    ),
     widget.Clock(
         format="%A %d %B %Y %H:%M",
         # mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},

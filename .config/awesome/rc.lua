@@ -15,11 +15,7 @@ require("module.notifications")
 require("module.auto-start")
 require("module.decorate-client")
 
-require("module.focus-mouse")
--- Backdrop causes bugs on some gtk3 applications
---require('module.backdrop')
-require("module.exit-screen")
-require("module.quake-terminal")
+-- require("module.exit-screen")
 
 -- Setup all configurations
 require("configuration.client")
@@ -46,6 +42,17 @@ _G.client.connect_signal("manage", function(c)
 	end
 end)
 
+-- Garbage collection
+collectgarbage("incremental", 150, 600, 0)
+
+gears.timer.start_new(60, function()
+	-- just let it do a full collection
+	collectgarbage()
+	-- or else set a step size
+	-- collectgarbage("step", 30000)
+	return true
+end)
+
 -- Focus when url opened in default browser firefox by link
 client.connect_signal("property::urgent", function(c)
 	if c.class == "firefox" then
@@ -62,6 +69,8 @@ end)
 -- Enable sloppy focus, so that focus follows mouse. (e.g force focus client under mouse)
 -- NOTE: if you want to hide cursor when it is not used in the future
 -- use `unclutter` package to hide it if you want
+--
+require("module.focus-mouse")
 
 client.connect_signal("mouse::enter", function(c)
 	if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and awful.client.focus.filter(c) then

@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # COLORSCHEME=Nord
+#FIX: not work for now on hyprland
 # python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
+#FIX: gammastep not work on hyprland now.
+# probably need wayland enabled on nixos while building
 gammastep &
 dunst &
 nm-applet & # network manager applet
 waybar &
 syncthingtray &
-# gammastep & # redshift alternative (works wayland and xorg)
 
 #TESTING: handle inside python if this is not work
 #Laptop statement is worked.

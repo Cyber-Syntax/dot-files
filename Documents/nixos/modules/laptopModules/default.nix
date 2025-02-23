@@ -9,6 +9,6 @@
     # ./tlp
     #TESTING: auto-cpufreq
     ./battery
-    ./hyprland
+    ./hyprland-laptop.nix
   ];
 }

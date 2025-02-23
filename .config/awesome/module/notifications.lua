@@ -3,22 +3,35 @@ local beautiful = require("beautiful")
 local gears = require("gears")
 local dpi = require("beautiful").xresources.apply_dpi
 
--- Naughty presets
-naughty.config.padding = 8
-naughty.config.spacing = 8
+-- -- Temporary test notification (add to your config)
+-- gears.timer({
+-- 	timeout = 5,
+-- 	call_now = true,
+-- 	autostart = true,
+-- 	callback = function()
+-- 		naughty.notify({ title = "Visibility Test", text = "Can you see me?" })
+-- 	end,
+-- })
+-- Add this at the TOP of your notifications config
+naughty.config.defaults.layer = "top" -- Force notifications to topmost layer
+naughty.config.defaults.ontop = true -- Ensure on-top (redundant but explicit)
 
-naughty.config.defaults.timeout = 5
-naughty.config.defaults.screen = 1
-naughty.config.defaults.position = "top_right"
-naughty.config.defaults.margin = dpi(16)
-naughty.config.defaults.ontop = true
-naughty.config.defaults.font = "Noto Sans 10"
-naughty.config.defaults.icon = nil
-naughty.config.defaults.icon_size = dpi(32)
-naughty.config.defaults.shape = gears.shape.rounded_rect
-naughty.config.defaults.border_width = 0
-naughty.config.defaults.hover_timeout = nil
-
+-- Then modify your existing configuration:
+naughty.config.defaults = {
+	-- Your existing settings --
+	timeout = 5,
+	screen = 1,
+	position = "top_right",
+	margin = dpi(16),
+	ontop = true, -- Already present, keep it
+	layer = "top", -- Add this line (critical for fullscreen visibility)
+	font = "Noto Sans 10",
+	icon = nil,
+	icon_size = dpi(32),
+	shape = gears.shape.rounded_rect,
+	border_width = 0,
+	hover_timeout = nil,
+}
 -- Error handling
 if _G.awesome.startup_errors then
 	naughty.notify({

@@ -13,7 +13,7 @@ local zen_cpu_temp = require("widget.temp.zen")
 local gpu_temp = require("widget.temp.gpu")
 local ram_meter = require("widget.ram.ram-meter")
 local storage_widget = require("widget.storage.disk")
-local mpris = require("widget.mediaplayer.sh")
+local player = require("widget.mediaplayer.player")
 -- local mpris2 = require("awesome-wm-widgets.mpris-widget")
 -- -- local spotify = require("widget.mediaplayer.spotify")
 local volume_widget = require("widget.volume-widget.volume")
@@ -27,7 +27,7 @@ systray.forced_height = 20
 -- Clock / Calendar 24h format
 -- local textclock = wibox.widget.textclock('<span font="Roboto Mono bold 9">%d.%m.%Y\n     %H:%M</span>')
 -- Clock / Calendar 12AM/PM fornat
-local textclock = wibox.widget.textclock('<span font="Roboto Mono 12">%I:%M %p</span>')
+local textclock = wibox.widget.textclock('<span font="Noto Sans 12">%I:%M %p</span>')
 -- textclock.forced_height = 36
 
 -- Add a calendar (credits to kylekewley for the original code)
@@ -103,23 +103,7 @@ local TopPanel = function(s)
 		{
 			storage_widget,
 			tbox_separator,
-			mpris,
-			-- mpris2({
-			-- 	font = "Noto Sans 9",
-			-- 	path_to_icons = "/home/developer/Pictures/icons",
-			-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
-			-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
-			-- 	stop_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
-			-- 	library_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
-			-- }),
-			--FIX: sp.sh: line 84: `sp-dbus': not a valid identifier
-			-- spotify({
-			-- 	font = "Noto Sans 9",
-			-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
-			-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/pause.svg",
-			-- 	-- sp_bin = gears.filesystem.get_configuration_dir() .. "scripts/sp.sh",
-			-- 	sp_bin = "/home/developer/.config/awesome/scripts/sp.sh",
-			-- }),
+			player,
 			tbox_separator,
 			ram_meter,
 			tbox_separator,
@@ -130,9 +114,10 @@ local TopPanel = function(s)
 			layout = wibox.layout.fixed.horizontal,
 			wibox.container.margin(systray, dpi(3), dpi(3), dpi(6), dpi(3)),
 			LayoutBox(s),
+			-- volume_widget,
 			volume_widget({
-				widget_type = "icon_and_text",
-				device = "pipewire",
+				font = "Noto Sans 11",
+				icon_dir = "/home/developer/.config/awesome/widget/volume-widget/icons/",
 			}),
 			clock_widget,
 		},
@@ -142,3 +127,20 @@ local TopPanel = function(s)
 end
 
 return TopPanel
+
+-- mpris2({
+-- 	font = "Noto Sans 9",
+-- 	path_to_icons = "/home/developer/Pictures/icons",
+-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+-- 	stop_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+-- 	library_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+-- }),
+--FIX: sp.sh: line 84: `sp-dbus': not a valid identifier
+-- spotify({
+-- 	font = "Noto Sans 9",
+-- 	play_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/play.svg",
+-- 	pause_icon = "/home/developer/.config/awesome/widget/mediaplayer/icons/pause.svg",
+-- 	-- sp_bin = gears.filesystem.get_configuration_dir() .. "scripts/sp.sh",
+-- 	sp_bin = "/home/developer/.config/awesome/scripts/sp.sh",
+-- }),

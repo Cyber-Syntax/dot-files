@@ -42,32 +42,34 @@
     # udev.extraRules = ''
     # '';
 
-    # displayManager = {
-    #   defaultSession = "qtile";
-    #   autoLogin.enable = true; # NOTE: ctrl + alt + F1,2,3,4 still works
-    #   autoLogin.user = "developer";
-    #
-    #   # sddm = {
-    #   #   enable = true;
-    #   #   autoNumlock = true;
-    #   #   #TEST: theme testing
-    #   #   theme = "where_is_my_sddm_theme";
-    #   # };
-    # };
+    displayManager = {
+      defaultSession = "qtile";
+      autoLogin.enable = true; # NOTE: ctrl + alt + F1,2,3,4 still works
+      autoLogin.user = "developer";
+
+      # sddm = {
+      #   enable = true;
+      #   autoNumlock = true;
+      #   #TEST: theme testing
+      #   theme = "where_is_my_sddm_theme";
+      # };
+    };
 
     xserver = {
-      # enable = true;
-      # xkb.layout = "tr";
-      # autorun = true;
-      # exportConfiguration = true;
-      #
-      # displayManager.lightdm.enable = true;
+      enable = true;
+      xkb.layout = "tr";
+      autorun = true;
+      exportConfiguration = true;
+
+      displayManager.lightdm.enable = true;
 
       windowManager.qtile = {
         enable = true;
         extraPackages =
           python3Packages: with python3Packages; [
             qtile-extras
+            pillow
+            dbus-next
           ];
       };
 

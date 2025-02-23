@@ -3,7 +3,6 @@ local gears = require("gears")
 local client_keys = require("configuration.client.keys")
 local client_buttons = require("configuration.client.buttons")
 
--- Rules
 awful.rules.rules = {
 	-- All clients will match this rule.
 	{
@@ -25,28 +24,6 @@ awful.rules.rules = {
 			maximized_vertical = false,
 		},
 	},
-
-	-- keepassxc floating and centered
-	-- { rule = { name = "keepassxc" }, properties = { floating = true } },
-
-	{
-		rule_any = {
-			class = { "keepassxc" },
-		},
-		properties = {
-			floating = true,
-			placement = awful.placement.centered,
-		},
-		callback = function(c)
-			naughty.notify({
-				text = "KeepassXC rule applied: class=" .. tostring(c.class) .. ", type=" .. tostring(c.type),
-			})
-		end,
-	},
-
-	-- 1 [Browser]
-	-- { rule = { class = "firefox" }, properties = { screen = 1, tag = 1, switchtotag = true } },
-	-- { rule = { instance = "firefox" }, properties = { screen = "DP-4", tag = "1" } },
 	{
 		rule_any = {
 			class = {
@@ -57,28 +34,45 @@ awful.rules.rules = {
 			},
 		},
 		properties = { screen = 1, tag = "1" },
-		-- properties = {
-		-- 	tag = screen[1].tags[1],
-		-- 	switch_to_tags = true,
-		-- },
 	},
-	-- 5 [superproductivity] -- Default start with this workspace.
+	-- SuperProductivity: Assign to Tag 5 on Screen 1
 	{
-		rule_any = {
-			class = {
-				"superproductivity",
-			},
-		},
+		rule = { class = "superProductivity" },
 		properties = {
 			screen = 1,
-			tag = "5",
-			-- switchtotag = true,
+			tag = "5", -- Use tag index (assuming tag 5 exists)
+			switch_to_tags = true,
 			-- urgency = "critical",
 		},
 	},
-
+	-- KeePassXC: Floating + Centered
+	{
+		rule = { class = "KeePassXC" },
+		properties = {
+			floating = true,
+			placement = awful.placement.centered,
+		},
+	},
 	-- {
-	-- 	rule = { class = "superproductivity" },
-	-- 	properties = { screen = 1, tag = "5", switchtotag = true, urgency = "critical" },
+	-- 	rule_any = {
+	-- 		class = {
+	-- 			"keepassxc",
+	-- 			"KeePassXC",
+	-- 		},
+	-- 	},
+	-- 	properties = {
+	-- 		screen = 1,
+	-- 		floating = true,
+	-- 		focus = awful.client.focus.filter,
+	-- 		raise = true,
+	-- 		keys = client_keys,
+	-- 		buttons = client_buttons,
+	-- 		screen = awful.screen.preferred,
+	-- 		placement = awful.placement.centered,
+	-- 		titlebars_enabled = false,
+	-- 		ontop = true,
+	-- 		width = 640,
+	-- 		height = 480,
+	-- 	},
 	-- },
 }

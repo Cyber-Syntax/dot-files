@@ -6,7 +6,6 @@ from themes import Nord as nord_theme
 # General
 
 # mod = "mod4"
-# terminal = None  # guess if None
 # browser = None  # guess if None
 # file_manager = None  # guess if None
 # launcher = "rofi -show drun"

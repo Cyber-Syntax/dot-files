@@ -26,7 +26,7 @@
 import os
 import subprocess
 from libqtile import hook, layout
-from libqtile.config import Group, Key, Match, Drag
+from libqtile.config import Group, Key, Match, Drag, ScratchPad, DropDown
 from libqtile.lazy import lazy
 import re  # this fixes the Match error on group
 from functions import *
@@ -106,7 +106,6 @@ groups = [
     ),
     Group("6", screen_affinity=0, layout="monadtall", label=""),
 ]
-
 for i in groups:
     keys.extend(
         [
@@ -118,6 +117,47 @@ for i in groups:
             Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
         ]
     )
+
+# Scratchpad
+groups.append(
+    ScratchPad(
+        "scratchpad",
+        [
+            # define a drop down terminal.
+            # it is placed in the upper third of screen by default.
+            DropDown(  # F10
+                "term",
+                "kitty",
+                opacity=0.8,
+                width=0.5,
+                height=0.5,
+                x=0.3,
+                y=0.3,
+                # on_focus_lost_hide=False,  # Keep open until manually hidden
+            ),
+            DropDown(  # F11
+                "social",
+                "freetube",
+                opacity=0.8,
+                width=0.5,
+                height=0.5,
+                x=0.3,
+                y=0.3,
+                # on_focus_lost_hide=False,  # Keep open until manually hidden
+            ),
+            DropDown(  # F12
+                "chat",
+                "signal-desktop",
+                opacity=0.8,
+                width=0.5,
+                height=0.5,
+                x=0.3,
+                y=0.3,
+                # on_focus_lost_hide=False,  # Keep open until manually hidden
+            ),
+        ],
+    ),
+)
 
 layout_theme = {
     "border_width": layouts_border_width,

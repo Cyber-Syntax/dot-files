@@ -31,7 +31,6 @@
     xdotool # command for mouse binds etc.
     #TESTING: are they necessasry?
     jq # for widget script
-    mpv
   ];
 
   # environment.pathsToLink = [ "/libexec" ]; # Links /libexec from derivations to /run/current-system/sw

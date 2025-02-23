@@ -22,6 +22,11 @@ mouse = [
 ]
 
 keys = [
+    # scratchpad
+    # Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("deepseek-chat")),
+    Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("term")),
+    Key([], "F11", lazy.group["scratchpad"].dropdown_toggle("social")),
+    Key([], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
     Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),

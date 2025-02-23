@@ -50,9 +50,10 @@ local tags = {
 }
 
 awful.layout.layouts = {
-	awful.layout.suit.tile,
+	-- awful.layout.suit.dwindle,
 	awful.layout.suit.max,
 	awful.layout.suit.floating,
+	awful.layout.suit.tile,
 }
 
 awful.screen.connect_for_each_screen(function(s)
@@ -70,11 +71,11 @@ awful.screen.connect_for_each_screen(function(s)
 	end
 end)
 
-_G.tag.connect_signal("property::layout", function(t)
-	local currentLayout = awful.tag.getproperty(t, "layout")
-	if currentLayout == awful.layout.suit.max then
-		t.gap = 0
-	else
-		t.gap = 4
-	end
-end)
+-- _G.tag.connect_signal("property::layout", function(t)
+-- 	local currentLayout = awful.tag.getproperty(t, "layout")
+-- 	if currentLayout == awful.layout.suit.max then
+-- 		t.gap = 0
+-- 	else
+-- 		t.gap = 4
+-- 	end
+-- end)

@@ -88,9 +88,10 @@ local globalKeys = awful.util.table.join(
 	end, { description = "view next non-empty tag", group = "tag" }),
 	-- xrandr
 	-- If the key is not pressed again within four seconds, the configuration described in the current popup is applied.
-	awful.key({}, "F1", function()
-		xrandr.xrandr()
-	end),
+	--FIX: not work
+	-- awful.key({}, "F1", function()
+	-- 	xrandr.xrandr()
+	-- end),
 
 	-- Tag browsing
 	awful.key({ modkey }, "w", awful.tag.viewprev, { description = "view previous", group = "tag" }),
@@ -204,10 +205,6 @@ local globalKeys = awful.util.table.join(
 			c:raise()
 		end
 	end, { description = "restore minimized", group = "client" }),
-	-- Dropdown application
-	awful.key({ modkey }, "z", function()
-		_G.toggle_quake()
-	end, { description = "dropdown application", group = "launcher" }),
 	-- Widgets popups
 	--[[awful.key(
     {altkey},
