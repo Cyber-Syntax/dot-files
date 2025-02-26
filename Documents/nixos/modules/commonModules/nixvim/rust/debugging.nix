@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.nixvim.plugins.dap = {
     enable = true;
     extensions = {
@@ -7,7 +7,7 @@
     };
 
     adapters = {
-      executables = { lldb = { command = "${pkgs.lldb_19}/bin/lldb-dap"; }; };
+      executables = {lldb = {command = "${pkgs.lldb_19}/bin/lldb-dap";};};
     };
   };
 }

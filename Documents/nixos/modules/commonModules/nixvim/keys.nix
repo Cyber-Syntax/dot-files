@@ -324,20 +324,64 @@
     {
       mode = "n";
       key = "<leader>ff";
-      action = "<CMD>lua require('fzf-lua').live_grep({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Grep/Search keyword";
+      action = "<CMD>lua require('fzf-lua').files({ cwd = vim.loop.cwd() })<CR>";
+      options.desc = "Find files in CWD";
     }
     {
       mode = "n";
-      key = "<leader>fs";
-      action = "<CMD>lua require('fzf-lua').files({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Find Files";
+      key = "<leader>fg";
+      action = "<CMD>lua require('fzf-lua').live_grep({ cwd = vim.loop.cwd() })<CR>";
+      options.desc = "Live grep in CWD";
     }
     {
       mode = "n";
       key = "<leader>fr";
       action = "<CMD>lua require('fzf-lua').oldfiles({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Recent Files";
+      options.desc = "Recent files in CWD";
+    }
+
+    # New recommended mappings
+    {
+      mode = "n";
+      key = "<leader>fb";
+      action = "<CMD>lua require('fzf-lua').buffers()<CR>";
+      options.desc = "Find buffers";
+    }
+    {
+      mode = "n";
+      key = "<leader>fh";
+      action = "<CMD>lua require('fzf-lua').help_tags()<CR>";
+      options.desc = "Help tags";
+    }
+    {
+      mode = "n";
+      key = "<leader>fs";
+      action = "<CMD>lua require('fzf-lua').git_status()<CR>";
+      options.desc = "Git status";
+    }
+    {
+      mode = "n";
+      key = "<leader>fl";
+      action = "<CMD>lua require('fzf-lua').blines()<CR>";
+      options.desc = "Search lines in buffer";
+    }
+    {
+      mode = "n";
+      key = "<leader>fc";
+      action = "<CMD>lua require('fzf-lua').commands()<CR>";
+      options.desc = "Vim commands";
+    }
+    {
+      mode = "n";
+      key = "<leader>fm";
+      action = "<CMD>lua require('fzf-lua').marks()<CR>";
+      options.desc = "Vim marks";
+    }
+    {
+      mode = "n";
+      key = "<leader>fd";
+      action = "<CMD>lua require('fzf-lua').lsp_document_symbols()<CR>";
+      options.desc = "Document symbols";
     }
 
     # Database

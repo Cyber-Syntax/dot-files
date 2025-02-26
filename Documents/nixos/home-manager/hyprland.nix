@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{pkgs, ...}:
 #TODO: use it when kde not work on hyprland
 {
   home.file.".config/hypr/auth.conf".text = ''

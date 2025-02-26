@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nixvim.plugins = {
     # auto-save.enable = true;
     clipboard-image = {
@@ -127,11 +126,40 @@
       };
     };
 
+    #Productivity
     hop.enable = true;
     illuminate.enable = true;
+    # auto-save.enable = true;
 
     # # AI
-    #TEST:
+    cmp-ai = {
+      enable = true;
+      # autoLoad = true; # not came to 24.11 yet
+      # lazyLoad.enable = false;
+      settings = {
+        # ignored_file_types = {
+        #   lua = true;
+        # };
+        max_lines = 100;
+        notify = true;
+        notify_callback = ''
+          function(msg)
+            vim.notify(msg)
+          end
+        '';
+        provider = "Ollama";
+        provider_options = {
+          model = "qwen2.5-coder:7b-base-q5_K_M";
+          prompt = ''
+            function(lines_before, lines_after)
+              return "<|fim_prefix|>" .. lines_before .. "<|fim_suffix|>" .. lines_after .. "<|fim_middle|>"
+            end
+          '';
+        };
+        run_on_every_keystroke = true;
+      };
+    };
+
     # copilot-cmp = {
     #   enable = true;
     #   # luaConfig = { };
@@ -223,7 +251,40 @@
     # };
 
     # others
-    nvim-lightbulb.enable = true;
+    nvim-lightbulb = {
+      enable = true;
+      settings = {
+        autocmd = {
+          enabled = true;
+          updatetime = 200;
+        };
+        float = {
+          enabled = false;
+          text = " 󰌶 ";
+          win_opts = {
+            border = "rounded";
+          };
+        };
+        line = {
+          enabled = false;
+        };
+        number = {
+          enabled = false;
+        };
+        sign = {
+          enabled = false;
+          text = "󰌶";
+        };
+        status_text = {
+          enabled = false;
+          text = " 󰌶 ";
+        };
+        virtual_text = {
+          enabled = true;
+          text = "󰌶";
+        };
+      };
+    };
     lualine = {
       enable = true;
       settings.options.globalstatus = true;
@@ -233,7 +294,7 @@
     mini = {
       enable = true;
       modules = {
-        surround = { };
+        surround = {};
         indentscope = {
           symbol = "│";
           options = {
@@ -376,10 +437,9 @@
       keymaps = {
         todoTelescope = {
           key = "<leader>st";
-          keywords = [ "TODO" ];
+          keywords = ["TODO"];
         };
       };
     };
-
   };
 }

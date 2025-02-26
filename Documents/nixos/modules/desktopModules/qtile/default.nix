@@ -1,7 +1,4 @@
-{ pkgs, ... }:
-
-{
-
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     xorg.setxkbmap
     xorg.xrandr
@@ -35,12 +32,29 @@
     python312Packages.xcffib
     python312Packages.cairocffi
     python312Packages.cffi
+    flameshot #screenshot
   ];
 
   services = {
     # udev.enable = true;
     # udev.extraRules = ''
     # '';
+
+    libinput.mouse = {
+      #TESTING:
+      # accelProfile = "flat"; # slow
+      #Cursor acceleration (how fast speed increases from minSpeed to maxSpeed).
+      #This only applies to the flat or adaptive profile.
+      accelSpeed = "-0.5";
+      accelStepScroll = 0.1;
+      #Sets the points of the scroll acceleration function.
+      accelPointsScroll = [
+        0.0
+        1.0
+        2.4
+        2.5
+      ];
+    };
 
     displayManager = {
       defaultSession = "qtile";
@@ -65,14 +79,13 @@
 
       windowManager.qtile = {
         enable = true;
-        extraPackages =
-          python3Packages: with python3Packages; [
+        extraPackages = python3Packages:
+          with python3Packages; [
             qtile-extras
             pillow
             dbus-next
           ];
       };
-
     }; # ./xserver
   }; # ## ./services
 

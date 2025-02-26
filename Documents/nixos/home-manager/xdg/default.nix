@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   #TODO: setup xdg dirs
   #https://nixos.wiki/wiki/Environment_variables
 

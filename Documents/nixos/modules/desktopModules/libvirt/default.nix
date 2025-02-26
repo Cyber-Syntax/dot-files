@@ -1,5 +1,8 @@
-{ pkgs, username, ... }:
-
+{
+  pkgs,
+  username,
+  ...
+}:
 #TESTING:
 {
   virtualisation = {
@@ -9,13 +12,13 @@
         package = pkgs.qemu_kvm;
         swtpm.enable = true;
         ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
+        ovmf.packages = [pkgs.OVMFFull.fd];
       };
     };
     spiceUSBRedirection.enable = true;
   };
 
-  users.users.${username}.extraGroups = [ "libvirtd" ];
+  users.users.${username}.extraGroups = ["libvirtd"];
 
   environment.systemPackages = with pkgs; [
     spice
@@ -30,8 +33,8 @@
   home-manager.users.${username} = {
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
-        autoconnect = [ "qemu:///system" ];
-        uris = [ "qemu:///system" ];
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
       };
     };
   };

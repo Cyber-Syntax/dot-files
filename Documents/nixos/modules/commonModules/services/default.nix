@@ -1,12 +1,10 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   # Disable pulseaudio, using pipewire
   hardware.pulseaudio.enable = false;
 
   # sytemd-timer for trash-cli to delete files older than 30 days.
   systemd.timers."trash-cli" = {
-    wantedBy = [ "timers.target" ];
+    wantedBy = ["timers.target"];
     timerConfig = {
       OnCalendar = "daily";
       Persistent = true; # make systemd timer persistent if missed the last start time, similar anacron
@@ -16,7 +14,7 @@
   systemd.services."trash-cli" = {
     # (crontab -l ; echo "@daily $(which trash-empty) 30") | crontab -
     script = ''
-      ${pkgs.trash-cli}/bin/trash-empty 30  
+      ${pkgs.trash-cli}/bin/trash-empty 30
     '';
 
     serviceConfig = {
@@ -27,7 +25,6 @@
   };
 
   services = {
-
     clamav = {
       updater.enable = true;
       updater.settings = {
@@ -116,7 +113,6 @@
       #     };
       #   };
       # };
-
     };
   };
   #

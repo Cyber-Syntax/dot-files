@@ -1,5 +1,4 @@
 {pkgs, ...}: {
-
   # Allow DAP UI to automatically open and close when possible
   programs.nixvim.extraConfigLua = ''
     require('dap').listeners.after.event_initialized['dapui_config'] = require('dapui').open
@@ -37,7 +36,7 @@
     };
   };
 
-    programs.nixvim.keymaps = [
+  programs.nixvim.keymaps = [
     {
       mode = "n";
       key = "<leader>dB";
@@ -216,5 +215,4 @@
       options = {desc = "Debug Configurations";};
     }
   ];
-
 }

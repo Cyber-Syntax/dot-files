@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   networking.networkmanager.wifi.powersave = true;
 
   powerManagement = {
@@ -37,7 +35,6 @@
           turbo = "auto";
           energy_performance_preference = "performance";
           platform_profile = "performance";
-
         };
       };
     };

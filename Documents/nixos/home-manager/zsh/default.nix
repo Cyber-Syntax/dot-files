@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home-manager.users.developer.programs.zsh = {
     enable = true;
     oh-my-zsh = {
@@ -71,7 +69,7 @@
       dino-deploy = "yarn build & USE_SSH=true yarn deploy";
 
       # nixos
-      #TESTING: stable version need test which I am not sure is it work
+      #FIX: stable not work...
       stable-flu = "sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware";
       all-flu = "sudo nix flake update"; # NOTE: this is going to be used for updating packages instead of switch-upgrade
       boot-nixos = "sudo nixos-rebuild boot --flake .#nixos"; # build going to be activated after next boot
@@ -156,6 +154,5 @@
       # import zoxide
       eval "$(zoxide init zsh)"
     '';
-
   };
 }

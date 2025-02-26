@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     #TODO: test later
     # ./libvirt
@@ -8,8 +7,8 @@
     ./amd-cpu.nix
     ./packages
     ./corsair
-    ./qtile
+    # ./qtile
     # ./awesome
-    # ./hyprland-desktop.nix
+    ./hyprland-desktop.nix
   ];
 }

@@ -14,6 +14,7 @@
 }
 
 @import "theme.css";
+/*@import "tomorrow-night.css";*/
 
 /* === Main Background === */
 window#waybar {
@@ -51,7 +52,7 @@ tooltip label {
   margin: 0px 1px;
   min-width: 30px;
   /* Set an opaque base background (Nord polar-night-1) */
-  background: #2e3440;
+  background: @memory;
   color: @module-fg;
   border: 0.5px solid #2e3440;
   border-radius: 8px;
@@ -66,8 +67,8 @@ tooltip label {
 }
 /* Focused workspace */
 #workspaces button.active {
-  color: @active-fg;
-  background: @active-bg;
+  color: @main-fg;
+  background: @memory;
   border-color: @active-bg;
   box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.6);
 }
@@ -146,17 +147,17 @@ tooltip label {
 
 /* -- Workspaces Group -- */
 #custom-left1 {
-  color: @workspaces;
+  color: @memory;
   background: @main-bg;
   padding-left: 2px;
 }
 #workspaces {
-  background: @workspaces;
+  background: @memory;
   border-radius: 6px;
   margin: 4px;
 }
 #custom-right1 {
-  color: @workspaces;
+  color: @memory;
   background: @main-bg;
   text-shadow: 3px 0 2px rgba(0, 0, 0, 0.4);
 }
@@ -212,7 +213,7 @@ tooltip label {
 #tray,
 #custom-media,
 #mpris {
-  background: #3b4252; /* Dark gray */
+  background: @memory; /* Dark gray */
   color: @module-fg;
   border-radius: 6px;
   padding: 0 4px;
@@ -296,7 +297,7 @@ tooltip label {
   margin-bottom: -1px;
 }
 #idle_inhibitor {
-  background: @date;
+  background: @memory;
   margin-right: -2px;
   padding-left: 7px;
 }
@@ -312,14 +313,14 @@ tooltip label {
 }
 #custom-right3 {
   color: @time;
-  background: @date;
+  background: @memory;
   border-radius: 6px;
   padding: 0 3px;
 }
 
 /* -- Date Module for Clock -- */
 #clock.date {
-  background: @date;
+  background: @memory;
   border-radius: 6px;
   padding: 0 3px;
 }
@@ -337,7 +338,7 @@ tooltip label {
 
 /* -- Tray Module (if not already defined) -- */
 #tray {
-  background: #3b4252;
+  background: @tray;
   color: @module-fg;
   border-radius: 6px;
   padding: 0 4px;
@@ -407,8 +408,8 @@ tooltip label {
   border-radius: 6px;
 }
 #custom-power {
-  color: @main-bg;
-  background: @power;
+  color: @battery;
+  background: @memory;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
   box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.6);
   border-radius: 10px;

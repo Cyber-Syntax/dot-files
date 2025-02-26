@@ -1,1 +1,1 @@
-{ programs.nixvim.plugins.dap.extensions.dap-python.enable = true; }
+{programs.nixvim.plugins.dap.extensions.dap-python.enable = true;}

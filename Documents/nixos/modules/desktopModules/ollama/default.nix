@@ -3,9 +3,7 @@
   pkgs-unstable,
   pkgs,
   ...
-}:
-
-{
+}: {
   environment.systemPackages = with pkgs; [
     python312Packages.litellm
     python312Packages.tokenizers

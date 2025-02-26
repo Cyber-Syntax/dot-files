@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   xdg = {
     portal = {
       enable = true;
@@ -22,7 +20,6 @@
           ];
         };
       };
-
     };
 
     #TODO: add new defaultApplications:
@@ -49,6 +46,5 @@
         ];
       };
     };
-
   };
 }

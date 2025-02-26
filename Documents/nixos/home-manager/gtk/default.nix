@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home-manager.users.developer.home.pointerCursor = {
     gtk.enable = true;
     # x11.enable = true;
@@ -12,7 +10,6 @@
     #   enable = true;
     #   size = 24;
     # };
-
   };
 
   home-manager.users.developer.gtk = {
@@ -61,7 +58,5 @@
       #gtk-recent-files-limit = 20;
       gtk-application-prefer-dark-theme = 1;
     };
-
   }; # ./gtk
-
 }

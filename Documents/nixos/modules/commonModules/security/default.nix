@@ -1,6 +1,8 @@
-{ pkgs, lib, ... }:
 {
-
+  pkgs,
+  lib,
+  ...
+}: {
   #FIX: gnome keyring still not works
   #https://github.com/NixOS/nixpkgs/issues/86884#issuecomment-1134787613
   environment.systemPackages = with pkgs; [

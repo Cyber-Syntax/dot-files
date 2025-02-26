@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
@@ -57,16 +56,35 @@
     # neovim
     lazygit
     gnumake
-    #vscode-json-languageserver
-    nil # nix language server as lsp
     cargo # for rust and nil to work
     lua-language-server
-    bash-language-server
     luarocks # for lua
     stylua # lua formatter
     marksman
-    ruff # python linter
-    pylint # static code analysis tool for python
+    vimPlugins.vim-markdown-toc
+    markdownlint-cli2
+    #python
+    ruff
+    mypy
+    #nix
+    nil
+    nixd
+    # nixfmt-rfc-style
+    alejandra
+    statix
+    #bash, shell
+    bash-language-server
+    #json
+    #json-lsp #FIX: find correct name
+    #Other
+    stdenv.cc.cc.lib
+    zlib
+    # html
+    prettierd # TODO: need setup on neovim
+    nodePackages.prettier
+    yamlfmt
+    bash-language-server
+    # pylint # static code analysis tool for python
     ## AI
     python3
     ### Development for compiling
@@ -87,7 +105,6 @@
     evince
     calibre
     libreoffice
-    flameshot
     xournalpp
     pcmanfm
     ## email

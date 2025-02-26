@@ -1,5 +1,8 @@
-{ pkgs, unstable, ... }:
 {
+  pkgs,
+  unstable,
+  ...
+}: {
   boot = {
     kernelPackages = pkgs.linuxPackages_latest; # Use latest production
     # kernelParams = [ "preempt=full" ];
@@ -17,7 +20,7 @@
 
     # reno cubic enabled: 83-89down 18-19up
     # after bbr enabled: 89-93down 18-20up
-    kernelModules = [ "tcp_bbr" ]; # Enable BBR congestion control algorithm.
+    kernelModules = ["tcp_bbr"]; # Enable BBR congestion control algorithm.
     kernel.sysctl = {
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.core.default_qdisc" = "fq";

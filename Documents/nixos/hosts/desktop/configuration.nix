@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -95,9 +93,8 @@
         monthly = 2;
       };
       persistentTimer = true; # similar anacron, if missed the last start time, start backup
-      startAt = [ "*-*-* 10:00 Europe/Istanbul" ];
+      startAt = ["*-*-* 10:00 Europe/Istanbul"];
     };
-
   };
 
   # Some programs need SUID wrappers, can be configured further or are

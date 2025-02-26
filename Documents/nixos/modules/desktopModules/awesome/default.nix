@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     xorg.setxkbmap
     xorg.xrandr
@@ -73,8 +72,6 @@
           luajitPackages.luadbi-mysql
         ];
       };
-
     }; # ./xserver
   }; # ## ./services
-
 }

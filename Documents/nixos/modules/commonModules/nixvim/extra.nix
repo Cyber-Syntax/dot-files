@@ -1,5 +1,10 @@
-{pkgs, nixvim, ...}: {
+{
+  pkgs,
+  nixvim,
+  ...
+}: {
   programs.nixvim.extraPlugins = with pkgs; [
+    vimPlugins.plenary-nvim # compability for cmp-ai
     # vimPlugins.supermaven-nvim # AI code completion
     # vimPlugins.vim-dadbod # DB client
     # vimPlugins.vim-dadbod-completion # DB completion

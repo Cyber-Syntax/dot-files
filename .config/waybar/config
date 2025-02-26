@@ -27,8 +27,6 @@
             "clock#time",           
           "custom/paddw",
             "clock#date",
-          "custom/paddw",
-            "tempature",
         ],
         "modules-right": [
               "mpris",

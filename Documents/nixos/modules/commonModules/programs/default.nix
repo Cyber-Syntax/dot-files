@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-{
-  environment.pathsToLink = [ "/share/zsh" ];
+{pkgs, ...}: {
+  environment.pathsToLink = ["/share/zsh"];
   environment.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
 
   environment.variables.EDITOR = "nvim";
@@ -25,10 +23,12 @@
       markdownlint-cli2
       #python
       ruff
-      pyright
+      mypy
       #nix
       nil
       nixfmt-rfc-style
+      alejandra
+      statix
       #bash, shell
       bash-language-server
       #json
@@ -38,6 +38,11 @@
       zlib
       # html
       prettierd # TODO: need setup on neovim
+      nodePackages.prettier
+      yamlfmt
+      stylua # lua formatter
+      marksman
+
       ## TODO: TEST later!!
       # alsa-lib
       # at-spi2-atk
@@ -75,7 +80,6 @@
       # vulkan-loader
       # zlib
     ];
-    #FIX: tutanota
     seahorse = {
       enable = true;
     };

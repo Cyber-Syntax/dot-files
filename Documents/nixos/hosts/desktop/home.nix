@@ -1,6 +1,8 @@
-{ pkgs, nixvim, ... }:
-
 {
+  pkgs,
+  nixvim,
+  ...
+}: {
   imports = [
     #./../../home-manager/qtile.nix
     #./../../home-manager/firefox.nix
@@ -104,7 +106,6 @@
     # DISABLE_QT5_COMPAT = "0";
     # QT_STYLE_OVERRIDE = "kvantum";
     # GTK_THEME = "Adwaita-dark";
-
   };
 
   # home-manager.useUserPackages = false;

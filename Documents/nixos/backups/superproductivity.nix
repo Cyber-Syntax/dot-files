@@ -6,7 +6,6 @@
   makeWrapper,
   electron,
 }:
-
 stdenv.mkDerivation rec {
   pname = "super-productivity";
   version = "11.0.0";
@@ -25,7 +24,7 @@ stdenv.mkDerivation rec {
   dontConfigure = true;
   dontBuild = true;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [makeWrapper];
 
   installPhase = ''
     runHook preInstall
@@ -51,8 +50,8 @@ stdenv.mkDerivation rec {
     description = "To Do List / Time Tracker with Jira Integration";
     homepage = "https://super-productivity.com";
     license = licenses.mit;
-    platforms = [ "x86_64-linux" ];
-    maintainers = with maintainers; [ offline ];
+    platforms = ["x86_64-linux"];
+    maintainers = with maintainers; [offline];
     mainProgram = "super-productivity";
   };
 }

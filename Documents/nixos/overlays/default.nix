@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     ./brave
     # ./super-productivity

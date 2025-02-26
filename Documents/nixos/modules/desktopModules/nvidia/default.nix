@@ -2,10 +2,7 @@
   config,
   pkgs,
   ...
-}:
-
-{
-
+}: {
   #TODO: Learn later how to fix for ollama is not seeing the GPU ?
   #NOTE: seems like it is fixed by the 570.86
   #powerManagement.powerUpCommands = "rmmod nvidia_uvm && modprobe nvidia_uvm"; # This will executed after boot and resume from suspend but ollama still cause this issue because it's sometimes disable nvidia for saving power?
@@ -105,7 +102,6 @@
     #NOTE: work on wayland: hyprland without issue
     modesetting.enable = true;
     # dynamicBoost.enable = true;
-
   };
   #TEST: fix 6.13.2 not build with 565.77
   # linuxKernel.packages.linux_6_13.nvidia_x11_beta_open : 6.13.3-570.86.16
@@ -134,5 +130,4 @@
   #       persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
   # #      patchesOpen = [ fbdev_linux_611_patch ];
   #   };
-
 }

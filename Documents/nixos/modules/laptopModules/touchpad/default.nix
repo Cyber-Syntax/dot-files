@@ -17,6 +17,5 @@
         #clickMethod = "buttonareas"; #default: "buttonareas" other: "clickfinger"
       };
     };
-
   };
 }

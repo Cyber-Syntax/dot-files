@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   ### NETWORK
   networking = {
     # Enable the NetworkManager
@@ -7,10 +6,10 @@
     # Define your hostname.
     #TESTING:
     hosts = {
-      "192.168.1.60" = [ "nextcloud" ];
-      "192.168.1.107" = [ "laptop" ];
-      "192.168.1.39" = [ "nixos" ];
-      "192.168.1.58" = [ "phone" ];
+      "192.168.1.60" = ["nextcloud"];
+      "192.168.1.107" = ["laptop"];
+      "192.168.1.39" = ["nixos"];
+      "192.168.1.58" = ["phone"];
     };
 
     ### FIREWALL

@@ -1,11 +1,12 @@
-{ inputs, pkgs, ... }:
-
+{
+  inputs,
+  pkgs,
+  ...
+}:
 #TODO: Setup extensions with nur??
 #TESTING: using inputs instead of nur first?
 #NOTE: inputs already using nur?
-
 #TODO: change firefox unstable package if not use unstable version
-
 {
   home-manager.users.developer.programs.firefox = {
     enable = true;
@@ -73,13 +74,13 @@
                 }
               ];
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
+              definedAliases = ["@np"];
             };
             "NixOS Wiki" = {
-              urls = [ { template = "https://nixos.wiki/index.php?search={searchTerms}"; } ];
+              urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
               iconUpdateURL = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
-              definedAliases = [ "@nw" ];
+              definedAliases = ["@nw"];
             };
             "Google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
           };
@@ -135,9 +136,7 @@
             icon = "fence";
             id = 4;
           };
-
         };
-
       }; # default
     }; # ./profiles
 
@@ -312,10 +311,7 @@
           #   Status = "default";
           # };
         }; # ./Preferences
-
       }; # ./eextraPolicies
-
     }; # ./package wrap
   }; # ./firefox home-manager
-
 }

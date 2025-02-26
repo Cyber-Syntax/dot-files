@@ -14,7 +14,9 @@ from qtile_extras.widget.decorations import (
 from qtile_extras.widget.mixins import ExtendedPopupMixin, TooltipMixin
 from qtile_extras.popup.toolkit import (
     PopupAbsoluteLayout,
-    # PopupRelativeLayout,
+    PopupRelativeLayout,
+    PopupText,
+    PopupSlider,
 )
 
 # # TESTING: add button

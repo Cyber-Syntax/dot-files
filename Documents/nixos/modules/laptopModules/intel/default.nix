@@ -19,12 +19,12 @@
   };
   #TESTING: taring fix for intel
   nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    vaapiIntel = pkgs.vaapiIntel.override {enableHybridCodec = true;};
   };
   environment.variables = {
     VDPAU_DRIVER = lib.mkIf config.hardware.graphics.enable (lib.mkDefault "va_gl");
   };
-  boot.initrd.kernelModules = [ "i915" ];
+  boot.initrd.kernelModules = ["i915"];
 
   environment.variables.LIBVA_DRIVER_NAME = "iHD";
 
@@ -37,7 +37,7 @@
       Driver "modesetting"
       Option "NoAccel" "True"
       Option "TearFree" "true"
-      Option "DRI" "3" 
+      Option "DRI" "3"
     '';
   };
 }

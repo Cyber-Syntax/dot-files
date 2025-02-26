@@ -1,5 +1,4 @@
 {
-
   # prevent kdewallet core dump issue
   nixpkgs.overlays = [
     (self: super: {
@@ -8,5 +7,4 @@
       };
     })
   ];
-
 }

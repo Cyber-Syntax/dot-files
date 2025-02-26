@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     xorg.setxkbmap
     xorg.xrandr
@@ -32,7 +31,7 @@
     jq
   ];
   # i3 configuration
-  environment.pathsToLink = [ "/libexec" ]; # Links /libexec from derivations to /run/current-system/sw
+  environment.pathsToLink = ["/libexec"]; # Links /libexec from derivations to /run/current-system/sw
 
   # Configure keymap in X11
   services = {
@@ -51,7 +50,6 @@
         # theme = "where_is_my_sddm_theme";
         wayland.enable = false;
       };
-
     };
 
     xserver = {
@@ -74,8 +72,6 @@
           polybar
         ];
       };
-
     }; # ./xserver
   }; # ## ./services
-
 }

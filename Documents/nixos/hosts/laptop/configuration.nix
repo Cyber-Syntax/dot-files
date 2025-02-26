@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -14,7 +13,6 @@
 
     # laptop ../../modules
     ./../../modules/laptopModules/default.nix
-
   ];
 
   # Luks encryption support
@@ -59,7 +57,6 @@
   # throttled.enable = true; # fix for intel cpu throttling on thinkpads
 
   services = {
-
     syncthing = {
       enable = true;
       group = "syncthing"; # default
@@ -112,9 +109,7 @@
 
       #NOTE: I already setup manually on network but maybe this would be useful
       #openDefaultPorts = true; # open defualt ports if you use one user in this machine.
-
     }; # ./syncthing
-
   }; # ./services
 
   # Some programs need SUID wrappers, can be configured further or are
