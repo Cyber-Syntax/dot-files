@@ -22,7 +22,7 @@ return {
       --TESTING: nixfmt
       nil_ls = {
         formatting = {
-          command = { "nixfmt" },
+          command = { "alejandra" },
         },
       },
     },

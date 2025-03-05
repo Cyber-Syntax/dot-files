@@ -1,14 +1,15 @@
 {...}: {
   imports = [
-    #TODO: test later
-    # ./libvirt
+    ./libvirt
     ./nvidia
     ./ollama
-    ./amd-cpu.nix
+    ./amd-cpu
     ./packages
     ./corsair
-    # ./qtile
-    # ./awesome
-    ./hyprland-desktop.nix
+    ./services #borg and syncthing
+    ./network
+    # ./WM/hyprland
+    # ./WM/awesome
+    ./WM/qtile
   ];
 }

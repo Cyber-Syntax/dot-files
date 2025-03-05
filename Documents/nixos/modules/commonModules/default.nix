@@ -13,5 +13,6 @@
     ./security
     ./services
     ./xdg
+    ./user
   ];
 }

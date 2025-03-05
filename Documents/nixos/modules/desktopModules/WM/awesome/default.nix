@@ -28,10 +28,13 @@
     i3lock
     picom
     xdotool # command for mouse binds etc.
-    jq
+    #TESTING: are they necessasry?
+    jq # for widget script
   ];
-  # i3 configuration
-  environment.pathsToLink = ["/libexec"]; # Links /libexec from derivations to /run/current-system/sw
+
+  # environment.pathsToLink = [ "/libexec" ]; # Links /libexec from derivations to /run/current-system/sw
+
+  #FIX: My current awesome config cause memory leak...
 
   # Configure keymap in X11
   services = {
@@ -40,16 +43,16 @@
     # '';
 
     displayManager = {
-      defaultSession = "none+i3";
+      defaultSession = "none+awesome";
       autoLogin.enable = true; # ctrl + alt + F1,f2... still works
       autoLogin.user = "developer";
 
-      sddm = {
-        enable = true;
-        autoNumlock = true;
-        # theme = "where_is_my_sddm_theme";
-        wayland.enable = false;
-      };
+      # sddm = {
+      #   enable = true;
+      #   autoNumlock = true;
+      #   # theme = "where_is_my_sddm_theme";
+      #   wayland.enable = false;
+      # };
     };
 
     xserver = {
@@ -57,19 +60,18 @@
       xkb.layout = "tr";
       autorun = true;
       exportConfiguration = true;
-      # displayManager.lightdm.enable = true;
+      displayManager.lightdm.enable = true;
 
-      desktopManager = {
-        xterm.enable = false;
-      };
+      # desktopManager = {
+      #   xterm.enable = false;
+      # };
 
-      windowManager.i3 = {
+      windowManager.awesome = {
         enable = true;
-        # Shell commands executed just before i3 is started.
-        # extraSessionCommands = "" ""; # strings concatenated with "\n"
-        extraPackages = with pkgs; [
-          i3lock
-          polybar
+        luaModules = with pkgs; [
+          luajitPackages.lgi
+          luajitPackages.luarocks
+          luajitPackages.luadbi-mysql
         ];
       };
     }; # ./xserver

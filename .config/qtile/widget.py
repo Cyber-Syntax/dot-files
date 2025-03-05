@@ -1,28 +1,28 @@
+import os
+
 from libqtile import bar, qtile
 from libqtile.config import Screen
 from libqtile.lazy import lazy
-import colors
-import os
 from qtile_extras import widget
+from qtile_extras.popup.toolkit import (
+    PopupAbsoluteLayout,
+    PopupRelativeLayout,
+    PopupSlider,
+    PopupText,
+)
 from qtile_extras.widget.decorations import (
-    RectDecoration,
     BorderDecoration,
     # GradientDecoration,
     PowerLineDecoration,
     # ImageDecoration,
+    RectDecoration,
 )
 from qtile_extras.widget.mixins import ExtendedPopupMixin, TooltipMixin
-from qtile_extras.popup.toolkit import (
-    PopupAbsoluteLayout,
-    PopupRelativeLayout,
-    PopupText,
-    PopupSlider,
-)
+
+import colors
 
 # # TESTING: add button
 # from modules.spawn_default_app import spawn_default_app
-
-
 from variables import *
 
 terminal = "kitty"  # guess if None
@@ -196,6 +196,7 @@ right = [
         limit_high=100,
         limit_loud=101,
         mode="both",
+        # mouse_callbacks={"Button3": lazy.function(widget.select_sink)},
     ),
     space,
     widget.Mpris2(

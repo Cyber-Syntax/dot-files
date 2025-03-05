@@ -14,10 +14,10 @@
       persistent = true; # Default = true. This make systemd timer persistent if missed the last start time, similar anacron
     };
     # TODO: Learn more detail
-    extraOptions = ''
-      min-free = ${toString (10 * 1024 * 1024 * 1024)}
-      max-free = ${toString (15 * 1024 * 1024 * 1024)}
-    '';
+    # extraOptions = ''
+    #   min-free = ${toString (10 * 1024 * 1024 * 1024)}
+    #   max-free = ${toString (15 * 1024 * 1024 * 1024)}
+    # '';
 
     # It is also possible to automatically run garbage collection whenever there is not enough space left.[cf. 5] For example, to free up to 1GiB whenever there is less than 100MiB left:
     # nix.extraOptions = ''

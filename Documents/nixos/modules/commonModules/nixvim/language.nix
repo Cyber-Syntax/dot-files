@@ -3,165 +3,27 @@ let
 in
   {pkgs, ...}: {
     programs.nixvim.plugins = {
-      cmp = {
-        enable = true;
-        settings = {
-          autoEnableSources = true;
-          performance = {
-            debounce = 150;
-          };
-          sources = [
-            {name = "cmp_ai";} #cmp-ai enable for cmp
-            {name = "path";}
-            {
-              name = "nvim_lsp";
-              keywordLength = 1;
-            }
-            {
-              name = "buffer";
-              keywordLength = 3;
-            }
-          ];
-
-          snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
-          formatting = {
-            fields = [
-              "menu"
-              "abbr"
-              "kind"
-            ];
-            format = ''
-              function(entry, item)
-                local menu_icon = {
-                  nvim_lsp = '[LSP]',
-                  luasnip = '[SNIP]',
-                  buffer = '[BUF]',
-                  path = '[PATH]',
-                }
-
-                item.menu = menu_icon[entry.source.name]
-                return item
-              end
-            '';
-          };
-
-          mapping = {
-            "<Up>" = "cmp.mapping.select_prev_item(${selectOpts})";
-            "<Down>" = "cmp.mapping.select_next_item(${selectOpts})";
-
-            "<C-p>" = "cmp.mapping.select_prev_item(${selectOpts})";
-            "<C-n>" = "cmp.mapping.select_next_item(${selectOpts})";
-
-            "<C-u>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-d>" = "cmp.mapping.scroll_docs(4)";
-
-            "<C-e>" = "cmp.mapping.abort()";
-            "<C-y>" = "cmp.mapping.confirm({select = true})";
-            "<CR>" = "cmp.mapping.confirm({select = false})";
-
-            "<C-f>" = ''
-              cmp.mapping(
-                function(fallback)
-                  if luasnip.jumpable(1) then
-                    luasnip.jump(1)
-                  else
-                    fallback()
-                  end
-                end,
-                { "i", "s" }
-              )
-            '';
-
-            "<C-b>" = ''
-              cmp.mapping(
-                function(fallback)
-                  if luasnip.jumpable(-1) then
-                    luasnip.jump(-1)
-                  else
-                    fallback()
-                  end
-                end,
-                { "i", "s" }
-              )
-            '';
-
-            "<Tab>" = ''
-              cmp.mapping(
-                function(fallback)
-                  local col = vim.fn.col('.') - 1
-
-                  if cmp.visible() then
-                    cmp.select_next_item(select_opts)
-                  elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-                    fallback()
-                  else
-                    cmp.complete()
-                  end
-                end,
-                { "i", "s" }
-              )
-            '';
-
-            "<S-Tab>" = ''
-              cmp.mapping(
-                function(fallback)
-                  if cmp.visible() then
-                    cmp.select_prev_item(select_opts)
-                  else
-                    fallback()
-                  end
-                end,
-                { "i", "s" }
-              )
-            '';
-          };
-          window = {
-            completion = {
-              border = "rounded";
-              winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None";
-              zindex = 1001;
-              scrolloff = 0;
-              colOffset = 0;
-              sidePadding = 1;
-              scrollbar = true;
-            };
-            documentation = {
-              border = "rounded";
-              winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None";
-              zindex = 1001;
-              maxHeight = 20;
-            };
-          };
-        };
-      };
-      cmp-nvim-lsp.enable = true;
-      cmp-buffer.enable = true;
-      cmp-path.enable = true;
-      cmp-treesitter.enable = true;
-      dap.enable = true;
+      # none-ls formatting setup for languages
+      #TODO: need to find alternative because none-ls null-ls is not develop anymore
       none-ls = {
         enable = true;
         sources.formatting = {
           alejandra.enable = true; # better
-          # nixfmt = {
-          #   enable = true;
-          #   package = pkgs.nixfmt-rfc-style;
-          # };
           prettier.enable = true;
-          # sqlformat.enable = true;
           stylua.enable = true;
           yamlfmt.enable = true;
         };
         sources.diagnostics = {
-          # trivy.enable = true; # kubernetes etc.
           yamllint.enable = true;
           statix.enable = true; # Nix linting
         };
       };
 
+      # Conform plugin for languages, formating on the save etc.
       conform-nvim = {
         enable = true;
         settings = {
+          notify_no_formatters = true;
           format_on_save = {
             lsp_fallback = "fallback";
             timeout_ms = 500;
@@ -170,13 +32,6 @@ in
             alejandra = {
               command = "${pkgs.alejandra}/bin/alejandra";
               args = ["--quiet"];
-            };
-            ruff = {
-              command = "${pkgs.ruff}/bin/ruff";
-              args = [
-                "format"
-                "-"
-              ];
             };
           };
           notify_on_error = true;
@@ -187,16 +42,72 @@ in
             json = ["prettier"];
             lua = ["stylua"];
             markdown = ["prettier"];
-            nix = ["alejandra"]; # Use alejandra instead of nixfmt
-            # nix = [ "nixfmt" ];
+            nix = ["alejandra"]; # better than nixfmt
             yaml = ["yamlfmt"];
           };
         };
       };
+      # issue show plugin
+      trouble = {
+        enable = true;
+        settings = {
+          auto_preview = true;
+          indent_guides = true;
+          multiline = true;
+          useDiagnosticSigns = true;
+          preview = {
+            type = "main";
+            # -- when a buffer is not yet loaded, the preview window will be created
+            # -- in a scratch buffer with only syntax highlighting enabled.
+            # -- Set to false, if you want the preview to always be a real loaded buffer.
+            scratch = false;
+          };
+        };
+      };
+      #NOTE: General lsp for bash, nix(old nil_ls), json, markdown, yaml
 
+      #Lazyload is not on 24.11 yet?
+      # Lazyload
+      # which-key.lazyLoad.settings.even = "VimEnter";
       lsp = {
         enable = true;
+        # lazyLoad = {
+        #   enable = true;
+        #   settings = {
+        #     ft = "markdown";
+        #   };
+        # };
         inlayHints = true;
+        servers = {
+          nixd = {
+            enable = true;
+            #HACK: rpc.lua error on highlighting
+            #https://github.com/nix-community/nixvim/issues/2390#issuecomment-2408101568
+            extraOptions = {
+              offset_encoding = "utf-8";
+            };
+            settings = {
+              formatting.command = ["alejandra"];
+              #TESTING:
+              # nixpkgs.expr = "import <nixpkgs> { }";
+              # options = {
+              #   #TODO: need to find out folders
+              #   # nixos.expr = "(builtins.getFlake \"/home/developer/Documents/nixos\").nixosConfigurations.nixos.options";
+              #   # nixvim.expr = "(builtins.getFlake \"/home/developer/Documents/nixos\").nixosConfigurations.nixos.options.programs.nixvim.type.getSubOptions []";
+              #   # nixos.expr = "(builtins.getFlake \"github:pagedMov/nixos-config\").nixosConfigurations.xenon.options";
+              #   # home_manager.expr = "";
+              #
+              #   # home_manager.expr = "(builtins.getFlake ('git+file://' + toString ./.)).homeConfigurations.'ruixi@k-on'.options";
+              # };
+            };
+          };
+          bashls = {
+            enable = true;
+          };
+          yamlls.enable = true;
+          jsonls.enable = true;
+          marksman.enable = true; # markdown
+        };
         keymaps = {
           diagnostic = {
             "<leader>E" = "open_float";
@@ -256,54 +167,141 @@ in
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
           end
         '';
-        servers = {
-          jsonls.enable = true;
-          marksman.enable = true;
-
-          # Enable nixd for better Nix understanding
-          nixd = {
-            enable = true;
-            settings = {
-              formatting.command = ["alejandra"];
-            };
-          };
-
-          #Enable lsp for bash
-          bashls = {
-            enable = true;
-          };
-
-          # nil_ls = {
-          #   enable = true;
-          #   autostart = true; # default in plugin
-          #   settings = {
-          #     nix.maxMemoryMB = 2560; # plugin default, nixvim:null
-          #     nix.flake.nixpkgsInputName = "nixpkgs";
-          #     nix.flake.autoArchive = true; # default:null -> ask every time
-          #     formatting.command = [
-          #       # "nixfmt-rfc-style"
-          #       "alejandra"
-          #     ];
-          #     nix.binary = "/run/current-system/sw/bin/nix"; # example, default:null, plugin default: nix
-          #   };
-          # };
-          yamlls.enable = true;
-        };
       };
+      dap.enable = true;
 
-      trouble = {
+      cmp-nvim-lsp.enable = true;
+      cmp-buffer.enable = true;
+      cmp-path.enable = true;
+      cmp-treesitter.enable = true;
+
+      #TEST: later
+      # cmp-dictionary.enable = true;
+
+      cmp = {
         enable = true;
         settings = {
-          auto_preview = true;
-          indent_guides = true;
-          multiline = true;
-          useDiagnosticSigns = true;
-          preview = {
-            type = "main";
-            # -- when a buffer is not yet loaded, the preview window will be created
-            # -- in a scratch buffer with only syntax highlighting enabled.
-            # -- Set to false, if you want the preview to always be a real loaded buffer.
-            scratch = false;
+          autoEnableSources = true;
+          performance = {
+            debounce = 150;
+          };
+          sources = [
+            # {name = "cmp_ai";}
+            {name = "path";}
+            {
+              name = "nvim_lsp";
+              keywordLength = 1;
+            }
+            {
+              name = "buffer";
+              keywordLength = 3;
+            }
+          ];
+
+          snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
+          formatting = {
+            fields = [
+              "menu"
+              "abbr"
+              "kind"
+            ];
+            format = ''
+              function(entry, item)
+                local menu_icon = {
+                  nvim_lsp = '[LSP]',
+                  luasnip = '[SNIP]',
+                  buffer = '[BUF]',
+                  path = '[PATH]',
+                }
+
+                item.menu = menu_icon[entry.source.name]
+                return item
+              end
+            '';
+          };
+
+          mapping = {
+            # "<C-x>" = "cmp.mapping.confirm({select = true})";
+            "<Up>" = "cmp.mapping.select_prev_item(${selectOpts})";
+            "<Down>" = "cmp.mapping.select_next_item(${selectOpts})";
+            "<C-p>" = "cmp.mapping.select_prev_item(${selectOpts})";
+            "<C-n>" = "cmp.mapping.select_next_item(${selectOpts})";
+            # "<C-u>" = "cmp.mapping.scroll_docs(-4)";
+            # "<C-d>" = "cmp.mapping.scroll_docs(4)";
+            "<C-e>" = "cmp.mapping.abort()";
+            "<C-y>" = "cmp.mapping.confirm({select = true})";
+            "<CR>" = "cmp.mapping.confirm({select = false})";
+
+            "<C-f>" = ''
+              cmp.mapping(
+                function(fallback)
+                  if luasnip.jumpable(1) then
+                    luasnip.jump(1)
+                  else
+                    fallback()
+                  end
+                end,
+                { "i", "s" }
+              )
+            '';
+            "<C-b>" = ''
+              cmp.mapping(
+                function(fallback)
+                  if luasnip.jumpable(-1) then
+                    luasnip.jump(-1)
+                  else
+                    fallback()
+                  end
+                end,
+                { "i", "s" }
+              )
+            '';
+            "<C-Up>" = ''
+              cmp.mapping(
+                function(fallback)
+                  local col = vim.fn.col('.') - 1
+
+                  if cmp.visible() then
+                    cmp.select_next_item(select_opts)
+                  elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+                    fallback()
+                  else
+                    cmp.complete()
+                  end
+                end,
+                { "i", "s" }
+              )
+            '';
+
+            "<C-Down>" = ''
+              cmp.mapping(
+                function(fallback)
+                  if cmp.visible() then
+                    cmp.select_prev_item(select_opts)
+                  else
+                    fallback()
+                  end
+                end,
+                { "i", "s" }
+              )
+            '';
+          };
+          window = {
+            completion = {
+              border = "rounded";
+              winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None";
+              zindex = 1001;
+              scrolloff = 0;
+              colOffset = 0;
+              sidePadding = 1;
+              scrollbar = true;
+            };
+            documentation = {
+              border = "rounded";
+              winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:Visual,Search:None";
+              zindex = 1001;
+              maxHeight = 20;
+            };
           };
         };
       };

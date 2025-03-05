@@ -86,15 +86,11 @@
               #./cachix.nix
             ];
             home-manager = {
-              backupFileExtension = "bak9999";
+              backupFileExtension = "bak9972";
               extraSpecialArgs = specialArgs;
               users.${name} = {
                 imports = [home];
                 home.stateVersion = version;
-                # programs.nixvim = {
-                #   enable = true;
-                #   # package = nixpkgs-unstable.nixvim;
-                # };
               };
               # sharedModules = [ nixvim.homeManagerModules.nixvim ];
               useGlobalPkgs = true;

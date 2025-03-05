@@ -48,7 +48,9 @@
     ## Development
     # Coding
     # nodejs_22
-    nodePackages_latest.nodejs
+    nodejs # latest lts version
+    nodejs_18 # for copilot-vim
+    # direnv # virtualenv for nix shell
     yarn
     hugo
     go
@@ -130,8 +132,7 @@
     ## Terminal
     kitty
     ## My best apps
-    freetube
-
+    # freetube
     ## My unfree apps
     obsidian
     spotify

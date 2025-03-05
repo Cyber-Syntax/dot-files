@@ -1,9 +1,8 @@
 import os
-from libqtile.lazy import lazy
 
 # TESTING: clear imports
 from libqtile.config import Click, Drag, Key
-
+from libqtile.lazy import lazy
 
 ## Keybindings ##
 mod = "mod4"  # Sets mod key to SUPER/WINDOWS
@@ -24,16 +23,21 @@ mouse = [
 keys = [
     # scratchpad
     # Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("deepseek-chat")),
-    Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("term")),
-    Key([], "F11", lazy.group["scratchpad"].dropdown_toggle("social")),
-    Key([], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
+    Key([mod], "F10", lazy.group["scratchpad"].dropdown_toggle("term")),
+    # Key([mod], "F11", lazy.group["scratchpad"].dropdown_toggle("social")),
+    Key([mod], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
     Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
     # brave browser
-    # Key([mod], "less", lazy.spawn(os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")), desc="Launch brave"),
     # firefox
     Key([mod], "less", lazy.spawn("firefox"), desc="Launch firefox"),
+    Key(
+        [mod],
+        "p",
+        lazy.spawn(os.path.expanduser("~/Documents/appimages/FreeTube.AppImage")),
+        desc="Launch FreeTube",
+    ),
     # siyuan
     # Key([mod], "s", lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")), desc="Launch siyuan"),
     # folder

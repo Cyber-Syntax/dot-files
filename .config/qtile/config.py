@@ -24,11 +24,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import os
-import subprocess
-from libqtile import hook, layout
-from libqtile.config import Group, Key, Match, Drag, ScratchPad, DropDown
-from libqtile.lazy import lazy
 import re  # this fixes the Match error on group
+import subprocess
+
+from libqtile import hook, layout
+from libqtile.config import Drag, DropDown, Group, Key, Match, ScratchPad
+from libqtile.lazy import lazy
+
 from functions import *
 
 """
@@ -52,11 +54,11 @@ hostname = get_hostname()
 from variables import *
 
 if hostname == "nixos":
-    from widget import *
     from keys import *
+    from widget import *
 elif hostname == "nixosLaptop":
-    from laptopWidget import *
     from laptopKeys import *
+    from laptopWidget import *
 else:
     print("No hostname found")
 
@@ -135,16 +137,16 @@ groups.append(
                 y=0.3,
                 # on_focus_lost_hide=False,  # Keep open until manually hidden
             ),
-            DropDown(  # F11
-                "social",
-                "freetube",
-                opacity=0.8,
-                width=0.5,
-                height=0.5,
-                x=0.3,
-                y=0.3,
-                # on_focus_lost_hide=False,  # Keep open until manually hidden
-            ),
+            # DropDown(  # F11
+            #     "social",
+            #     "/home/developer/Documents/appimages/FreeTube.AppImage",
+            #     opacity=0.8,
+            #     width=0.5,
+            #     height=0.5,
+            #     x=0.3,
+            #     y=0.3,
+            #     # on_focus_lost_hide=False,  # Keep open until manually hidden
+            # ),
             DropDown(  # F12
                 "chat",
                 "signal-desktop",

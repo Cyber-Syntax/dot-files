@@ -5,9 +5,11 @@
     ./bluetooth
     ./thinkfan
     ./touchpad
+    ./network
+    ./boot
+    ./WM/hyprland
+    ./services
+    ./auto-cpufreq
     # ./tlp
-    #TESTING: auto-cpufreq
-    ./battery
-    ./hyprland-laptop.nix
   ];
 }

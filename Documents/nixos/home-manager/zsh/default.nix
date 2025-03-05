@@ -128,6 +128,7 @@
       # lh = "ls --human-readable --size -1 -S --classify";
       # l = "ls -CF";
       duh = "du -sh * | sort -h";
+      duhdot = "du -sh .[^.]* * | sort -h";
     };
 
     initExtra = ''

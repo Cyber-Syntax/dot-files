@@ -26,12 +26,12 @@
     # xorg.libxcb
     # xorg.libxkbfile
     # xorg.libxshmfence
+    # python312Packages.xcffib
+    # python312Packages.cairocffi
+    # python312Packages.cffi
     i3lock
     picom
     xdotool # command for mouse binds etc.
-    python312Packages.xcffib
-    python312Packages.cairocffi
-    python312Packages.cffi
     flameshot #screenshot
   ];
 
@@ -40,21 +40,21 @@
     # udev.extraRules = ''
     # '';
 
-    libinput.mouse = {
-      #TESTING:
-      # accelProfile = "flat"; # slow
-      #Cursor acceleration (how fast speed increases from minSpeed to maxSpeed).
-      #This only applies to the flat or adaptive profile.
-      accelSpeed = "-0.5";
-      accelStepScroll = 0.1;
-      #Sets the points of the scroll acceleration function.
-      accelPointsScroll = [
-        0.0
-        1.0
-        2.4
-        2.5
-      ];
-    };
+    # libinput.mouse = {
+    #   #TESTING:
+    #   # accelProfile = "flat"; # slow
+    #   #Cursor acceleration (how fast speed increases from minSpeed to maxSpeed).
+    #   #This only applies to the flat or adaptive profile.
+    #   accelSpeed = "-0.5";
+    #   accelStepScroll = 0.1;
+    #   #Sets the points of the scroll acceleration function.
+    #   accelPointsScroll = [
+    #     0.0
+    #     1.0
+    #     2.4
+    #     2.5
+    #   ];
+    # };
 
     displayManager = {
       defaultSession = "qtile";

@@ -93,6 +93,7 @@ tooltip label {
 #window,
 #custom-cpuinfo,
 #memory,
+#privacy,
 /* #cpu, */
 #custom-cpu,
 #idle_inhibitor,
@@ -179,6 +180,12 @@ tooltip label {
 
 /* -- Storage Module -- */
 #custom-storage {
+  background: @memory; /* Nord purple */
+  color: @module-fg;
+  border-radius: 6px;
+  padding: 0 4px;
+}
+#privacy {
   background: @memory; /* Nord purple */
   color: @module-fg;
   border-radius: 6px;
