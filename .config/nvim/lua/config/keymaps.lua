@@ -23,6 +23,13 @@ map("n", "<leader>fO", ":ObsidianSearch<CR>", { desc = "Obsidian Search in Files
 map("n", "<leader>rb", ":Neotree buffers<CR>", { desc = "NeoTree reveal", silent = true })
 map("n", "<leader>rg", ":Neotree git_status<CR>", { desc = "NeoTree reveal", silent = true })
 
+-- Focus window keys
+map("n", "<C-a>", "<cmd>wincmd h<CR>", { desc = "Focus left window", silent = true })
+map("n", "<C-d>", "<cmd>wincmd l<CR>", { desc = "Focus right window", silent = true })
+
+-- Copy all lines in buffer
+map("n", "<C-c>", ":%y<CR>", { desc = "Copy all lines in buffer" })
+
 -- It's already default:
 --map("n", "<leader>bd", Snacks.bufdelete, { desc = "Delete Buffer" })
 -- map('<leader>e', ':Neotree toggle<CR>',{desc = 'Neotree toggle'})

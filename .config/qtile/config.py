@@ -32,6 +32,7 @@ from libqtile.config import Drag, DropDown, Group, Key, Match, ScratchPad
 from libqtile.lazy import lazy
 
 from functions import *
+from variables import *
 
 """
 Log location
@@ -42,18 +43,14 @@ DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
 DP_4   right monitor :   screen_affinity=1, group 4 # view right
 """
 
-
 # 2 machine setup
 def get_hostname():
     hostname = subprocess.check_output(["hostname"]).decode("utf-8").strip()
     return hostname
 
-
 hostname = get_hostname()
 
-from variables import *
-
-if hostname == "nixos":
+if hostname == "fedora":
     from keys import *
     from widget import *
 elif hostname == "nixosLaptop":

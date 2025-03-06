@@ -3,7 +3,7 @@ COLORSCHEME=Nord
 
 picom -b & # compositor
 numlockx on &
-nm-applet & # network manager applet
+# nm-applet & # network manager applet
 setxkbmap tr &
 #polkit & # not work probably need to define on nix or need to install package
 gammastep & # redshift alternative (works wayland and xorg)
@@ -12,13 +12,14 @@ syncthingtray &
 
 #TESTING: handle inside python if this is not work
 #Laptop statement is worked.
-if [ $(hostname) == "nixos" ]; then
-  xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
-  xset s off & # disable screen saver
-  TZ=Europe/Istanbul /home/developer/Documents/appimages/super-productivity.AppImage & # task app
-  sh /home/developer/Documents/scripts/screenloyout/asus_only.sh & # My screen layout scripts
-  keepassxc & # password manager
- elif [ $(hostname) == "nixosLaptop" ]; then
+if [ $(hostname) == "fedora" ]; then
+  # xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
+  # xset s off & # disable screen saver
+  #TZ=Europe/Istanbul # work on fedora for now
+  /home/developer/Documents/appimages/super-productivity.AppImage & # task app
+  sh /home/developer/Documents/scripts/screenloyout/asus_only.sh &  # My screen layout scripts
+  keepassxc &                                                       # password manager
+elif [ $(hostname) == "nixosLaptop" ]; then
   cbatticon & # battery notification, systray app
 fi
 

@@ -478,6 +478,12 @@
       options.desc = "Navigate Window Left";
     }
     {
+      key = "<C-d>";
+      action = "<CMD>wincmd l<CR>";
+      options.desc = "Navigate Window Right";
+    }
+
+    {
       key = "<C-s>";
       action = "<CMD>wincmd j<CR>";
       options.desc = "Navigate Window Down";
@@ -486,11 +492,6 @@
       key = "<C-k>";
       action = "<CMD>wincmd k<CR>";
       options.desc = "Navigate Window Up";
-    }
-    {
-      key = "<C-d>";
-      action = "<CMD>wincmd l<CR>";
-      options.desc = "Navigate Window Right";
     }
     {
       mode = "n";

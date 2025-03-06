@@ -6,5 +6,6 @@
 
     android-tools # for phone like adb
     lsof # terminal command to see which processes use dir etc.
+    sysbench # benchmarking tool
   ];
 }
