@@ -80,7 +80,8 @@ qtile_packages=(
 flatpak_packages=(
   org.signal.Signal
   io.github.martchus.syncthingtray
-  spotify
+  com.spotify.Client
+  com.tutanota.Tutanota
 )
 
 #ffmpeg-free to ffmpeg for fedora-to use h264 codec and others
@@ -229,11 +230,8 @@ speed_up_dnf() {
 # DefaultSession=gnome-xorg.desktop
 
 #TODO: find a way to update those files more easily
-# cp ~/Documents/app_backups/desktop/fstab /etc/fstab
-# cp ~/Documents/app_backups/desktop/boot /etc/default/boot
-# cp ~/Documents/app_backups/desktop/dnf.conf /etc/dnf/dnf.conf
-# sudo cp ~/Documents/app_backups/desktop/custom.conf /etc/gdm/custom.conf
-# cp ~/Documents/app_backups/desktop/99-tcp-bbr.conf /etc/sysctl.d/99-tcp-bbr.conf
+# making line change on boot file for timeout 0 code ?
+
 function setup_files() {
   echo "Copying files: fstab, boot, dnf.conf, custom.conf(gdm autologin), 99-tcp-bbr.conf..."
   cp /home/developer/Documents/scripts/desktop/fstab /etc/fstab
