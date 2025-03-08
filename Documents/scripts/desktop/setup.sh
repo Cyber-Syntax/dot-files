@@ -1,7 +1,7 @@
 #!/bin/bash
 # Comprehensive installation and configuration script for dnf-based systems.
 #
-# Core packages are always installed first. Additional functions can be run via command‑line options.
+# Additional functions can be run via command‑line options.
 #
 # Options:
 #   -a    Do everything (run all additional functions).
@@ -42,7 +42,7 @@ usage() {
   cat <<EOF
 Usage: $0 [OPTIONS]
 
-Core packages are installed by default.
+Use this script to install and configure packages on Fedora-based systems.
 
 Options:
   -a    Do everything (execute all additional functions).
@@ -52,9 +52,9 @@ Options:
   -b    Install Brave Browser.
   -r    Enable RPM Fusion repositories.
   -s    Setup system services (borgbackup, trash-cli).
-  -d    Speed up DNF (update /etc/dnf/dnf.conf with pkg_gpgcheck and max_parallel_downloads).
+  -d    Speed up DNF ( e.g max_parallel_downloads=10 etc. )
   -x    Swap ffmpeg-free with ffmpeg.
-  -f    Overwrite configuration files (boot, GDM, sysctl, sudoers).
+  -f    Overwrite configuration files (boot(timeout=0), GDM(autologin qtile), tcp-bbr, sudoers(timeout password).
   -h    Display this help message.
 
 Example:
@@ -67,24 +67,23 @@ EOF
 # Package arrays.
 #---------------------------------------------------------------------
 CORE_PACKAGES=(
-  zsh
-  vim
-  feh       # Wallpaper tool
-  ufw       # Firewall; Fedora defaults to firewalld
-  zoxide    # Enhanced directory navigation
-  eza       # Modern ls replacement
-  fd-find   # Faster file search
-  trash-cli # Command-line trash utility
   zsh-autosuggestions
   zsh-syntax-highlighting
+  zsh
+  vim
+  ufw                  # Firewall; Fedora defaults to firewalld
+  zoxide               # Enhanced directory navigation
+  eza                  # Modern ls replacement
+  fd-find              # Faster file search
+  trash-cli            # Command-line trash utility
   lm_sensors           # Hardware sensor monitoring
   htop                 # Process viewer
   btop                 # Resource monitor
-  xev                  # X event viewer
   pip                  # Python package installer
   keepassxc            # Password manager
   seahorse             # GNOME keyring manager
   neovim               # Modern text editor
+  vim                  # Text editor
   luarocks             # Lua package manager
   cargo                # Rust package manager
   bash-language-server # Bash language server
@@ -160,6 +159,7 @@ install_qtile_packages() {
     dunst
     flameshot
     playerctl
+    xev # X event viewer
   )
   for pkg in "${qtile_packages[@]}"; do
     echo "Installing $pkg..."
@@ -169,6 +169,27 @@ install_qtile_packages() {
 }
 
 #---------------------------------------------------------------------
+# Function: modify_brave_desktop
+# Description: Appends "--password-store basic" to the Exec line in
+#              brave-browser.desktop so that Brave starts with that flag.
+#---------------------------------------------------------------------
+modify_brave_desktop() {
+  local desktop_file="/usr/share/applications/brave-browser.desktop"
+  if [[ ! -f "$desktop_file" ]]; then
+    echo "Error: $desktop_file not found. Please check the path."
+    return 1
+  fi
+
+  # Check if the parameter is already present.
+  if grep -q -- "--password-store basic" "$desktop_file"; then
+    echo "Brave desktop file already contains '--password-store basic'."
+  else
+    # Use sed to insert the argument after the binary path.
+    sed -i 's|^\(Exec=.*brave-browser-stable\)\(.*\)|\1 --password-store basic\2|' "$desktop_file"
+    echo "Modified $desktop_file to include '--password-store basic'."
+  fi
+}
+#---------------------------------------------------------------------
 # Function: install_brave
 # Description: Installs Brave Browser by adding its repository.
 #---------------------------------------------------------------------
@@ -176,9 +197,12 @@ install_brave() {
   echo "Installing Brave Browser..."
   dnf install -y dnf-plugins-core
   echo "Adding Brave Browser repository..."
-  dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+  dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
   dnf install -y brave-browser
   echo "Brave Browser installation completed."
+
+  echo "Modifying Brave Browser desktop file for password-store basic..."
+  modify_brave_desktop
 }
 
 #---------------------------------------------------------------------
@@ -310,8 +334,10 @@ EOF
 main() {
   check_root
 
-  # Always install core packages first.
-  install_core_packages
+  # Quick check for help options
+  if [[ "$#" -eq 1 && "$1" == "-h" ]]; then
+    usage
+  fi
 
   # Initialize option flags.
   all_option=false
@@ -343,6 +369,30 @@ main() {
     esac
   done
 
+  # If no optional flags were provided, show usage and exit.
+  if ! $flatpak_option && ! $librewolf_option && ! $qtile_option &&
+    ! $brave_option && ! $rpm_option && ! $service_option &&
+    ! $dnf_speed_option && ! $swap_ffmpeg_option && ! $config_option; then
+    usage
+  fi
+
+  # Determine if core packages are needed
+  local need_core_packages=false
+  if $all_option || $qtile_option || $service_option; then
+    need_core_packages=true
+  fi
+
+  # Optimze DNF if core packages are required
+  # or the user has selected the DNF speed option.
+  if $need_core_packages || $dnf_speed_option; then
+    speed_up_dnf
+  fi
+
+  # Install core packages.
+  if $need_core_packages; then
+    install_core_packages
+  fi
+
   if $all_option; then
     echo "Executing all additional functions..."
     install_flatpak_packages
@@ -351,7 +401,6 @@ main() {
     install_brave
     enable_rpm_fusion
     service_setup
-    speed_up_dnf
     ffmpeg_swap
     setup_files
   else
@@ -364,12 +413,6 @@ main() {
     if $dnf_speed_option; then speed_up_dnf; fi
     if $swap_ffmpeg_option; then ffmpeg_swap; fi
     if $config_option; then setup_files; fi
-
-    # If no extra option flags were provided, report default operation.
-    if ! $flatpak_option && ! $librewolf_option && ! $qtile_option && ! $brave_option &&
-      ! $rpm_option && ! $service_option && ! $dnf_speed_option && ! $swap_ffmpeg_option && ! $config_option; then
-      echo "Only core packages installed (default operation)."
-    fi
   fi
 }
 

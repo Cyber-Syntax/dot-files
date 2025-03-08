@@ -16,6 +16,10 @@ return {
   -- { import = "lazyvim.plugins.extras.coding.blink" },
   -- harpoon
   { import = "lazyvim.plugins.extras.editor.harpoon2" },
+  -- illuminate
+  { import = "lazyvim.plugins.extras.editor.illuminate" },
+  -- indent-blankline
+  -- { import = "lazyvim.plugins.extras.ui.indent-blankline" },
 
   -- add edgy.nvim for IDE like features
   -- BUG: open two window on the start
