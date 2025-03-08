@@ -5,9 +5,9 @@ return {
     formatters_by_ft = {
       lua = { "stylua" },
       --nix = { "alejandra" },
-      nix = { "nixfmt-rfc-style" },
+      -- nix = { "nixfmt-rfc-style" },
       -- Conform will run multiple formatters sequentially
-      python = { "isort", "black" },
+      python = { "ruff" },
       -- Conform will run the first available formatter
       javascript = { "prettierd", "prettier", stop_after_first = true },
       -- markdown

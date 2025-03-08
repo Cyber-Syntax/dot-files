@@ -36,7 +36,7 @@
     };
 
     gtk3.bookmarks = [
-      "file:///home/developer/Downloads"
+        "file:///home/developer/Downloads"
       "file:///home/developer/Pictures/"
       "file:///home/developer/Photos/"
       "file:///home/developer/Documents"

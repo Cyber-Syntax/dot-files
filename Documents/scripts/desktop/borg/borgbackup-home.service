@@ -1,0 +1,7 @@
+[Unit]
+Description=Home Backup using BorgBackup
+
+[Service]
+Type=oneshot
+User=developer
+ExecStart=/home/developer/Documents/scripts/desktop/borg/home-borgbackup.sh

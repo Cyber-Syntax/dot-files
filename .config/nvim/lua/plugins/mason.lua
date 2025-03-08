@@ -7,10 +7,7 @@ return {
       "stylua",
       "shellcheck",
       "shfmt",
-      "flake8",
-      --"nixfmt", --BUG: not found on mason
       "markdownlint",
-      "nixfmt-rfc-style",
       "prettierd",
     },
   },

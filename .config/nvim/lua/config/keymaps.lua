@@ -30,6 +30,13 @@ map("n", "<C-d>", "<cmd>wincmd l<CR>", { desc = "Focus right window", silent = t
 -- Copy all lines in buffer
 map("n", "<C-c>", ":%y<CR>", { desc = "Copy all lines in buffer" })
 
+-- Tab indetation, shift tab dedentation
+map("v", "<Tab>", "<cmd>normal! > | gv<cr>", { desc = "Indent selected lines" })
+map("v", "<S-Tab>", "<cmd>normal! < | gv<cr>", { desc = "Dedent selected lines" })
+
+-- snacks live_grep on current directory
+map("n", "<leader>fq", ":lua Snacks.dashboard.pick('live_grep')<CR>", { desc = "Snacks live_grep" })
+
 -- It's already default:
 --map("n", "<leader>bd", Snacks.bufdelete, { desc = "Delete Buffer" })
 -- map('<leader>e', ':Neotree toggle<CR>',{desc = 'Neotree toggle'})

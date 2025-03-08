@@ -10,7 +10,7 @@ return {
         -- enabled = not vim.g.ai_cmp,
         enabled = true,
         auto_trigger = true,
-        hide_during_completion = vim.g.ai_cmp,
+        -- hide_during_completion = vim.g.ai_cmp,
         keymap = {
           -- accept = false, -- handled by nvim-cmp / blink.cmp
           accept = "<Tab>",

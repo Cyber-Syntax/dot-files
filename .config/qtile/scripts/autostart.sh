@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 COLORSCHEME=Nord
 
+#polkit & # not work probably need to define on nix or need to install package
+# nm-applet & # network manager applet
 picom -b & # compositor
 numlockx on &
-# nm-applet & # network manager applet
 setxkbmap tr &
-#polkit & # not work probably need to define on nix or need to install package
 gammastep & # redshift alternative (works wayland and xorg)
 python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
-syncthingtray &
 
-#TESTING: handle inside python if this is not work
-#Laptop statement is worked.
 if [ $(hostname) == "fedora" ]; then
   # xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
   # xset s off & # disable screen saver
@@ -19,8 +16,10 @@ if [ $(hostname) == "fedora" ]; then
   /home/developer/Documents/appimages/super-productivity.AppImage & # task app
   sh /home/developer/Documents/scripts/screenloyout/asus_only.sh &  # My screen layout scripts
   keepassxc &                                                       # password manager
+  flatpak run io.github.martchus.syncthingtray &                    # syncthing tray
 elif [ $(hostname) == "nixosLaptop" ]; then
   cbatticon & # battery notification, systray app
+  syncthingtray &
 fi
 
 #nextcloud & # nextcloud client

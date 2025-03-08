@@ -23,7 +23,8 @@ sudo borg create --list --filter=AME --progress --stats --exclude-caches --show-
   --exclude /home/*/.config/Code/CachedData/ \
   --exclude /home/*/.tox/ \
   --exclude /home/*/.venv/ \
-  --compression zstd,15 $REPOSITORY_home::'{now:home-%d-%m-%Y}' \
+  --exclude /home/*/.backups/ \
+  --compression zstd,15 $REPOSITORY_home::'{now:home-developer-%d-%m-%Y}' \
   /home/developer/
 
 echo "Backup of home directory complete"

@@ -83,7 +83,7 @@ bar_background_color = nord_theme["background"]
 bar_foreground_color = nord_theme["foreground"]
 bar_background_opacity = 0
 bar_global_opacity = 1.0
-bar_font = "Opensans Medium"
+bar_font = "JetbrainsMono Nerd Font"
 bar_nerd_font = "JetbrainsMono Nerd Font"
 bar_fontsize = 13.2
 

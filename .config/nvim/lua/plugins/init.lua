@@ -9,23 +9,6 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-    -- extras
-    --  { import = "lazyvim.plugins.extras.lang.markdown" },
-    { import = "lazyvim.plugins.extras.lang.python" },
-    { import = "lazyvim.plugins.extras.lang.git" },
-    { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.lang.nix" },
-    -- add edgy.nvim for IDE like features 
- -- BUG: open two window on the start
- --   { import = "lazyvim.plugins.extras.ui.edgy" },
-
-----FIX: 'git' command not found on command section?
--- {
---  "tpope/vim-fugitive",
---}
-
-  -- -- disable trouble
-  -- { "folke/trouble.nvim", enabled = false },
 
   -- override nvim-cmp and add cmp-emoji
 
@@ -45,7 +28,4 @@ return {
   --     }
   --   end,
   -- },
-
 }
-
-
