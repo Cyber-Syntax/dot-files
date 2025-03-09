@@ -169,6 +169,17 @@ install_qtile_packages() {
 }
 
 #---------------------------------------------------------------------
+# Function: install_lazygit
+# Description: Installs Lazygit via a COPR repository.
+#---------------------------------------------------------------------
+install_lazygit() {
+  echo "Installing Lazygit..."
+  dnf copr enable atim/lazygit -y
+  dnf install -y lazygit
+  echo "Lazygit installation completed."
+}
+
+#---------------------------------------------------------------------
 # Function: modify_brave_desktop
 # Description: Appends "--password-store basic" to the Exec line in
 #              brave-browser.desktop so that Brave starts with that flag.
@@ -181,12 +192,12 @@ modify_brave_desktop() {
   fi
 
   # Check if the parameter is already present.
-  if grep -q -- "--password-store basic" "$desktop_file"; then
+  if grep -q -- "--password-store=basic" "$desktop_file"; then
     echo "Brave desktop file already contains '--password-store basic'."
   else
     # Use sed to insert the argument after the binary path.
-    sed -i 's|^\(Exec=.*brave-browser-stable\)\(.*\)|\1 --password-store basic\2|' "$desktop_file"
-    echo "Modified $desktop_file to include '--password-store basic'."
+    sed -i 's|^\(Exec=.*brave-browser-stable\)\(.*\)|\1 --password-store=basic\2|' "$desktop_file"
+    echo "Modified $desktop_file to include '--password-store=basic'."
   fi
 }
 #---------------------------------------------------------------------
@@ -350,13 +361,15 @@ main() {
   dnf_speed_option=false
   swap_ffmpeg_option=false
   config_option=false
+  lazygit_option=false
 
   # Process command-line options.
-  while getopts "aFlqbrsdxfh" opt; do
+  while getopts "aFlLqbrsdxfh" opt; do
     case $opt in
     a) all_option=true ;;
     F) flatpak_option=true ;;
     l) librewolf_option=true ;;
+    L) lazygit_option=true ;;
     q) qtile_option=true ;;
     b) brave_option=true ;;
     r) rpm_option=true ;;
@@ -400,10 +413,13 @@ main() {
     install_qtile_packages
     install_brave
     enable_rpm_fusion
+    install_lazygit
     service_setup
     ffmpeg_swap
     setup_files
   else
+    echo "Executing selected additional functions..."
+    if $lazygit_option; then install_lazygit; fi
     if $flatpak_option; then install_flatpak_packages; fi
     if $librewolf_option; then install_librewolf; fi
     if $qtile_option; then install_qtile_packages; fi

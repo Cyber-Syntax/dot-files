@@ -1,5 +1,6 @@
 return {
   -- your additional plugins
+  --TODO: is copilot-vim much faster than copilot.lua?
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",

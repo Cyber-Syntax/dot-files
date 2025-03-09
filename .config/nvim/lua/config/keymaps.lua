@@ -4,6 +4,12 @@
 
 local map = vim.keymap.set
 
+-- up down + ctrl to move more lines
+map("n", "<C-Down>", "5j", { desc = "Move down 5 lines" })
+map("n", "<C-Up>", "5k", { desc = "Move up 5 lines" })
+map("n", "<C-Left>", "7h", { desc = "Move left 5 lines" })
+map("n", "<C-Right>", "7l", { desc = "Move right 5 lines" })
+
 -- Buffer switch
 --map("n", "<tab>", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
