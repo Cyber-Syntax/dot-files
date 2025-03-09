@@ -4,13 +4,8 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
-      --nix = { "alejandra" },
-      -- nix = { "nixfmt-rfc-style" },
-      -- Conform will run multiple formatters sequentially
       python = { "ruff" },
-      -- Conform will run the first available formatter
       javascript = { "prettierd", "prettier", stop_after_first = true },
-      -- markdown
       markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
       ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
       html = { "prettierd" },

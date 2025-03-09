@@ -12,14 +12,12 @@ return {
   { import = "lazyvim.plugins.extras.lang.typescript" },
   { import = "lazyvim.plugins.extras.formatting.prettier" },
   { import = "lazyvim.plugins.extras.lang.markdown" },
-  --switch blink from nvim-cmp
-  -- { import = "lazyvim.plugins.extras.coding.blink" },
   -- harpoon
   { import = "lazyvim.plugins.extras.editor.harpoon2" },
-  -- illuminate
+  -- illuminate: highlight same words with underline
   { import = "lazyvim.plugins.extras.editor.illuminate" },
-  -- indent-blankline
-  -- { import = "lazyvim.plugins.extras.ui.indent-blankline" },
+  -- copilot
+  { import = "lazyvim.plugins.extras.ai.copilot" },
 
   -- add edgy.nvim for IDE like features
   -- BUG: open two window on the start

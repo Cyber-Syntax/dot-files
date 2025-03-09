@@ -11,6 +11,9 @@ fi
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# working directory to home
+cd ~
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -104,7 +107,7 @@ alias e2="eza -F --all --long --sort=size --total-size --tree --level=2"
 alias e3="eza -F --all --long --sort=size --total-size --tree --level=3"
 alias ee="eza -F --all --long --sort=size --total-size --group"
 alias duh="du -sh * | sort -h"
-alias duhdot="du -sh .[^.]* * | sort -h"
+alias duhdot="du -sh .[^.]* | sort -h"
 
 
 # Set list of themes to pick from when loading at random
@@ -177,7 +180,6 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -227,15 +229,26 @@ if [ -f "$HOME/.p10k.zsh" ]; then
 fi
 
 # Additional keybindings
+
+# this is for home and end keys
 bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
+
+# this is for ctrl+arrow keys
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
-# ctrl + z to undo
+
+# this is undo tab completion with ctrl+z
 bindkey '^Z' undo
 
-# bindkey '^[[Z' reverse-menu-complete
+# delete last word with ctrl+w(seems like default?)
+# bindkey '^W' backward-kill-word
 
+# bindkey '^[[Z' reverse-menu-complete
+export SUDO_EDITOR="nvim"
+#
+# Export this for development purposes
+export CHROME_BIN="/usr/bin/brave-browser-stable"
 
 # Add custom Rofi scripts directory to PATH.
 export PATH="$HOME/.config/rofi/scripts:$PATH"
@@ -248,5 +261,5 @@ if command -v zoxide > /dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
 
-# End of .zshrc
-
+# Load Angular CLI autocompletion.
+source <(ng completion script)

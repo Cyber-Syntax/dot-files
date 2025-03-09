@@ -43,6 +43,13 @@ map("v", "<S-Tab>", "<cmd>normal! < | gv<cr>", { desc = "Dedent selected lines" 
 -- snacks live_grep on current directory
 map("n", "<leader>fq", ":lua Snacks.dashboard.pick('live_grep')<CR>", { desc = "Snacks live_grep" })
 
+-- terminal
+map("n", "<C-t>", function()
+  Snacks.terminal()
+end, { desc = "Terminal (cwd)" })
+
+map("t", "<C-t>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+
 -- It's already default:
 --map("n", "<leader>bd", Snacks.bufdelete, { desc = "Delete Buffer" })
 -- map('<leader>e', ':Neotree toggle<CR>',{desc = 'Neotree toggle'})

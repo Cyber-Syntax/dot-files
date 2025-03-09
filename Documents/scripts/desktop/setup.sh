@@ -168,6 +168,27 @@ install_qtile_packages() {
   echo "Qtile packages installation completed."
 }
 
+# Delete gnome desktop environment
+#TODO: remove all gnome de but keep network manager
+#WARN: need to be causese in this one
+# remove_gnome() {
+#
+# }
+
+#TODO: need to find a way to get the latest version
+# 1. Download the package. Enter:
+#
+# wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d' ' -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.2-1.noarch.rpm"
+# 2. Install the Proton VPN repository containing the new app. Run:
+#
+# sudo dnf install ./protonvpn-stable-release-1.0.2-1.noarch.rpm && sudo dnf check-update --refresh
+# 3. Run:
+#
+# sudo dnf install proton-vpn-gnome-desktop
+
+#enable openvpn for selinux
+# sudo semodule -i myopenvpn.pp
+
 #---------------------------------------------------------------------
 # Function: install_lazygit
 # Description: Installs Lazygit via a COPR repository.
@@ -326,10 +347,13 @@ EOF
   echo "Reloading sysctl settings..."
   sysctl --system
 
-  # 4. Sudoers snippet to increase terminal password prompt timeout.
+  # 4. Sudoers snippet to increase terminal password prompt timeout and allow borgbackup script.
   local sudoers_file="/etc/sudoers.d/terminal_timeout"
   echo "Creating/updating sudoers snippet ($sudoers_file)..."
   cat <<EOF >"$sudoers_file"
+## Allow borgbackup script to run without password
+developer ALL=(ALL) NOPASSWD: /opt/borg/home-borgbackup.sh
+
 ## Increase timeout on terminal password prompt
 Defaults timestamp_type=global
 Defaults env_reset,timestamp_timeout=20

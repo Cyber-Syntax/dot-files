@@ -1,8 +1,0 @@
-GRUB_TIMEOUT=0
-GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
-GRUB_DEFAULT=saved
-GRUB_DISABLE_SUBMENU=true
-GRUB_TERMINAL_OUTPUT="console"
-GRUB_CMDLINE_LINUX="resume=UUID=3403e1e3-f354-40a7-bc9e-b14546ad4d3e rhgb quiet rd.driver.blacklist=nouveau modprobe.blacklist=nouveau"
-GRUB_DISABLE_RECOVERY="true"
-GRUB_ENABLE_BLSCFG=true
