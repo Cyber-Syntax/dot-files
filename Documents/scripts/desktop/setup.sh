@@ -97,8 +97,10 @@ CORE_PACKAGES=(
 FLATPAK_PACKAGES=(
   org.signal.Signal
   io.github.martchus.syncthingtray
-  com.spotify.Client
   com.tutanota.Tutanota
+  # Proprietary softwares
+  md.obsidian.Obsidian
+  com.spotify.Client
 )
 
 #---------------------------------------------------------------------
@@ -150,6 +152,7 @@ install_qtile_packages() {
   local qtile_packages=(
     feh
     picom
+    i3lock
     rofi
     qtile-extras
     lxappearance
@@ -361,6 +364,64 @@ EOF
   chmod 0440 "$sudoers_file"
 
   echo "Configuration files have been updated."
+}
+
+# switch to ufw from firewalld
+#TODO: this need core packages add below later
+switch_firewall() {
+  echo "Switching to UFW from firewalld..."
+  systemctl disable --now firewalld
+  systemctl enable --now ufw
+  echo "UFW installation completed."
+}
+# syncthing ufw rule setup
+# manual guide: https://github.com/syncthing/syncthing/tree/main/etc/firewall-ufw
+# echo this to /etc/ufw/applications.d/syncthing
+
+#
+#run this command
+# sudo ufw app update syncthing
+# sudo ufw app update syncthing-gui
+# # than
+# sudo ufw allow syncthing
+
+#TODO: call later ufw setup?
+#FIXME: Wait instead of dealing with this, just enable ports?
+syncthing_manual_ufw_setup() {
+  echo "Setting up UFW rules for Syncthing..."
+  local syncthing_file="/etc/ufw/applications.d/syncthing"
+  echo "Creating UFW application files for Syncthing..."
+  cat <<EOF >"$syncthing_file"
+[syncthing]
+title=Syncthing
+description=Syncthing file synchronisation
+ports=22000|21027/udp
+
+[syncthing-gui]
+title=Syncthing-GUI
+description=Syncthing web gui
+ports=8384/tcp
+EOF
+  echo "UFW syncthing ufw preset created."
+}
+
+ufw_setup() {
+  # Firstly, do some basic setup like
+  # disable incoming and enable outgoing only
+  echo "Updating UFW rules..."
+  ufw default deny incoming
+  ufw default allow outgoing
+  # allow  localhost access
+  #TODO: 192.168.1.0/24 use more better way?
+  ufw allow proto tcp from 192.168.1.107
+  ufw allow proto tcp from 192.168.1.58
+  ufw allow proto tcp from 192.168.1.1
+
+  # enable ssh
+  ufw allow ssh
+  ufw app update syncthing
+  ufw app update syncthing-gui
+  ufw allow syncthing
 }
 
 #---------------------------------------------------------------------

@@ -18,6 +18,8 @@ return {
   { import = "lazyvim.plugins.extras.editor.illuminate" },
   -- copilot
   { import = "lazyvim.plugins.extras.ai.copilot" },
+  --FIXME: blink not work at all
+  -- { import = "lazyvim.plugins.extras.coding.blink" },
 
   -- add edgy.nvim for IDE like features
   -- BUG: open two window on the start

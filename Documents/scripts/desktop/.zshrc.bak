@@ -80,11 +80,21 @@ alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-
 
 # Standard Git aliases
 alias gst="git status"
-alias gbr="git branch"
-alias gcko="git checkout"
+alias gb="git branch"
+alias gco="git checkout"
 alias gcmt="git commit -am"
+alias gpl="git pull"
+alias gp="git push"
+alias gf="git fetch"
 alias gdf="git diff"
 alias adog="log --all --decorate --oneline --graph"
+
+# more advanced Git aliases
+alias gfmst="git fetch upstream && git rebase upstream/master"
+alias gfmn="git fetch upstream && git rebase upstream/main"
+alias gpmn="git push origin main"
+alias gpmst="git push origin master"
+alias gcom="git checkout main"
 
 # Other aliases
 alias icat="kitten icat"  # Kitty terminal image preview
