@@ -28,7 +28,8 @@ keys = [
     Key([mod], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
-    Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
+    #HACK: start kitty in home directory because oh-my-zsh start in root directory
+    Key([mod], "Return", lazy.spawn("kitty -d ~"), desc="Launch terminal"),
     # brave browser
     # firefox
     Key([mod], "less", lazy.spawn("firefox"), desc="Launch firefox"),

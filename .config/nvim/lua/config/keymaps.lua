@@ -45,7 +45,7 @@ map("n", "<leader>fq", ":lua Snacks.dashboard.pick('live_grep')<CR>", { desc = "
 
 -- terminal
 map("n", "<C-t>", function()
-  Snacks.terminal()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
 end, { desc = "Terminal (cwd)" })
 
 map("t", "<C-t>", "<cmd>close<cr>", { desc = "Hide Terminal" })
