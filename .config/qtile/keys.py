@@ -28,7 +28,7 @@ keys = [
     Key([mod], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
-    #HACK: start kitty in home directory because oh-my-zsh start in root directory
+    #HACK: workaround fix for zsh not launching in the home directory
     Key([mod], "Return", lazy.spawn("kitty -d ~"), desc="Launch terminal"),
     # brave browser
     # firefox

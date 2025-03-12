@@ -126,6 +126,7 @@ groups.append(
             # it is placed in the upper third of screen by default.
             DropDown(  # F10
                 "term",
+                #HACK: 
                 "kitty -d ~",
                 opacity=0.8,
                 width=0.5,
