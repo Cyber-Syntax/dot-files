@@ -1,23 +1,15 @@
 import os
+import subprocess
 
 from libqtile import bar, qtile
 from libqtile.config import Screen
 from libqtile.lazy import lazy
 from qtile_extras import widget
 from qtile_extras.popup.toolkit import (
-    PopupAbsoluteLayout,
     PopupRelativeLayout,
     PopupSlider,
     PopupText,
 )
-from qtile_extras.widget.decorations import (
-    BorderDecoration,
-    # GradientDecoration,
-    PowerLineDecoration,
-    # ImageDecoration,
-    RectDecoration,
-)
-from qtile_extras.widget.mixins import ExtendedPopupMixin, TooltipMixin
 
 import colors
 
@@ -64,7 +56,7 @@ VOLUME_NOTIFICATION = PopupRelativeLayout(
             colour_below="00ffff",
             bar_border_size=2,
             bar_border_margin=1,
-            bar_size=6,
+            bar_size=4,
             marker_size=0,
             end_margin=0,
         ),
@@ -270,6 +262,22 @@ right = [
         fmt=" {}",
         warn_space=10,
         visible_on_warn=True,
+    ),
+    space,
+    # custom script caller widget
+    widget.GenPollText(
+        # FIX: output shows like this b'Fedora: 39 | Flatpak: 12'
+        # NOTE: .strip() cause above, .decode("utf-8") cause fonts to aligned on upper side
+        func=lambda: subprocess.check_output(
+            "/home/developer/.config/qtile/scripts/fedora-flatpak-status.sh"
+        ).strip(),
+        update_interval=60,
+        mouse_callbacks={
+            # shell with kitty
+            "Button1": lambda: qtile.spawn(
+                'kitty -- bash -c "/home/developer/.config/qtile/scripts/update-dnf-flatpak.sh"'
+            ),
+        },
     ),
     space,
     widget.Clock(

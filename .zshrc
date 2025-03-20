@@ -66,6 +66,9 @@ plugins=(
 # Docusaurus deployment alias
 alias dino-deploy="yarn build & USE_SSH=true yarn deploy"
 
+# Fedora related aliases
+#TODO: 
+
 # # NixOS related aliases
 # alias stable-flu="sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware"
 # alias all-flu="sudo nix flake update"
@@ -88,7 +91,7 @@ alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-rep
 alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --'
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
-alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/'
+alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ .zshrc'
 alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
 
@@ -114,10 +117,11 @@ alias gcom="git checkout main"
 alias icat="kitten icat"  # Kitty terminal image preview
 
 # Neovim related aliases
+# fzf not work
 # alias n="nvim -c 'FzfLua oldfiles'"
+# alias nlv="NVIM_APPNAME=nvim.lazyvim nvim -c 'Telescope oldfiles'"
 
-alias n="nvim -c 'Telescope oldfiles'"
-alias nlv="NVIM_APPNAME=nvim.lazyvim nvim -c 'Telescope oldfiles'"
+alias n="nvim"
 
 # General utility aliases
 alias tp="trash-put"
@@ -267,10 +271,16 @@ bindkey '^Z' undo
 
 # delete last word with ctrl+w(seems like default?)
 # bindkey '^W' backward-kill-word
-
 # bindkey '^[[Z' reverse-menu-complete
+
+
+# environment variables
+# https://github.com/elFarto/nvidia-vaapi-driver#direct-backend
+export NVD_LOG=1
+export NVD_BACKEND=direct # default
+
 export SUDO_EDITOR="nvim"
-#
+
 # Export this for development purposes
 export CHROME_BIN="/usr/bin/brave-browser-stable"
 

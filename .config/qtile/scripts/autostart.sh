@@ -10,8 +10,8 @@ gammastep & # redshift alternative (works wayland and xorg)
 python3 /home/developer/Documents/repository/WallpaperChanger/main.py &
 
 if [ $(hostname) == "fedora" ]; then
-  # xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
-  # xset s off & # disable screen saver
+  xset -dpms & # disable power management (DPMS) causes screen to sleep after 10 minutes
+  xset s off & # disable screen saver
   #TZ=Europe/Istanbul # work on fedora for now
   /home/developer/Documents/appimages/super-productivity.AppImage & # task app
   sh /home/developer/Documents/scripts/screenloyout/asus_only.sh &  # My screen layout scripts
