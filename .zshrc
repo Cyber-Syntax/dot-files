@@ -11,6 +11,20 @@ fi
 # # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+
+#### TMUX
+# Enable tmux all the time when zsh starts
+# if [ "$TMUX" = "" ]; then tmux; fi
+
+
+
+# Fixing term home and end keys
+TERM=screen-256color
+# TERM=tmux-256color
+# TERM=tmux
+
+#### ./TMUX
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -48,10 +62,10 @@ zstyle ':completion:*' menu select # select completions with arrow keys
 zstyle ':completion:*' group-name '' # group results by category
 zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
-plugins=( 
+plugins=(
     zsh-autosuggestions
     dirhistory
-    #TESTING: 
+    #TESTING:
     zsh-navigation-tools
     git
     ssh
@@ -67,7 +81,7 @@ plugins=(
 alias dino-deploy="yarn build & USE_SSH=true yarn deploy"
 
 # Fedora related aliases
-#TODO: 
+#TODO:
 
 # # NixOS related aliases
 # alias stable-flu="sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware"
@@ -91,7 +105,7 @@ alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-rep
 alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --'
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
-alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ .zshrc'
+alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ .zshrc ~/.config/tmux/ ~/.config/alacritty/'
 alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
 

@@ -1,6 +1,7 @@
 #!/bin/bash -e
 # Extract command
 # sudo borg extract --progress --list /mnt/backups/borgbackup/doc-repo::doc-27-02-2024
+#NOTE: this file need to be on /opt/borg/home-borgbackup.sh
 
 export BORG_UKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
 

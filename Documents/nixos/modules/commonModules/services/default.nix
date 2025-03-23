@@ -1,10 +1,11 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Disable pulseaudio, using pipewire
   hardware.pulseaudio.enable = false;
 
   # sytemd-timer for trash-cli to delete files older than 30 days.
   systemd.timers."trash-cli" = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "daily";
       Persistent = true; # make systemd timer persistent if missed the last start time, similar anacron
@@ -36,8 +37,8 @@
     openssh = {
       enable = true;
       startWhenNeeded = true;
-      settings.PermitRootLogin = "no"; # prohibit-password
-      settings.PasswordAuthentication = false;
+      settings.PermitRootLogin = "yes"; # prohibit-password
+      settings.PasswordAuthentication = true;
 
       openFirewall = true; # default
       # ports = [

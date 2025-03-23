@@ -1,10 +1,6 @@
 # #!/bin/bash
 
-# sudo rsync -avz --progress \
-#   --exclude-from "rsync-exclude.txt" \
-#   /home/developer/ laptop:/home/
-
-# one time rsync from local to remote
+# one time rsync from laptop to desktop via ssh
 sudo rsync -avzP \
   --exclude='/home/developer/Downloads/' \
   --exclude='Downloads/' \
@@ -20,4 +16,4 @@ sudo rsync -avzP \
   --exclude='Documents/backup-for-cloud/' \
   --exclude='~/Documents/backup-for-cloud/' \
   --exclude='/home/developer/Documents/backup-for-cloud/*' \
-  /home/developer laptop:/home/
+  /home/developer developer@desktop:/home/developer/Documents/backup-for-cloud/laptop/

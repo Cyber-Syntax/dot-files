@@ -54,6 +54,16 @@ map("n", "<C-n>", "*Ncgn", { silent = true, desc = "Substitute word under cursor
 -- `ce` similar: but ce is change after the cursor.
 map("n", "<cr>", "ciw")
 
+-- home and end keymaps
+-- https://github.com/neovim/neovim/issues/9012
+-- inoremap <C-a> <Home>
+-- inoremap <C-e> <End>
+map("i", "<C-a>", "<Home>", { desc = "Home" })
+map("i", "<C-e>", "<End>", { desc = "End" })
+
+-- Redo - default already
+-- map("n", "<C-r>", "<cmd>redo<cr>", { desc = "Redo" })
+
 --TODO:  maybe caps2esc would be better
 
 -- -- -- Obsidian.nvim
