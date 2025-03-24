@@ -75,6 +75,7 @@ space = widget.Spacer(length=widget_gap, decorations=[])
 def no_text(text):
     return ""
 
+
 left = [
     # "pyxdg" package is needed for wayland for TaskList
     widget.GroupBox(
@@ -115,12 +116,9 @@ left = [
         ],
     ),
     space,
-
-
 ]
 
-middle = [
-]
+middle = []
 
 right = [
     widget.Mpris2(
@@ -227,16 +225,18 @@ right = [
         ],
     ),
     space,
+    widget.Battery(),
+    space,
     widget.Bluetooth(
         default_show_battery=True,
-        default_text=' {connected_devices}',
-        device_format=' {name}{battery_level} [{symbol}]',
+        default_text=" {connected_devices}",
+        device_format=" {name}{battery_level} [{symbol}]",
         fontsize=20,
     ),
     space,
     widget.Backlight(
-        fmt = '🔆 {}',
-        backlight_name='intel_backlight',
+        fmt="🔆 {}",
+        backlight_name="intel_backlight",
     ),
     space,
     widget.TextBox(

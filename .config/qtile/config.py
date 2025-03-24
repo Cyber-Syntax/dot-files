@@ -43,17 +43,19 @@ DP-2   left monitor    :   screen_affinity=0, group 2 # primary asus
 DP_4   right monitor :   screen_affinity=1, group 4 # view right
 """
 
+
 # 2 machine setup
 def get_hostname():
     hostname = subprocess.check_output(["hostname"]).decode("utf-8").strip()
     return hostname
+
 
 hostname = get_hostname()
 
 if hostname == "fedora":
     from keys import *
     from widget import *
-elif hostname == "nixosLaptop":
+elif hostname == "fedora-laptop":
     from laptopKeys import *
     from laptopWidget import *
 else:
@@ -126,7 +128,7 @@ groups.append(
             # it is placed in the upper third of screen by default.
             DropDown(  # F10
                 "term",
-                #HACK: 
+                # HACK:
                 "kitty -d ~",
                 opacity=0.8,
                 width=0.5,

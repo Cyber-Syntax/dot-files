@@ -39,57 +39,60 @@ autocmd("BufEnter", {
 --   end,
 -- })
 
-local persistence = require("persistence")
-
--- Override session path to current directory
-persistence.current = function(opts)
-  return vim.fn.getcwd() .. "/session.vim"
-end
-
--- Setup with always-save mode
-persistence.setup({
-  options = {
-    need = 0, -- Always save regardless of buffer count
-  },
-})
-
--- Load session on enter if exists
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    local session_file = persistence.current()
-    if vim.fn.filereadable(session_file) == 1 then
-      persistence.load()
-    end
-    -- Initial save after load
-    persistence.save()
-  end,
-})
-
--- Save on buffer/window changes (with debouncing)
-local save_debounce = nil
-local function debounced_save()
-  if save_debounce then
-    save_debounce:close()
-  end
-  save_debounce = vim.loop.new_timer()
-  save_debounce:start(
-    2000,
-    0,
-    vim.schedule_wrap(function()
-      persistence.save()
-      save_debounce:close()
-      save_debounce = nil
-    end)
-  )
-end
-
--- Track important events
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "WinEnter" }, {
-  callback = debounced_save,
-})
-
--- Safety save every 5 minutes
-vim.loop.new_timer():start(0, 5 * 60 * 1000, vim.schedule_wrap(persistence.save))
+----FIXME: This save the current session on the directory but when we open the sessions it load the last saved nvim session
+---- That's mean, it is showing wrong buffers and windows in projects which restoring the last one
+--local persistence = require("persistence")
+--
+---- Override session path to current directory
+--persistence.current = function(opts)
+--  return vim.fn.getcwd() .. "/session.vim"
+--end
+--
+---- Setup with always-save mode
+--persistence.setup({
+--  options = {
+--    need = 0, -- Always save regardless of buffer count
+--  },
+--})
+--
+---- Maybe that's why it is not working properly
+---- -- Load session on enter if exists
+---- vim.api.nvim_create_autocmd("VimEnter", {
+----   callback = function()
+----     local session_file = persistence.current()
+----     if vim.fn.filereadable(session_file) == 1 then
+----       persistence.load()
+----     end
+----     -- Initial save after load
+----     persistence.save()
+----   end,
+---- })
+--
+---- Save on buffer/window changes (with debouncing)
+--local save_debounce = nil
+--local function debounced_save()
+--  if save_debounce then
+--    save_debounce:close()
+--  end
+--  save_debounce = vim.loop.new_timer()
+--  save_debounce:start(
+--    2000,
+--    0,
+--    vim.schedule_wrap(function()
+--      persistence.save()
+--      save_debounce:close()
+--      save_debounce = nil
+--    end)
+--  )
+--end
+--
+---- Track important events
+--vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "WinEnter" }, {
+--  callback = debounced_save,
+--})
+--
+---- Safety save every 5 minutes
+--vim.loop.new_timer():start(0, 5 * 60 * 1000, vim.schedule_wrap(persistence.save))
 
 -- Optional: Save when leaving Neovim (already handled by plugin)
 
