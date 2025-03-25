@@ -5,8 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-[[ -z "$PROFILE_STARTUP" ]] && cd ~ >/dev/null || true
-
 
 # # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
@@ -18,9 +16,12 @@ fi
 
 
 
-# Fixing term home and end keys
-TERM=screen-256color
-# TERM=tmux-256color
+# This fixes colors on tmux but cause issue on zsh
+# shell echoing the commands as they executed
+# TERM=screen-256color
+
+
+#TERM=tmux-256color
 # TERM=tmux
 
 #### ./TMUX
@@ -120,11 +121,15 @@ alias gf="git fetch"
 alias gdf="git diff"
 alias adog="log --all --decorate --oneline --graph"
 
+# advancade git aliases for my own repos
+alias gfetchmain="git fetch && git rebase"
+
+
 # more advanced Git aliases
-alias gfmst="git fetch upstream && git rebase upstream/master"
-alias gfmn="git fetch upstream && git rebase upstream/main"
-alias gpmn="git push origin main"
-alias gpmst="git push origin master"
+alias gfetchmaster="git fetch upstream && git rebase upstream/master"
+alias gfetchmain="git fetch upstream && git rebase upstream/main"
+alias gpushmn="git push origin main"
+alias gpushmt="git push origin master"
 alias gcom="git checkout main"
 
 # Other aliases
@@ -275,6 +280,13 @@ fi
 # this is for home and end keys
 bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
+
+# Home
+bindkey '\e[H' beginning-of-line
+bindkey '\eOH' beginning-of-line
+# End
+bindkey '\e[F' end-of-line
+bindkey '\eOF' end-of-line
 
 # this is for ctrl+arrow keys
 bindkey '^[[1;5D' backward-word

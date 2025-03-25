@@ -116,8 +116,10 @@ keys = [
     Key([], "Cancel", lazy.spawn("playerctl play-pause")),
     Key([], "XF86Favorites", lazy.spawn("playerctl next")),
     Key([], "XF86Messenger", lazy.spawn("playerctl previous")),
-    # brightness acpilight
-    #TESTING: acpilight command
-    Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10")),
+    # brightnessctl on fedora
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +500")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 500-")),
+    # # TESTING: acpilight command
+    # Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 10")),
+    # Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 10")),
 ]
