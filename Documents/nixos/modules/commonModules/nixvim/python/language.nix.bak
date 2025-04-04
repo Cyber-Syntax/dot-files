@@ -1,0 +1,45 @@
+{
+  programs.nixvim.plugins = {
+    lsp-format.enable = true;
+    conform-nvim = {
+      enable = true;
+      settings = {
+        formatters_by_ft.python = [
+          "ruff" # Replaced black with ruff (handles formatting + isort)
+          # "black"
+        ];
+      };
+    };
+    lsp.servers.ruff = {
+      enable = true;
+      extraOptions = {
+        initOptions.settings.args = [
+          "--config=/home/developer/Documents/nixos/modules/commonModules/nixvim/python/ruff.toml"
+        ];
+      };
+    };
+    lint.lintersByFt.python = [
+      "ruff"
+    ];
+    lsp.servers.pylsp = {
+      enable = true;
+      settings.plugins = {
+        ruff = {
+          enabled = true;
+          formatEnable = false;
+        };
+        jedi.enabled = true; # Good for completions
+        rope.enabled = true; # Useful for refactoring
+      };
+    };
+    none-ls = {
+      sources = {
+        # formatting = {
+        # };
+        diagnostics = {
+          mypy.enable = true; # Static type checking
+        };
+      };
+    };
+  };
+}

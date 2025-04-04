@@ -1,36 +1,97 @@
 [
     {
-        "output": "HDMI-A-1",
-        "height": 22,
+        "output": "DP-3",
         "include": [
-            "~/.config/waybar/default-modules.json"
-        ],
-        "layer": "top",
-        "modules-left": [],
-        "modules-center": ["clock"],
-        "modules-right": ["pulseaudio"]
-    },
-    {
-        "output": "DP-4",
-        "include": [
-            "~/.config/waybar/default-modules.json"
+            "~/.config/waybar/config.jsonc"
         ],
         "layer": "top",
         "spacing": 4,
-        "modules-left": ["hyprland/workspaces", "custom/icon1", "custom/icon2", "custom/icon3"],
-        "modules-center": ["hyprland/window", "clock", "tray", "custom/dnf-update-status"],
-        "modules-right": ["idle_inhibitor", "disk#d2", "disk", "cpu", "memory","pulseaudio"]
+        "modules-left": [
+          //"custom/paddw",
+              "hyprland/workspaces",  // workspaces
+          //"custom/paddw",
+            "wlr/taskbar",
+          "custom/paddw",
+              //"custom/ws",            // window icon
+              //"custom/paddw",
+              "hyprland/window"       // window title
+        ],
+        "modules-center": [
+          "custom/paddc",
+            "custom/storage",
+          "custom/paddw",
+            "memory",
+          "custom/paddw",
+            "custom/cpu-zen-temp",       
+          "custom/paddw",
+            "clock#time",           
+          "custom/paddw",
+            "clock#date",
+        ],
+        "modules-right": [
+              "mpris",
+          "custom/paddw",
+              "privacy",
+          "custom/paddw",
+              "tray",
+          "custom/paddw",
+              "pulseaudio",           // output device
+          "custom/paddw",
+              "idle_inhibitor",
+          "custom/paddw",
+              "custom/power"          // power button
+        ],
     },
     {
-        "output": "DP-2",
+        "output": "eDP-1",
         "include": [
-            "~/.config/waybar/default-modules.json"
+            "~/.config/waybar/config.jsonc"
         ],
         "layer": "top",
         "position": "top",
         "spacing": 4,
-        "modules-left": ["hyprland/workspaces", "custom/icon1", "custom/icon2", "custom/icon3"],
-        "modules-center": ["custom/media", "hyprland/window", "clock", "tray", "custom/dnf-update-status" ],
-        "modules-right": [ "custom/sink-status", "pulseaudio"]
+        "modules-left": [
+          //"custom/paddw",
+              "hyprland/workspaces",  // workspaces
+          //"custom/paddw",
+            "wlr/taskbar",
+          "custom/paddw",
+              //"custom/ws",            // window icon
+              //"custom/paddw",
+              "hyprland/window"       // window title
+        ],
+        "modules-center": [
+          "custom/paddc",
+            "custom/storage",
+          "custom/paddw",
+            "custom/cpu-temp",       
+          "custom/paddw",
+            "clock#time",           
+          "custom/paddw",
+            "clock#date",          
+          "custom/paddw",
+            "network",          
+          "custom/paddw"
+        ],
+        "modules-right": [
+              "mpris",
+          "custom/paddw",
+              "privacy",
+          "custom/paddw",
+              "tray",
+          "custom/paddw",
+              "pulseaudio",           // output device
+          "custom/paddw",
+              "bluetooth",
+          "custom/paddw",
+              // "backlight",            // brightness
+              "custom/backlight",     // brightness
+          "custom/paddw",
+              "battery",              // battery
+          "custom/paddw",
+              "idle_inhibitor",
+          "custom/paddw",
+              "custom/power"          // power button
+        ],
     }
 ]

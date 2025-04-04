@@ -1,5 +1,4 @@
 { pkgs, ... }:
-
 {
   # Disable pulseaudio, using pipewire
   hardware.pulseaudio.enable = false;
@@ -16,7 +15,7 @@
   systemd.services."trash-cli" = {
     # (crontab -l ; echo "@daily $(which trash-empty) 30") | crontab -
     script = ''
-      ${pkgs.trash-cli}/bin/trash-empty 30  
+      ${pkgs.trash-cli}/bin/trash-empty 30
     '';
 
     serviceConfig = {
@@ -27,7 +26,6 @@
   };
 
   services = {
-
     clamav = {
       updater.enable = true;
       updater.settings = {
@@ -37,10 +35,10 @@
     };
 
     openssh = {
-      enable = false;
+      enable = true;
       startWhenNeeded = true;
-      settings.PermitRootLogin = "no"; # prohibit-password
-      settings.PasswordAuthentication = false;
+      settings.PermitRootLogin = "yes"; # prohibit-password
+      settings.PasswordAuthentication = true;
 
       openFirewall = true; # default
       # ports = [
@@ -55,7 +53,6 @@
       # ];
     };
 
-    gnome.gnome-keyring.enable = true;
     acpid.enable = true;
     dbus.enable = true;
     devmon.enable = true;
@@ -117,7 +114,6 @@
       #     };
       #   };
       # };
-
     };
   };
   #

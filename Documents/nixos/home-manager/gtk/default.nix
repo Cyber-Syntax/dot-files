@@ -1,6 +1,17 @@
-{ pkgs, ... }:
+{pkgs, ...}: {
+  home-manager.users.developer.home.pointerCursor = {
+    gtk.enable = true;
+    # x11.enable = true;
+    package = pkgs.vimix-cursors;
+    name = "Vimix-white-cursors";
+    size = 24;
 
-{
+    # hyprcursor = {
+    #   enable = true;
+    #   size = 24;
+    # };
+  };
+
   home-manager.users.developer.gtk = {
     enable = true;
 
@@ -25,7 +36,7 @@
     };
 
     gtk3.bookmarks = [
-      "file:///home/developer/Downloads"
+        "file:///home/developer/Downloads"
       "file:///home/developer/Pictures/"
       "file:///home/developer/Photos/"
       "file:///home/developer/Documents"
@@ -47,7 +58,5 @@
       #gtk-recent-files-limit = 20;
       gtk-application-prefer-dark-theme = 1;
     };
-
   }; # ./gtk
-
 }

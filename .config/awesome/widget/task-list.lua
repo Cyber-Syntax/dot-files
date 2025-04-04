@@ -1,212 +1,126 @@
-local awful = require('awful')
-local wibox = require('wibox')
-local dpi = require('beautiful').xresources.apply_dpi
-local capi = {button = _G.button}
-local gears = require('gears')
-local clickable_container = require('widget.material.clickable-container')
---- Common method to create buttons.
--- @tab buttons
--- @param object
--- @treturn table
-local function create_buttons(buttons, object)
-  if buttons then
-    local btns = {}
-    for _, b in ipairs(buttons) do
-      -- Create a proxy button object: it will receive the real
-      -- press and release events, and will propagate them to the
-      -- button object the user provided, but with the object as
-      -- argument.
-      local btn = capi.button {modifiers = b.modifiers, button = b.button}
-      btn:connect_signal(
-        'press',
-        function()
-          b:emit_signal('press', object)
-        end
-      )
-      btn:connect_signal(
-        'release',
-        function()
-          b:emit_signal('release', object)
-        end
-      )
-      btns[#btns + 1] = btn
-    end
+local awful = require("awful")
+local wibox = require("wibox")
+local gears = require("gears")
+local beautiful = require("beautiful")
+local capi = { button = _G.button }
+local clickable_container = require("widget.material.clickable-container")
 
-    return btns
-  end
+-- Cache frequently used values
+local dpi = beautiful.xresources.apply_dpi
+local close_icon = os.getenv("HOME") .. "/.config/awesome/theme/icons/tag-list/tag/close.png"
+local cached_widgets = setmetatable({}, { __mode = "k" }) -- Weak table for automatic cleanup
+
+local function create_buttons(buttons, object)
+	if not buttons then
+		return
+	end
+
+	local btns = {}
+	for _, b in ipairs(buttons) do
+		local btn = capi.button({
+			modifiers = b.modifiers,
+			button = b.button,
+		})
+		btn:connect_signal("press", function()
+			b:emit_signal("press", object)
+		end)
+		btn:connect_signal("release", function()
+			b:emit_signal("release", object)
+		end)
+		btns[#btns + 1] = btn
+	end
+	return btns
 end
 
 local function list_update(w, buttons, label, data, objects)
-  -- update the widgets, creating them if needed
-  w:reset()
-  for i, o in ipairs(objects) do
-    local cache = data[o]
-    local ib, cb, tb, cbm, bgb, tbm, ibm, tt, l, ll, bg_clickable
-    if cache then
-      ib = cache.ib
-      tb = cache.tb
-      bgb = cache.bgb
-      tbm = cache.tbm
-      ibm = cache.ibm
-      tt  = cache.tt
-    else
-      ib = wibox.widget.imagebox()
-      tb = wibox.widget.textbox()
-      cb =
-        clickable_container(
-        wibox.container.margin(
-          wibox.widget.imagebox(os.getenv('HOME') .. '/.config/awesome/theme/icons/tag-list/tag/close.png'),
-          4,
-          4,
-          4,
-          4
-        )
-      )
-      cb.shape = gears.shape.circle
-      cbm = wibox.container.margin(cb, dpi(4), dpi(4), dpi(4), dpi(4))
-      cbm:buttons(
-        gears.table.join(
-          awful.button(
-            {},
-            1,
-            nil,
-            function()
-              o.kill(o)
-            end
-          )
-        )
-      )
-      bg_clickable = clickable_container()
-      bgb = wibox.container.background()
-      tbm = wibox.container.margin(tb, dpi(4), dpi(4))
-      ibm = wibox.container.margin(ib, dpi(4), dpi(4), dpi(4), dpi(4))
-      l = wibox.layout.fixed.horizontal()
-      ll = wibox.layout.fixed.horizontal()
+	w:reset()
 
-      -- All of this is added in a fixed widget
-      l:fill_space(true)
-      l:add(ibm)
-      l:add(tbm)
-      ll:add(l)
-      ll:add(cbm)
+	-- Reuse existing widgets where possible
+	for i, o in ipairs(objects) do
+		local cache = data[o] or cached_widgets[o]
+		local text, bg, bg_image, icon, args = label(o, cache and cache.tb or nil)
 
-      bg_clickable:set_widget(ll)
-      -- And all of this gets a background
-      bgb:set_widget(bg_clickable)
+		if not cache then
+			cache = {
+				ib = wibox.widget.imagebox(),
+				tb = wibox.widget.textbox(),
+				bgb = wibox.container.background(),
+				tt = awful.tooltip({
+					mode = "outside",
+					align = "bottom",
+					delay_show = 1,
+				}),
+			}
+			cached_widgets[o] = cache
 
-      l:buttons(create_buttons(buttons, o))
+			-- Close button setup
+			local cb = clickable_container(wibox.container.margin(wibox.widget.imagebox(close_icon), 4, 4, 4, 4))
+			cb.shape = gears.shape.circle
+			cb:buttons(gears.table.join(awful.button({}, 1, nil, function()
+				o:kill()
+			end)))
 
-      -- Tooltip to display whole title, if it was truncated
-      tt = awful.tooltip({
-        objects = {tb},
-        mode = 'outside',
-        align = 'bottom',
-        delay_show = 1,
-      })
+			-- Layout construction
+			local layout = wibox.layout.fixed.horizontal()
+			layout:add(wibox.container.margin(cache.ib, dpi(4)))
+			layout:add(wibox.container.margin(cache.tb, dpi(4)))
+			cache.bgb:set_widget(wibox.widget({
+				layout,
+				wibox.container.margin(cb, dpi(4)),
+				layout = wibox.layout.align.horizontal,
+			}))
+			cache.bgb:buttons(create_buttons(buttons, o))
+		end
 
-      data[o] = {
-        ib = ib,
-        tb = tb,
-        bgb = bgb,
-        tbm = tbm,
-        ibm = ibm,
-        tt  = tt
-      }
-    end
+		-- Update content only if changed
+		if text then
+			local truncated = text:gsub(">(.-)<", function(t)
+				return #t > 24 and ">" .. t:sub(1, 21) .. "...<" or ">" .. t .. "<"
+			end)
+			cache.tb:set_markup_silently(truncated)
+			cache.tt:set_text(text:match(">(.-)<") or text)
+		end
 
-    local text, bg, bg_image, icon, args = label(o, tb)
-    args = args or {}
+		cache.bgb:set_bg(bg)
+		cache.ib.image = icon or nil
+		w:add(cache.bgb)
+	end
 
-    -- The text might be invalid, so use pcall.
-    if text == nil or text == '' then
-      tbm:set_margins(0)
-    else
-      -- truncate when title is too long
-      local textOnly = text:match('>(.-)<')
-      if (textOnly:len() > 24) then
-        text = text:gsub('>(.-)<', '>' .. textOnly:sub(1, 21) .. '...<')
-        tt:set_text(textOnly)
-        tt:add_to_object(tb)
-      else
-        tt:remove_from_object(tb)
-      end
-      if not tb:set_markup_silently(text) then
-        tb:set_markup('<i>&lt;Invalid text&gt;</i>')
-      end
-    end
-    bgb:set_bg(bg)
-    if type(bg_image) == 'function' then
-      -- TODO: Why does this pass nil as an argument?
-      bg_image = bg_image(tb, o, nil, objects, i)
-    end
-    bgb:set_bgimage(bg_image)
-    if icon then
-      ib.image = icon
-    else
-      ibm:set_margins(0)
-    end
-
-    bgb.shape = args.shape
-    bgb.shape_border_width = args.shape_border_width
-    bgb.shape_border_color = args.shape_border_color
-
-    w:add(bgb)
-  end
+	-- Cleanup unused clients
+	for o, _ in pairs(cached_widgets) do
+		if not o.valid then
+			cached_widgets[o] = nil
+		end
+	end
 end
-local tasklist_buttons =
-  awful.util.table.join(
-  awful.button(
-    {},
-    1,
-    function(c)
-      if c == _G.client.focus then
-        c.minimized = true
-      else
-        -- Without this, the following
-        -- :isvisible() makes no sense
-        c.minimized = false
-        if not c:isvisible() and c.first_tag then
-          c.first_tag:view_only()
-        end
-        -- This will also un-minimize
-        -- the client, if needed
-        _G.client.focus = c
-        c:raise()
-      end
-    end
-  ),
-  awful.button(
-    {},
-    2,
-    function(c)
-      c.kill(c)
-    end
-  ),
-  awful.button(
-    {},
-    4,
-    function()
-      awful.client.focus.byidx(1)
-    end
-  ),
-  awful.button(
-    {},
-    5,
-    function()
-      awful.client.focus.byidx(-1)
-    end
-  )
+
+-- Simplified tasklist buttons
+local tasklist_buttons = gears.table.join(
+	awful.button({}, 1, function(c)
+		if c == client.focus then
+			c.minimized = true
+		else
+			c.minimized = false
+			if not c:isvisible() then
+				c.first_tag:view_only()
+			end
+			client.focus = c
+			c:raise()
+		end
+	end),
+	awful.button({}, 2, function(c)
+		c:kill()
+	end)
 )
 
 local TaskList = function(s)
-  return awful.widget.tasklist(
-    s,
-    awful.widget.tasklist.filter.currenttags,
-    tasklist_buttons,
-    {},
-    list_update,
-    wibox.layout.fixed.horizontal()
-  )
+	return awful.widget.tasklist({
+		screen = s,
+		filter = awful.widget.tasklist.filter.currenttags,
+		buttons = tasklist_buttons,
+		update_function = list_update,
+		layout = wibox.layout.fixed.horizontal(),
+	})
 end
 
 return TaskList

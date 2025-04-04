@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+{pkgs, ...}: {
+  #TODO: setup xdg dirs
+  #https://nixos.wiki/wiki/Environment_variables
 
-{
   home-manager.users.developer.xdg = {
     enable = true;
     mime = {
@@ -21,9 +22,9 @@
           "org.freedesktop.impl.portal.FileChooser" = [
             "lxde"
           ];
-          "org.freedesktop.impl.portal.Secret" = [
-            "gnome-keyring"
-          ];
+          # "org.freedesktop.impl.portal.Secret" = [
+          #   "gnome-keyring"
+          # ];
         };
       };
     };

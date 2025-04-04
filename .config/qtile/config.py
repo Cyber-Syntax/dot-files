@@ -24,12 +24,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import os
-import subprocess
-from libqtile import hook, layout
-from libqtile.config import Group, Key, Match, Drag
-from libqtile.lazy import lazy
 import re  # this fixes the Match error on group
+import subprocess
+
+from libqtile import hook, layout
+from libqtile.config import Drag, DropDown, Group, Key, Match, ScratchPad
+from libqtile.lazy import lazy
+
 from functions import *
+from variables import *
 
 """
 Log location
@@ -49,12 +52,12 @@ def get_hostname():
 
 hostname = get_hostname()
 
-if hostname == "nixos":
-    from widget import *
+if hostname == "fedora":
     from keys import *
-elif hostname == "nixosLaptop":
-    from laptopWidget import *
+    from widget import *
+elif hostname == "fedora-laptop":
     from laptopKeys import *
+    from laptopWidget import *
 else:
     print("No hostname found")
 
@@ -86,14 +89,14 @@ groups = [
         screen_affinity=0,
         layout="monadtall",
         matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))],
-        label="",
+        label="",
     ),
     Group(
         "4",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^superproductivity$"))],
-        label="",
+        label="",
     ),
     Group(
         "5",
@@ -104,7 +107,6 @@ groups = [
     ),
     Group("6", screen_affinity=0, layout="monadtall", label=""),
 ]
-
 for i in groups:
     keys.extend(
         [
@@ -116,6 +118,48 @@ for i in groups:
             Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
         ]
     )
+
+# Scratchpad
+groups.append(
+    ScratchPad(
+        "scratchpad",
+        [
+            # define a drop down terminal.
+            # it is placed in the upper third of screen by default.
+            DropDown(  # F10
+                "term",
+                # HACK:
+                "kitty -d ~",
+                opacity=0.8,
+                width=0.5,
+                height=0.5,
+                x=0.3,
+                y=0.3,
+                # on_focus_lost_hide=False,  # Keep open until manually hidden
+            ),
+            # DropDown(  # F11
+            #     "social",
+            #     "/home/developer/Documents/appimages/FreeTube.AppImage",
+            #     opacity=0.8,
+            #     width=0.5,
+            #     height=0.5,
+            #     x=0.3,
+            #     y=0.3,
+            #     # on_focus_lost_hide=False,  # Keep open until manually hidden
+            # ),
+            DropDown(  # F12
+                "chat",
+                "signal-desktop",
+                opacity=0.8,
+                width=0.5,
+                height=0.5,
+                x=0.3,
+                y=0.3,
+                # on_focus_lost_hide=False,  # Keep open until manually hidden
+            ),
+        ],
+    ),
+)
 
 layout_theme = {
     "border_width": layouts_border_width,
@@ -138,6 +182,8 @@ floating_layout = layout.Floating(
     **layout_theme,
     float_rules=[
         *layout.Floating.default_float_rules,
+        Match(wm_class="Seahorse"),  # gitk
+        Match(wm_class="keepassxc"),  # gitk
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk

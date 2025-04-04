@@ -2,38 +2,34 @@ from libqtile.lazy import lazy
 from libqtile import hook
 from libqtile import qtile
 from libqtile.backend.base import Window
+import subprocess
+from libqtile.log_utils import logger
 
 # qtile cmd-obj -o group 4 -f toscreen # focus from command line
 
+#
+# @hook.subscribe.resume
+# def lock_on_resume():
+#     subprocess.run(["i3lock"])  # Use list form for safer execution
+#     logger.warning("Resuming from sleep")  # Changed to warning() from deprecated warn()
+#
+# @hook.subscribe.client_new
+# def idle_dialogues(window):
+#     # Use window.name instead of window.window.get_name()
+#     if window.name in {"Search Dialog", "Module", "Goto", "IDLE Preferences"}:
+#         window.floating = True
 
-@hook.subscribe.resume
-def lock_on_resume():
-    subprocess.run("i3lock --p")
-    logger.warn("Resuming from sleep")
-
-
-@hook.subscribe.client_new
-def idle_dialogues(window):
-    if (
-        (window.window.get_name() == "Search Dialog")
-        or (window.window.get_name() == "Module")
-        or (window.window.get_name() == "Goto")
-        or (window.window.get_name() == "IDLE Preferences")
-    ):
-        window.floating = True
-
-
-@hook.subscribe.client_new
-def floating_dialogs(window):
-    dialog = window.window.get_wm_type() == "dialog"
-    transient = window.window.get_wm_transient_for()
-    if dialog or transient:
-        window.floating = True
-
+# @hook.subscribe.client_new
+# def floating_dialogs(window):
+#     # Use Qtile's window properties instead of X11 direct access
+#     #FIX: AttributeError: <class 'libqtile.backend.x11.window.Window'> has no attribute wm_type
+#     dialog = "dialog" in window.wm_type  # Check if dialog is in WM_TYPE
+#     transient = window.transient_for()  # Check for transient parent
+#     if dialog or transient:
+#         window.floating = True
 
 # APP = "superproductivity"
-#
-#
+
 # @hook.subscribe.client_urgent_hint_changed
 # def follow_url(client: Window) -> None:
 #     """If superproductivity is flagged as urgent, focus it"""
@@ -46,7 +42,6 @@ def floating_dialogs(window):
 #                 qtile.current_screen.set_group(client.group)
 #                 client.group.focus(client)
 #                 return
-
 
 # 2 monitor setup
 DP_2 = 0
@@ -185,71 +180,71 @@ def focus_right_mon(qtile):
 
 # Common group functions
 
-
-@lazy.function
-def cycle_groups(qtile):
-    """Cycle through the groups but only the odd or even groups"""
-    current_group_index = qtile.groups.index(qtile.current_group)
-    next_group_index = current_group_index
-
-    # Check if the current group name is odd or even
-    current_group_name = qtile.current_group.name
-    is_odd_group = int(current_group_name) % 2 != 0
-
-    # Loop through the groups until we find the desired group
-    while True:
-        # Get the next group name
-        next_group_index = (next_group_index + 1) % len(qtile.groups)
-        next_group_name = qtile.groups[next_group_index].name
-
-        # Check if the next group name has the desired property (odd or even)
-        if is_odd_group and int(next_group_name) % 2 != 0:
-            break
-
-        if not is_odd_group and int(next_group_name) % 2 == 0:
-            break
-        # Lets get back to the first group when we reach the last group
-        # if 5 -> 1, 6 -> 2
-
-        if next_group_index == 6:
-            # -1 = refers to the group 1, 0 refers to the group 2
-            next_group_index = 0
-        elif next_group_index == 5:
-            next_group_index = -1
-
-    qtile.current_screen.set_group(qtile.groups[next_group_index])
-
-
-@lazy.function
-def cycle_groups_reverse(qtile):
-    """Cycle through the groups in reverse order but only the odd or even groups"""
-    current_group = qtile.current_group
-    current_group_num = int(current_group.name)
-    is_odd = current_group_num % 2 != 0
-
-    # Get all group numbers
-    group_nums = [int(group.name) for group in qtile.groups]
-
-    # Filter for odd or even groups based on the current group
-    filtered_nums = (
-        [num for num in group_nums if num % 2 != 0]
-        if is_odd
-        else [num for num in group_nums if num % 2 == 0]
-    )
-
-    # Sort in descending order
-    filtered_nums.sort(reverse=True)
-
-    # Find the index of the current group in our filtered list
-    current_index = filtered_nums.index(current_group_num)
-
-    # Get the next group number (wrapping around if necessary)
-    next_group_num = filtered_nums[(current_index + 1) % len(filtered_nums)]
-
-    # Find the qtile group object with this number
-    next_group = next(
-        group for group in qtile.groups if int(group.name) == next_group_num
-    )
-
-    # Switch to the next group
-    next_group.toscreen()
+# NOTE: not used anymore, above already handle it with (skip=True)
+# @lazy.function
+# def cycle_groups(qtile):
+#     """Cycle through the groups but only the odd or even groups"""
+#     current_group_index = qtile.groups.index(qtile.current_group)
+#     next_group_index = current_group_index
+#
+#     # Check if the current group name is odd or even
+#     current_group_name = qtile.current_group.name
+#     is_odd_group = int(current_group_name) % 2 != 0
+#
+#     # Loop through the groups until we find the desired group
+#     while True:
+#         # Get the next group name
+#         next_group_index = (next_group_index + 1) % len(qtile.groups)
+#         next_group_name = qtile.groups[next_group_index].name
+#
+#         # Check if the next group name has the desired property (odd or even)
+#         if is_odd_group and int(next_group_name) % 2 != 0:
+#             break
+#
+#         if not is_odd_group and int(next_group_name) % 2 == 0:
+#             break
+#         # Lets get back to the first group when we reach the last group
+#         # if 5 -> 1, 6 -> 2
+#
+#         if next_group_index == 6:
+#             # -1 = refers to the group 1, 0 refers to the group 2
+#             next_group_index = 0
+#         elif next_group_index == 5:
+#             next_group_index = -1
+#
+#     qtile.current_screen.set_group(qtile.groups[next_group_index])
+#
+#
+# @lazy.function
+# def cycle_groups_reverse(qtile):
+#     """Cycle through the groups in reverse order but only the odd or even groups"""
+#     current_group = qtile.current_group
+#     current_group_num = int(current_group.name)
+#     is_odd = current_group_num % 2 != 0
+#
+#     # Get all group numbers
+#     group_nums = [int(group.name) for group in qtile.groups]
+#
+#     # Filter for odd or even groups based on the current group
+#     filtered_nums = (
+#         [num for num in group_nums if num % 2 != 0]
+#         if is_odd
+#         else [num for num in group_nums if num % 2 == 0]
+#     )
+#
+#     # Sort in descending order
+#     filtered_nums.sort(reverse=True)
+#
+#     # Find the index of the current group in our filtered list
+#     current_index = filtered_nums.index(current_group_num)
+#
+#     # Get the next group number (wrapping around if necessary)
+#     next_group_num = filtered_nums[(current_index + 1) % len(filtered_nums)]
+#
+#     # Find the qtile group object with this number
+#     next_group = next(
+#         group for group in qtile.groups if int(group.name) == next_group_num
+#     )
+#
+#     # Switch to the next group
+#     next_group.toscreen()

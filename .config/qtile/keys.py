@@ -1,9 +1,8 @@
 import os
-from libqtile.lazy import lazy
 
 # TESTING: clear imports
 from libqtile.config import Click, Drag, Key
-
+from libqtile.lazy import lazy
 
 ## Keybindings ##
 mod = "mod4"  # Sets mod key to SUPER/WINDOWS
@@ -22,13 +21,24 @@ mouse = [
 ]
 
 keys = [
+    # scratchpad
+    # Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("deepseek-chat")),
+    Key([mod], "F10", lazy.group["scratchpad"].dropdown_toggle("term")),
+    # Key([mod], "F11", lazy.group["scratchpad"].dropdown_toggle("social")),
+    Key([mod], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
-    Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
+    #HACK: workaround fix for zsh not launching in the home directory
+    Key([mod], "Return", lazy.spawn("kitty -d ~"), desc="Launch terminal"),
     # brave browser
-    # Key([mod], "less", lazy.spawn(os.path.expanduser("~/Documents/appimages/appman_apps/brave/brave")), desc="Launch brave"),
     # firefox
     Key([mod], "less", lazy.spawn("firefox"), desc="Launch firefox"),
+    Key(
+        [mod],
+        "p",
+        lazy.spawn(os.path.expanduser("~/Documents/appimages/FreeTube.AppImage")),
+        desc="Launch FreeTube",
+    ),
     # siyuan
     # Key([mod], "s", lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")), desc="Launch siyuan"),
     # folder
@@ -72,10 +82,18 @@ keys = [
     # lazy.screen.prev_group(skip_empty=True),
     # 1 monitor setup
     # cycle groups on 1 monitor setup
-    Key([mod], "Tab", lazy.screen.next_group(), desc="Move to next group"),
-    Key([mod, "shift"], "Tab", lazy.screen.prev_group(), desc="Move to previous group"),
+    Key([mod], 49, lazy.screen.next_group(), desc="Move to next group"),
+    Key([mod, "shift"], 49, lazy.screen.prev_group(), desc="Move to previous group"),
     # Cycle only if there are window in the group (e.g skip empty groups)
-    Key([mod], 49, lazy.screen.next_group(skip_empty=True), desc="Move to next group"),
+    Key(
+        [mod], "Tab", lazy.screen.next_group(skip_empty=True), desc="Move to next group"
+    ),
+    Key(
+        [mod, "shift"],
+        "Tab",
+        lazy.screen.prev_group(skip_empty=True),
+        desc="Move to next group",
+    ),
     # Key([mod, "shift"], "Tab", lazy.screen.prev_group(skip_empty=True), desc="Move to previous group"),
     # focus window up or down
     Key([mod], "d", lazy.layout.down()),

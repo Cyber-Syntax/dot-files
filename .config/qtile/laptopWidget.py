@@ -25,7 +25,6 @@ def currentLayout(output):
     return output.capitalize()
 
 
-# qtile-extras definitions
 decorations = {
     "BorderDecoration": {
         "border_width": widget_decoration_border_width,
@@ -72,47 +71,13 @@ left_offset = [widget.Spacer(length=widget_left_offset, decorations=[])]
 right_offset = [widget.Spacer(length=widget_right_offset, decorations=[])]
 space = widget.Spacer(length=widget_gap, decorations=[])
 
+
+def no_text(text):
+    return ""
+
+
 left = [
     # "pyxdg" package is needed for wayland for TaskList
-    widget.TaskList(
-        border="#414868",  # border clour
-        highlight_method="block",
-        # foreground=colors[1],
-        # background=colors[0],
-        max_title_with=80,
-        txt_minimized="",
-        txt_floating="",
-        txt_maximized="",
-        # FIX: get only app names instead of webpage names etc., not work
-        # parse_text=lambda text: "|" + text,
-        # parse_text=my_func,
-        spacing=1,
-        icon_size=20,
-        border_width=0,
-        fontsize=13,  # Do not change! Cause issue with specified widget_defaults
-        stretch=False,
-        # margin_x=0,
-        # margin_y=0,
-        padding_x=5,
-        padding_y=5,
-        hide_crash=True,
-        decorations=[
-            getattr(widget.decorations, widget_decoration)(
-                **decorations[widget_decoration] | {"extrawidth": 4}
-            )
-        ],
-    ),
-]
-
-# FIX:
-# def my_func(text):
-#     for string in [" - Chromium", " - Firefox"]:
-#         text = text.replace(string, "")
-#     return text
-
-
-middle = [
-    space,
     widget.GroupBox(
         font=f"{bar_font} Bold",
         disable_drag=True,
@@ -122,22 +87,40 @@ middle = [
         active=bar_foreground_color,
         block_highlight_text_color=nord_theme["accent"],
         padding=7,
-        # fmt=groupBox,
     ),
+    space,
+    widget.TaskList(
+        border="#414868",  # border clour
+        highlight_method="block",
+        max_title_with=80,
+        txt_minimized="",
+        txt_floating="",
+        txt_maximized="",
+        parse_text=no_text,
+        text_minimized="",
+        text_maximized="",
+        text_floating="",
+        # parse_text=my_func,
+        spacing=1,
+        icon_size=20,
+        border_width=0,
+        fontsize=13,  # Do not change! Cause issue with specified widget_defaults
+        stretch=False,
+        padding_x=5,
+        padding_y=5,
+        hide_crash=True,
+        decorations=[
+            getattr(widget.decorations, widget_decoration)(
+                **decorations[widget_decoration] | {"extrawidth": 4}
+            )
+        ],
+    ),
+    space,
 ]
 
+middle = []
+
 right = [
-    # widget.Volume(
-    #     step=2,
-    #     fmt=volume,
-    #     mouse_callbacks={
-    #         "Button1": lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
-    #     },
-    #     update_interval=0.01,
-    #     limit_max_volume=True,
-    #     volume_app="pavucontrol",
-    # ),
-    space,
     widget.Mpris2(
         fmt="{}",
         format=" {xesam:title} - {xesam:artist}",
@@ -150,15 +133,9 @@ right = [
         stopped_text="",
         width=200,
     ),
-    space,
-    widget.ThermalSensor(
-        tag_sensor="CPU",
-        foreground=colors[4],
-        fmt=" {}",
-        update_interval=1,
-        threshold=60,
-        foreground_alert="ff6000",
-    ),
+    # widget.CPU(
+    #     format='{freq_current}GHz',
+    #     ),
     space,
     widget.DF(
         update_interval=60,
@@ -181,24 +158,33 @@ right = [
         visible_on_warn=True,
     ),
     space,
-    widget.DF(
-        update_interval=60,
-        # foreground=colors[5],
-        partition="/nix",
-        format="({uf}{m}|{r:.0f}%)",
-        fmt=" {}",
-        warn_space=20,
-        visible_on_warn=True,
-    ),
+    # widget.DF(
+    #     update_interval=60,
+    #     # foreground=colors[5],
+    #     partition="/nix",
+    #     format="({uf}{m}|{r:.0f}%)",
+    #     fmt=" {}",
+    #     warn_space=20,
+    #     visible_on_warn=True,
+    # ),
+    # space,
+    # widget.DF(
+    #     update_interval=60,
+    #     # foreground=colors[5],
+    #     partition="/backups",
+    #     format="({uf}{m}|{r:.0f}%)",
+    #     fmt=" {}",
+    #     warn_space=10,
+    #     visible_on_warn=True,
+    # ),
     space,
-    widget.DF(
-        update_interval=60,
-        # foreground=colors[5],
-        partition="/mnt/backups",
-        format="({uf}{m}|{r:.0f}%)",
-        fmt=" {}",
-        warn_space=10,
-        visible_on_warn=True,
+    widget.ThermalSensor(
+        tag_sensor="CPU",
+        foreground=colors[4],
+        fmt=" {}",
+        update_interval=1,
+        threshold=60,
+        foreground_alert="ff6000",
     ),
     space,
     widget.Volume(
@@ -239,9 +225,18 @@ right = [
         ],
     ),
     space,
-    widget.CurrentLayoutIcon(
-        padding=10,
-        scale=0.6,
+    widget.Battery(),
+    space,
+    widget.Bluetooth(
+        default_show_battery=True,
+        default_text=" {connected_devices}",
+        device_format=" {name}{battery_level} [{symbol}]",
+        fontsize=20,
+    ),
+    space,
+    widget.Backlight(
+        fmt="🔆 {}",
+        backlight_name="intel_backlight",
     ),
     space,
     widget.TextBox(
@@ -265,7 +260,7 @@ right = [
 screens = [
     Screen(
         top=bar.Bar(
-            widgets=left_offset + left + sep + middle + sep + right + right_offset,
+            widgets=left_offset + left + sep + right + right_offset,
             size=bar_size,
             background=bar_background_color
             + format(int(bar_background_opacity * 255), "02x"),

@@ -1,11 +1,9 @@
-{ pkgs, ... }:
-
+{pkgs, ...}:
 # pkgs = import nixpkgs {
 #   system = "x86_64-linux";
 #   config = { allowUnfree = true;
 #              allowUnfreePredicate = (_: true); };
 # };
-
 # pkgs-unstable = import nixpkgs-unstable {
 #   system = "x86_64-linux";
 #   config = {
@@ -13,7 +11,6 @@
 #     allowUnfreePredicate = (_: true);
 #   };
 # };
-
 {
   home-manager.users.developer.programs.neovim = {
     enable = true;

@@ -1,11 +1,12 @@
-{ inputs, pkgs, ... }:
-
+{
+  inputs,
+  pkgs,
+  ...
+}:
 #TODO: Setup extensions with nur??
 #TESTING: using inputs instead of nur first?
 #NOTE: inputs already using nur?
-
 #TODO: change firefox unstable package if not use unstable version
-
 {
   home-manager.users.developer.programs.firefox = {
     enable = true;
@@ -40,21 +41,19 @@
           "privacy.globalprivacycontrol.enabled" = true;
           "privacy.query_stripping.enabled.pbmode" = true;
           "privacy.webrtc.globalMuteToggles" = true;
-          # #TODO: add these after you handle migrating stable
-          #TODO:: 1. enable av1Support for firefox somewhere here, probably about:config setting
-          # # This will enable nvidia gpu usage on firefox. Probably decode for netflix, youtube etc.
           "media.ffmpeg.vaapi.enabled" = true;
           "media.hardware-video-decoding.force-enabled" = true;
           "media.rdd-ffmpeg.enabled" = true;
-          # "media.av1.enabled" = cfg.firefox.av1Support;
+          # Disable because 2000 series turing not able to decode AV1
+          "media.av1.enabled" = false;
           "gfx.x11-egl.force-enabled" = true;
           "widget.dmabuf.force-enabled" = true;
         };
         search = {
           force = true;
-          default = "DuckDuckGo";
+          default = "brave";
           order = [
-            "Brave"
+            "brave"
             "Google"
           ];
           engines = {
@@ -75,13 +74,13 @@
                 }
               ];
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
+              definedAliases = ["@np"];
             };
             "NixOS Wiki" = {
-              urls = [ { template = "https://nixos.wiki/index.php?search={searchTerms}"; } ];
+              urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
               iconUpdateURL = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
-              definedAliases = [ "@nw" ];
+              definedAliases = ["@nw"];
             };
             "Google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
           };
@@ -137,9 +136,7 @@
             icon = "fence";
             id = 4;
           };
-
         };
-
       }; # default
     }; # ./profiles
 
@@ -314,10 +311,7 @@
           #   Status = "default";
           # };
         }; # ./Preferences
-
       }; # ./eextraPolicies
-
     }; # ./package wrap
   }; # ./firefox home-manager
-
 }

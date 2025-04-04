@@ -1,15 +1,16 @@
 #NOTE: This file is not meant to be used directly. This is example code.
-
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   nixpkgs.overlays = [
     # Overlay 1: Use `self` and `super` to express
     # the inheritance relationship
     (self: super: {
       google-chrome = super.google-chrome.override {
-        commandLineArgs =
-          "--proxy-server='https=127.0.0.1:3128;http=127.0.0.1:3128'";
+        commandLineArgs = "--proxy-server='https=127.0.0.1:3128;http=127.0.0.1:3128'";
       };
     })
 
@@ -17,18 +18,19 @@
     # the relationship between the new and the old
     (final: prev: {
       steam = prev.steam.override {
-        extraPkgs = pkgs: with pkgs; [
-          keyutils
-          libkrb5
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-        ];
+        extraPkgs = pkgs:
+          with pkgs; [
+            keyutils
+            libkrb5
+            libpng
+            libpulseaudio
+            libvorbis
+            stdenv.cc.cc.lib
+            xorg.libXcursor
+            xorg.libXi
+            xorg.libXinerama
+            xorg.libXScrnSaver
+          ];
         extraProfile = "export GDK_SCALE=2";
       };
     })
@@ -39,10 +41,3 @@
     (import ./overlay3)
   ];
 }
-
-#NOTE: kernel overlay
-
-  # boot.kernelPackages = pkgs.linuxPackages_6_1; # Has no effect on the issue
-  nixpkgs.overlays = [
-    (self: super: { linuxPackages = super.linuxPackages_6_1; })
-  ];

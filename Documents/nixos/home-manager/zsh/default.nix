@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   home-manager.users.developer.programs.zsh = {
     enable = true;
     oh-my-zsh = {
@@ -67,8 +65,15 @@
     ];
 
     shellAliases = {
+      # docusaurus
+      dino-deploy = "yarn build & USE_SSH=true yarn deploy";
+
       # nixos
-      flake-update = "sudo nix flake update"; # NOTE: this is going to be used for updating packages instead of switch-upgrade
+      #FIX: stable not work...
+      stable-flu = "sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware";
+      all-flu = "sudo nix flake update"; # NOTE: this is going to be used for updating packages instead of switch-upgrade
+      boot-nixos = "sudo nixos-rebuild boot --flake .#nixos"; # build going to be activated after next boot
+      boot-laptop = "sudo nixos-rebuild boot --flake .#laptop";
       switch-nixos = "sudo nixos-rebuild switch --flake .#nixos";
       upgrade-nixos = "sudo nixos-rebuild switch --recreate-lock-file --flake .#nixos";
       switch-laptop = "sudo nixos-rebuild switch --flake .#laptop";
@@ -86,7 +91,7 @@
       bsingle-log = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --";
       badog = "git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph";
       badd = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add";
-      badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/Documents/screenloyout/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ";
+      badd-all = "git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/nixos/ ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/";
       bcmt = "git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am";
       bpush = "git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo";
 
@@ -123,6 +128,7 @@
       # lh = "ls --human-readable --size -1 -S --classify";
       # l = "ls -CF";
       duh = "du -sh * | sort -h";
+      duhdot = "du -sh .[^.]* * | sort -h";
     };
 
     initExtra = ''
@@ -149,6 +155,5 @@
       # import zoxide
       eval "$(zoxide init zsh)"
     '';
-
   };
 }

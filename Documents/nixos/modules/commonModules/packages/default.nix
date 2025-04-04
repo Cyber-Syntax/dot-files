@@ -1,18 +1,10 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    xorg.setxkbmap
-    xorg.xrandr
-    xorg.xhost
-    xorg.xev
-    xorg.xkbcomp
-    xorg.xkill
-    xorg.xwininfo
-    xorg.xinit
-    xorg.xauth
     # Main apps
+    libsecret # for seahorse and gpg
+    pciutils
     vim
     ripgrep # for obsidian.nvim plugin
     networkmanagerapplet # for nm-applet
@@ -22,9 +14,9 @@
     xdg-desktop-portal
     xdg-desktop-portal-gtk
     ## Stats, system infos etc.
+    powertop
     lm_sensors
     fastfetch
-    powertop # battery usage etc.
     htop
     ## basic developer tools
     wget
@@ -39,11 +31,10 @@
     ## theme
     materia-theme
     ## X11, window manager
-    i3lock
     rofi
     dunst
+    #FIX: wayland is not work on gammastep
     gammastep
-    picom
     xclip # for copy paste in neovim
     ## Productivity
     zoxide
@@ -56,41 +47,59 @@
     numlockx
     ## Development
     # Coding
-    nodejs_22
+    # nodejs_22
+    nodejs # latest lts version
+    nodejs_18 # for copilot-vim
+    # direnv # virtualenv for nix shell
+    yarn
     hugo
     go
     lua
     # neovim
     lazygit
     gnumake
-    #vscode-json-languageserver
+    cargo # for rust and nil to work
     lua-language-server
-    bash-language-server
     luarocks # for lua
     stylua # lua formatter
     marksman
-    ruff # python linter
-    pylint # static code analysis tool for python
+    vimPlugins.vim-markdown-toc
+    markdownlint-cli2
+    #python
+    ruff
+    mypy
+    #nix
+    nil
+    nixd
+    # nixfmt-rfc-style
+    alejandra
+    statix
+    #bash, shell
+    bash-language-server
+    #json
+    #json-lsp #FIX: find correct name
+    #Other
+    stdenv.cc.cc.lib
+    zlib
+    # html
+    prettierd # TODO: need setup on neovim
+    nodePackages.prettier
+    yamlfmt
+    bash-language-server
+    # pylint # static code analysis tool for python
     ## AI
-    python311Packages.litellm
-    python311Packages.tokenizers
     python3
     ### Development for compiling
     clang
     libgcc
-    libstdcxx5 # for litellm
     ### encryption
     openssl
-    ### other
-    xdotool
     # Nixos
     nix-prefetch # get hash from github branches
     nix-prefetch-git
     nix-prefetch-github
     nurl
     home-manager
-    nil # nix language server as lsp
-    cargo # for rust and nil to work
     # Apps
     ## Pictures, Documents etc.
     feh
@@ -98,20 +107,18 @@
     evince
     calibre
     libreoffice
-    flameshot
     xournalpp
     pcmanfm
     ## email
+    # birdtray # tray for thunderbird
     thunderbird
-    tutanota-desktop
-    birdtray
     ## Nextcloud packages
     nextcloud-client
     wakeonlan
     ## Disk
     gparted
     ## backup
-    rclone
+    # rclone
     borgbackup
     syncthingtray
     ## Browser
@@ -124,13 +131,8 @@
     signal-desktop
     ## Terminal
     kitty
-
     ## My best apps
-    #TEST: unstable version is in use
-    freetube
-
-    ## for windows
-    ntfs3g
+    # freetube
     ## My unfree apps
     obsidian
     spotify
@@ -140,5 +142,16 @@
     bash-completion
     bashInteractive
     nix-bash-completions
+
+    #VPN works now with the below packages
+    protonvpn-gui # cli not supported anymore
+    wireguard-tools
+
+    # manual setup without proton gui
+    networkmanager-openvpn
+    openvpn
+
+    #TESTING:
+    killall
   ];
 }

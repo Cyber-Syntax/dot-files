@@ -5,22 +5,22 @@
 
 					## SCRIPTS ##
 # https://github.com/olemartinorg/i3-alternating-layout
-	exec_always --no-startup-id ~/.config/i3/i3-alternating-layout.py
+	# exec_always --no-startup-id ~/.config/i3/i3-alternating-layout.py
 # Background image script
 	exec --no-startup-id ~/Documents/repository/WallpaperChanger/main.py
 # XRANDR
-	exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh
+	# exec_always --no-startup-id ~/Documents/screenloyout/xrandr.sh
 # Swapping workspaces, Source: https://i3wm.org/docs/user-contributed/swapping-workspaces.html
-	exec --no-startup-id ~/.config/i3/i3-display-swap.sh
+	# exec --no-startup-id ~/.config/i3/i3-display-swap.sh
 # NVIDIA AUTO FAN for propriety driver (Not work for now)
 	#exec_always --no-startup-id ~/Documents/nvidia/nfancurve/temp.sh
 					## ./SCRIPTS ##
 
 					## GNOME ##
 # lxpolkit for password ask e.g fedora media writer, backintime
-	exec --no-startup-id lxpolkit
+	# exec --no-startup-id lxpolkit
 # THEME GNOME
-	exec --no-startup-id /usr/libexec/gsd-xsettings
+	# exec --no-startup-id /usr/libexec/gsd-xsettings
 					## ./GNOME ##
 
 					## Keyboard ##
@@ -32,7 +32,7 @@
 
 					## Other ##
 # Picom (transparent alacritty)
-	#exec --no-startup-id picom -b
+	# exec --no-startup-id picom -b
 # Redshift
 	#exec --no-startup-id redshift -m randr -l 48:28 -t 6300:3000
 # gammastep
@@ -40,7 +40,7 @@
 # NetworkManager
 	exec --no-startup-id nm-applet
 # Polybar
-	exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+	# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 					## ./Other ##
 
 
@@ -53,35 +53,35 @@ tiling_drag modifier titlebar
 
 											## APPS ##
 	# start a terminal
-		bindsym Mod4+Return exec gnome-terminal
+		bindsym Mod4+Return exec kitty
 	# Firefox, less = '<'
 		bindsym Mod4+less exec firefox
 
 		# autostart firefox
 			#exec firefox
 	# Files
-		bindsym Mod4+z exec nautilus
+		bindsym Mod4+z exec pcmanfm
 	# Gnome setings
-		bindsym Mod4+shift+s exec gnome-control-center
+		# bindsym Mod4+shift+s exec gnome-control-center
 	# Discord
 		#bindsym Mod4+x exec dbus-launch flatpak run com.github.Eloston.UngoogledChromium --user-data-dir=.config/discord-dir --app=https://discord.com
 	# VSCode
-		bindsym Mod4+v exec flatpak run com.visualstudio.code
-	# Beekeper
-		bindsym Mod4+b exec flatpak run io.beekeeperstudio.Studio
-	# Tutanota
-		bindsym Mod4+t exec flatpak run com.tutanota.Tutanota
-	# Siyuan
-		bindsym Mod4+s exec ~/Documents/appimages/siyuan.AppImage
+	# 	bindsym Mod4+v exec flatpak run com.visualstudio.code
+	# # Beekeper
+	# 	bindsym Mod4+b exec flatpak run io.beekeeperstudio.Studio
+	# # Tutanota
+	# 	bindsym Mod4+t exec flatpak run com.tutanota.Tutanota
+	# # Siyuan
+	# 	bindsym Mod4+s exec ~/Documents/appimages/siyuan.AppImage
 	# superProductivity autostart
 		exec ~/Documents/appimages/super-productivity.AppImage
 		bindsym mod4+c exec ~/Documents/appimages/super-productivity.AppImage
 	# Sycthing
-		exec /usr/bin/syncthing serve --no-browser --no-restart --logflags=0
+		# exec /usr/bin/syncthing serve --no-browser --no-restart --logflags=0
 	# Keepassxc
 		exec keepassxc
 	# nuclear
-		bindsym Mod4+n exec flatpak run org.js.nuclear.Nuclear
+		# bindsym Mod4+n exec flatpak run org.js.nuclear.Nuclear
 	# ROFI
 		bindsym Mod4+r exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
 		bindsym Mod4+x exec --no-startup-id ~/.config/rofi/powermenu/type-6/powermenu.sh
@@ -94,21 +94,21 @@ tiling_drag modifier titlebar
 						## PulseAudio-pipewire ##
 # pipewire
 	bindsym Mod4+m exec pactl set-default-sink $(pactl list short sinks |awk '{print $2}' |rofi $rofi_args -dmenu)
-					## ./PulseAudio-pipewire ##
-											## ./APPS ##
+        ## ./PulseAudio-pipewire ##
+                    ## ./APPS ##
 
 # USEFUL SHORTCUTS
-	# kill focused window
-		bindsym Mod4+q kill
+# kill focused window
+  bindsym Mod4+q kill
 
 # FOCUS MONITORS
-	bindsym Mod4+a focus left
-	bindsym Mod4+Down focus down
-	bindsym Mod4+Up focus up
-	bindsym Mod4+d focus right
+bindsym Mod4+a focus left
+bindsym Mod4+Down focus down
+bindsym Mod4+Up focus up
+bindsym Mod4+d focus right
 
 # toggle tiling / floating
-	bindsym Mod4+Shift+space floating toggle
+bindsym Mod4+Shift+space floating toggle
 
 # change container layout (stacked, tabbed, toggle split)
 	# make tabbed layout default
@@ -124,9 +124,9 @@ tiling_drag modifier titlebar
 
  											## WORKSPACES ##
 # Workspace Monitor
-	workspace $ws1 output DP-0 DP-1x
-	workspace $ws2 output DP-2
-	workspace $ws3 output HDMI-0 HDMI-1
+	workspace $ws1 output DP-3 
+	workspace $ws2 output DP-3
+	workspace $ws3 output DP-3
 
 #	workspace $ws4 output DP-0 DP-1
 #	workspace $ws6 output DP-0 DP-1
@@ -144,7 +144,7 @@ tiling_drag modifier titlebar
 	bindsym Mod4+w exec i3-msg move window to output left
 
 # SPECIFIC APPS START SPECIFIC WORKSPACE
-	assign [class="superProductivity"] "3"
+	assign [class="superProductivity"] "5"
 
 	# assign [class="VSCode"] "1: Code"
 
@@ -180,8 +180,8 @@ tiling_drag modifier titlebar
 											## ./WORKSPACES ##
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-	bindsym F1 restart
-	#bindsym Mod4+ctrl+r restart
+	# bindsym F1 restart
+	bindsym Mod4+ctrl+r restart
 # exit i3 (logs you out of your X session)
 	set $executeExit exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 	bindsym Mod4+Shift+e $executeExit
@@ -254,7 +254,7 @@ mode "resize" {
         # back to normal: Enter or Escape or Mod4+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym Mod4+ctrl+r mode "default"
+        # bindsym Mod4+ctrl+r mode "default"
 }
 
 ## OTHER FOCUS

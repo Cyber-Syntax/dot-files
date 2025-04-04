@@ -1,25 +1,22 @@
-{pkgs, ...}:
-{
+{pkgs, ...}: {
   fonts = {
     packages = with pkgs; [
       dejavu_fonts
-      #ubuntu_font_family
-      noto-fonts-cjk-sans # NOTE: 24.11 version, 24.05 old only -cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       font-awesome
-      # fira-code
-      # fira-code-symbols
-      # fira-code-nerdfont
+      jetbrains-mono
+      hack-font # current code editor font
       # example of overriding
       #(nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
 
-  fontconfig = {
+    fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = ["DejaVu Sans Mono"];
+        monospace = ["JetBrains Mono"]; # Default: DejaVu Sans Mono
         serif = ["Noto Serif"];
-        sansSerif = ["Noto Sans"]; 
+        sansSerif = ["Noto Sans"];
       };
     };
   };

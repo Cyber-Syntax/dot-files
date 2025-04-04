@@ -1,0 +1,46 @@
+/* Tomorrow Night Theme for Waybar */
+
+/*TODO: Need proper setup which yellow is so bright for usage*/
+
+/* Main Colors */
+@define-color main-fg         #c4c8c5; /* Foreground */
+@define-color main-bg         #1d1f21; /* Background */
+@define-color main-br         #c4c8c5; /* Border */
+
+/* Active & Hover */
+@define-color active-bg       #80a1bd; /* color4 */
+@define-color active-fg       #c4c8c5; /* main-fg */
+
+@define-color hover-bg        #363a41; /* selection_background */
+@define-color hover-fg        rgba(196, 200, 197, 0.75); /* main-fg 75% */
+
+/* Basic Colors */
+@define-color white       #fffefe; /* color7/15 */
+@define-color black       #000000; /* color0/8 */
+@define-color yellow      #f0c574; /* color3 */
+@define-color blue        #80a1bd; /* color12 */
+@define-color seablue     #8abdb6; /* color6 */
+@define-color green       #b5bd68; /* color2 */
+
+/* Module Colors */
+@define-color module-fg       #363a41; /* foreground */
+@define-color workspaces      #363a41; /* selection_background */
+
+@define-color cpuinfo         #f0c574; /* color3 */
+@define-color memory          #3b3828; /* color12 */
+@define-color cpu            #f0c574; /* color4 */
+@define-color distro-fg       #1d1f21; /* background */
+@define-color distro-bg       #8abdb6; /* color6 */
+@define-color time            #80a1bd; /* color4 */
+@define-color date            #f0c574; /* color3 */
+@define-color tray            #363a41; /* selection_background */
+
+@define-color pulseaudio      #363a41; /* selection_background */
+@define-color backlight       #b5bd68; /* color2 */
+@define-color battery         #80a1bd; /* color4 */
+@define-color power           #8abdb6; /* color6 */
+
+/* State Colors */
+@define-color warning         #f0c574; /* color11 */
+@define-color critical        #cc6666; /* color1 */
+@define-color charging        #c4c8c5; /* main-fg */

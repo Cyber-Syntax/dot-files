@@ -1,5 +1,5 @@
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
   ft = "markdown",
@@ -18,9 +18,8 @@ return {
   dependencies = {
     -- Required.
     "nvim-lua/plenary.nvim",
-    "MeanderingProgrammer/render-markdown.nvim",
-    "nvim-treesitter/nvim-treesitter",
-    -- "nvim-web-devicons/nvim-web-devicons",
+    "folke/snacks.nvim",
+    "saghen/blink.cmp",
   },
   opts = {
     -- A list of workspace names, paths, and configuration overrides.
@@ -71,7 +70,8 @@ return {
     -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
     completion = {
       -- Set to false to disable completion.
-      nvim_cmp = true,
+      nvim_cmp = false,
+      blink = true,
       -- Trigger completion at 2 chars.
       min_chars = 2,
     },
@@ -203,8 +203,8 @@ return {
     -- file it will be ignored but you can customize this behavior here.
     ---@param img string
     follow_img_func = function(img)
-      vim.fn.jobstart({ "qlmanage", "-p", img }) -- Mac OS quick look preview
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
+      -- vim.fn.jobstart({ "qlmanage", "-p", img }) -- Mac OS quick look preview
+      vim.fn.jobstart({ "xdg-open", url }) -- linux
       -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
     end,
 
@@ -217,7 +217,7 @@ return {
 
     picker = {
       -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-      name = "telescope.nvim",
+      name = "snacks.pick",
       -- Optional, configure key mappings for the picker. These are the defaults.
       -- Not all pickers support all mappings.
       note_mappings = {

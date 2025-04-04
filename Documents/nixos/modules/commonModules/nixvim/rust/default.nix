@@ -3,7 +3,8 @@ let
   files = builtins.readDir ./.;
 
   # Filter out default.nix and non-.nix files
-  nixFiles = builtins.filter
+  nixFiles =
+    builtins.filter
     (name: name != "default.nix" && builtins.match ".*\\.nix" name != null)
     (builtins.attrNames files);
 
@@ -13,4 +14,3 @@ in {
   # Import all configuration modules automatically
   imports = imports;
 }
-

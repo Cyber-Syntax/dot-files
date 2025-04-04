@@ -3,9 +3,7 @@
   lib,
   config,
   ...
-}:
-
-{
+}: {
   options.gnome = {
     enable = lib.mkEnableOption "Gnome";
   };
@@ -54,15 +52,13 @@
       desktopManager.gnome.enable = true;
     };
 
-      
-    services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
     #hardware.sensor.iio.enable = true; # automatic screen rotation like in mobile phones
     ## ./Gnome some settings ###
     ### fix autologin issue on gdm ###
     systemd.services."getty@tty1".enable = false;
     systemd.services."autovt@tty1".enable = false;
     ### ./fix ###
-
 
     programs.dconf.profiles.gdm.databases = [
       {

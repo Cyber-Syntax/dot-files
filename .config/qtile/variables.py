@@ -6,7 +6,7 @@ from themes import Nord as nord_theme
 # General
 
 # mod = "mod4"
-# terminal = None  # guess if None
+terminal = "kitty -d ~"
 # browser = None  # guess if None
 # file_manager = None  # guess if None
 # launcher = "rofi -show drun"
@@ -79,12 +79,12 @@ bar_top_margin = 5
 bar_bottom_margin = 5
 bar_left_margin = 0
 bar_right_margin = 0
-bar_size = 32
+bar_size = 25
 bar_background_color = nord_theme["background"]
 bar_foreground_color = nord_theme["foreground"]
 bar_background_opacity = 0
 bar_global_opacity = 1.0
-bar_font = "Opensans Medium"
+bar_font = "JetbrainsMono Nerd Font"
 bar_nerd_font = "JetbrainsMono Nerd Font"
 bar_fontsize = 13.2
 

@@ -55,7 +55,6 @@
           group = "Database";
           icon = "";
         }
-
         # Keys with custom icons / labels
         {
           __unkeyed-1 = "<leader>e";
@@ -214,13 +213,8 @@
       action = "<CMD>noh<CR><ESC>";
       options.desc = "Normal mode and clear highlight";
     }
-    {
-      mode = "n";
-      key = "<ESC>";
-      action = "<CMD>noh<CR><ESC>";
-      options.desc = "Normal mode and clear highlight";
-    }
-    # useful
+
+    # useful quit neovim
     {
       mode = "n";
       key = "<leader>qq";
@@ -331,13 +325,63 @@
       mode = "n";
       key = "<leader>ff";
       action = "<CMD>lua require('fzf-lua').files({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Find Files";
+      options.desc = "Find files in CWD";
+    }
+    {
+      mode = "n";
+      key = "<leader>fg";
+      action = "<CMD>lua require('fzf-lua').live_grep({ cwd = vim.loop.cwd() })<CR>";
+      options.desc = "Live grep in CWD";
     }
     {
       mode = "n";
       key = "<leader>fr";
       action = "<CMD>lua require('fzf-lua').oldfiles({ cwd = vim.loop.cwd() })<CR>";
-      options.desc = "Recent Files";
+      options.desc = "Recent files in CWD";
+    }
+
+    # New recommended mappings
+    {
+      mode = "n";
+      key = "<leader>fb";
+      action = "<CMD>lua require('fzf-lua').buffers()<CR>";
+      options.desc = "Find buffers";
+    }
+    {
+      mode = "n";
+      key = "<leader>fh";
+      action = "<CMD>lua require('fzf-lua').help_tags()<CR>";
+      options.desc = "Help tags";
+    }
+    {
+      mode = "n";
+      key = "<leader>fs";
+      action = "<CMD>lua require('fzf-lua').git_status()<CR>";
+      options.desc = "Git status";
+    }
+    {
+      mode = "n";
+      key = "<leader>fl";
+      action = "<CMD>lua require('fzf-lua').blines()<CR>";
+      options.desc = "Search lines in buffer";
+    }
+    {
+      mode = "n";
+      key = "<leader>fc";
+      action = "<CMD>lua require('fzf-lua').commands()<CR>";
+      options.desc = "Vim commands";
+    }
+    {
+      mode = "n";
+      key = "<leader>fm";
+      action = "<CMD>lua require('fzf-lua').marks()<CR>";
+      options.desc = "Vim marks";
+    }
+    {
+      mode = "n";
+      key = "<leader>fd";
+      action = "<CMD>lua require('fzf-lua').lsp_document_symbols()<CR>";
+      options.desc = "Document symbols";
     }
 
     # Database
@@ -416,6 +460,7 @@
       action = "<C-\\><C-N>";
       options.desc = "Exit Terminal Mode";
       options.silent = true;
+      #options.noremap = true;
     }
 
     # {
@@ -433,6 +478,12 @@
       options.desc = "Navigate Window Left";
     }
     {
+      key = "<C-d>";
+      action = "<CMD>wincmd l<CR>";
+      options.desc = "Navigate Window Right";
+    }
+
+    {
       key = "<C-s>";
       action = "<CMD>wincmd j<CR>";
       options.desc = "Navigate Window Down";
@@ -441,11 +492,6 @@
       key = "<C-k>";
       action = "<CMD>wincmd k<CR>";
       options.desc = "Navigate Window Up";
-    }
-    {
-      key = "<C-d>";
-      action = "<CMD>wincmd l<CR>";
-      options.desc = "Navigate Window Right";
     }
     {
       mode = "n";
@@ -516,28 +562,12 @@
       options.desc = "Previous Tab";
     }
 
-    ## Barbar.nvim
-
+    ## Barbar.nvim keymaps
     {
       mode = "n";
       key = "<leader>bd";
       action = "<CMD>BufferClose<CR>";
-      options.desc = "Buffer Close"; # BufferClose only on barbar.nvim
-    }
-
-    ## bufferline.nvim
-    # {
-    #   mode = "n";
-    #   key = "<leader>bd";
-    #   action = "<CMD>bdelete<CR>";
-    #   options.desc = "Buffer Delete"; # BufferClose only on barbar.nvim
-    # }
-
-    {
-      mode = "n";
-      key = "<S-h>";
-      action = "<CMD>bprevious<CR>";
-      options.desc = "Previous Buffer";
+      options.desc = "Buffer Close";
     }
     {
       mode = "n";
@@ -547,40 +577,63 @@
     }
     {
       mode = "n";
-      key = "<leader>bb";
-      action = "<CMD>e #<CR>";
-      options.desc = "Switch To Other Buffer";
-    }
-    {
-      mode = "n";
-      key = "<leader>bp";
-      action = "<CMD>BufferLineTogglePin<CR>";
-      options.desc = "Toggle Pin";
-    }
-    {
-      mode = "n";
-      key = "<leader>bP";
-      action = "<CMD>BufferLineGroupClose ungrouped<CR>";
-      options.desc = "Delete Non-Pinned Buffers";
+      key = "<S-tab>";
+      action = "<CMD>bprevious<CR>";
+      options.desc = "Previous Buffer";
     }
     {
       mode = "n";
       key = "<leader>bo";
-      action = "<CMD>BufferLineCloseOthers<CR>";
+      action = "<CMD>BufferCloseAllButCurrent<CR>";
       options.desc = "Delete Other Buffers";
     }
     {
       mode = "n";
       key = "<leader>br";
-      action = "<CMD>BufferLineCloseRight<CR>";
+      action = "<CMD>BufferCloseBuffersRight<CR>";
       options.desc = "Delete Buffers to the Right";
     }
     {
       mode = "n";
       key = "<leader>bl";
-      action = "<CMD>BufferLineCloseLeft<CR>";
+      action = "<CMD>BufferCloseBuffersLeft<CR>";
       options.desc = "Delete Buffers to the Left";
     }
+    {
+      mode = "n";
+      key = "<leader>bp";
+      action = "<CMD>BufferPin<CR>";
+      options.desc = "Toggle Pin";
+    }
+    {
+      mode = "n";
+      key = "<leader>bP";
+      action = "<CMD>BufferCloseAllButCurrentOrPinned<CR>";
+      options.desc = "Delete Non-Pinned Buffers and Keep current";
+    }
+    {
+      mode = "n";
+      key = "<leader>ba";
+      action = "<CMD>BufferMovePrevious<CR>";
+      options.desc = "Re-order previous";
+    }
+    {
+      mode = "n";
+      key = "<leader>bA";
+      action = "<CMD>BufferMoveNext<CR>";
+      options.desc = "Re-order next";
+    }
+    # -- Magic buffer-picking mode
+    # map('n', '<C-p>',   '<Cmd>BufferPick<CR>', opts)
+    # map('n', '<C-s-p>', '<Cmd>BufferPickDelete<CR>', opts)
+    #
+    # -- Sort automatically by...
+    # map('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
+    # map('n', '<Space>bn', '<Cmd>BufferOrderByName<CR>', opts)
+    # map('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
+    # map('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
+    # map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
+    #
     # DAP Telescope Actions
     {
       mode = "n";

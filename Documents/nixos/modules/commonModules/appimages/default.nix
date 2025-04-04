@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # ### Appimage won't work without it, appimage-run
   # boot.binfmt.registrations.appimage = {
   #   wrapInterpreterInShell = false;

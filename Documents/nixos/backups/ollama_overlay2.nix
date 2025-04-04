@@ -1,6 +1,11 @@
-{ config, pkgs, unstable, lib, ... }:
-#NOTE: get unstable ollama 
-
+{
+  config,
+  pkgs,
+  unstable,
+  lib,
+  ...
+}:
+#NOTE: get unstable ollama
 # final: prev:
 # {
 #   ollama = prev.ollama.overrideAttrs (old: {
@@ -18,11 +23,10 @@
 #     };
 #   });
 # }
-
 let
   customOverlay = self: super: {
     customOllama = super.ollama.overrideAttrs (oldAttrs: {
-      version = "0.3.12";  # Ensure this matches the version you're trying to install
+      version = "0.3.12"; # Ensure this matches the version you're trying to install
       src = super.fetchFromGitHub {
         owner = "ollama";
         repo = "ollama";
@@ -31,32 +35,28 @@ let
       };
     });
   };
-in
-{
-
-  nixpkgs.overlays = [ customOverlay ];
+in {
+  nixpkgs.overlays = [customOverlay];
 
   services = {
-      ollama = {
-          enable = true;
-          acceleration = "cuda"; # enable nvidia cuda, or rocm
-          package = pkgs.customOllama; # also use the package from the unstable channel!
-          
-          models = "/home/ollama/models";
-          home = "/home/ollama";
-          # group = "ollama";               
-          # user = "ollama";
+    ollama = {
+      enable = true;
+      acceleration = "cuda"; # enable nvidia cuda, or rocm
+      package = pkgs.customOllama; # also use the package from the unstable channel!
 
-          # openFirewall = true;
+      models = "/home/ollama/models";
+      home = "/home/ollama";
+      # group = "ollama";
+      # user = "ollama";
 
-          environmentVariables = {
-            OLLAMA_LLM_LIBRARY = "gpu";
-            CUDA_VISIBLE_DEVICES = "0";
-          };
-            
+      # openFirewall = true;
+
+      environmentVariables = {
+        OLLAMA_LLM_LIBRARY = "gpu";
+        CUDA_VISIBLE_DEVICES = "0";
       };
+    };
   };
   # override unstable ollama ProtectHome=true to empty string
-  systemd.services.ollama.serviceConfig.ProtectHome = lib.mkForce ""; 
+  systemd.services.ollama.serviceConfig.ProtectHome = lib.mkForce "";
 }
-
