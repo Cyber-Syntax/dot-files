@@ -61,6 +61,7 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 
 plugins=(
     zsh-autosuggestions
+    zsh-you-should-use
     dirhistory
     zsh-navigation-tools
     git
@@ -69,6 +70,9 @@ plugins=(
     npm
     pip
     python
+    copyfile
+    copypath
+    copybuffer
 )
 # -------------------------------------------------------------------
 # Aliases
