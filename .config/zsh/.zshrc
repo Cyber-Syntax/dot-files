@@ -109,7 +109,7 @@ alias bfetch='git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-r
 alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --'
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
-alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ .zshenv'
+alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ .zshenv'
 alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
 
