@@ -9,6 +9,20 @@ map("n", "<C-Down>", "5j", { desc = "Move down 5 lines" })
 map("n", "<C-Up>", "5k", { desc = "Move up 5 lines" })
 map("n", "<C-Left>", "7h", { desc = "Move left 5 lines" })
 map("n", "<C-Right>", "7l", { desc = "Move right 5 lines" })
+-- switching to ctrl-j-k-l for moving between windows, c-h to switch home end on
+map("n", "<C-j>", "5j", { desc = "Move to window below" })
+map("n", "<C-k>", "5k", { desc = "Move to window above" })
+map("n", "<C-l>", "5l", { desc = "Move to window right" })
+map("n", "<C-h>", "5h", { desc = "Move to window left" })
+-- for also visual mode
+map("v", "<C-j>", "5j", { desc = "Move to window below" })
+map("v", "<C-k>", "5k", { desc = "Move to window above" })
+map("v", "<C-l>", "5l", { desc = "Move to window right" })
+map("v", "<C-h>", "5h", { desc = "Move to window left" })
+
+-- alt+h , l to home end behavior
+map("n", "<A-h>", "^", { desc = "Move to start of line" })
+map("n", "<A-l>", "$", { desc = "Move to end of line" })
 
 -- Buffer
 map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
@@ -67,5 +81,5 @@ map("i", "<C-e>", "<End>", { desc = "End" })
 --TODO:  maybe caps2esc would be better
 
 -- -- -- Obsidian.nvim
--- map("n", "<leader>fo", ":ObsidianQuickSwitch<CR>", { desc = "Obsidian File Search", silent = true })
--- map("n", "<leader>fO", ":ObsidianSearch<CR>", { desc = "Obsidian Search in Files", silent = true })
+map("n", "<leader>fo", ":ObsidianQuickSwitch<CR>", { desc = "Obsidian File Search", silent = true })
+map("n", "<leader>fO", ":ObsidianSearch<CR>", { desc = "Obsidian Search in Files", silent = true })

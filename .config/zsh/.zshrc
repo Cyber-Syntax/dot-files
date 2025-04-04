@@ -44,20 +44,20 @@ autoload -U compinit && compinit
 # History
 # -------------------------------------------------------------------
 # Set history file path and limits.
-HISTFILE="$HOME/.histfile"
+# HISTFILE="$HOME/.histfile" # This already in .zshenv
 HISTSIZE=10000
 SAVEHIST=10000
 
 # zsh options
-setopt hist_ignore_all_dups # remove older duplicate entries from history
-setopt hist_reduce_blanks # remove superfluous blanks from history items
-setopt inc_append_history # save history entries as soon as they are entered
-setopt share_history # share history between different instances of the shell
-setopt auto_cd # cd by typing directory name if it's not a command
-setopt correct_all # autocorrect commands
-setopt auto_list # automatically list choices on ambiguous completion
-setopt auto_menu # automatically use menu completion
-setopt always_to_end # move cursor to end if word had one match
+setopt HIST_IGNORE_ALL_DUPS # remove older duplicate entries from history
+setopt HIST_REDUCE_BLANKS # remove superfluous blanks from history items
+setopt INC_APPEND_HISTORY # save history entries as soon as they are entered
+setopt SHARE_HISTORY # share history between different instances of the shell
+setopt AUTO_CD # cd by typing directory name if it's not a command
+setopt CORRECT_ALL # autocorrect commands
+setopt AUTO_LIST # automatically list choices on ambiguous completion
+setopt AUTO_MENU # automatically use menu completion
+setopt ALWAYS_TO_END # move cursor to end if word had one match
 
 zstyle ':completion:*' menu select # select completions with arrow keys
 zstyle ':completion:*' group-name '' # group results by category
@@ -69,6 +69,7 @@ plugins=(
     #TESTING:
     zsh-navigation-tools
     git
+    vi-mode
     ssh
     npm
     pip
@@ -79,7 +80,7 @@ plugins=(
 # -------------------------------------------------------------------
 
 # Docusaurus deployment alias
-alias dino-deploy="yarn build & USE_SSH=true yarn deploy"
+alias dinodeploy="yarn build & USE_SSH=true yarn deploy"
 
 # Fedora related aliases
 #TODO:
@@ -97,16 +98,18 @@ alias dino-deploy="yarn build & USE_SSH=true yarn deploy"
 # alias switch-gen="sudo nix-env --profile /nix/var/nix/profiles/system --switch-generation"
 # alias del-gen="sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations"
 
+# Python project related aliases
+alias pm='python3 main.py'
+alias va='source .venv/bin/activate'
+
 # Git bare repo aliases
 alias bare='git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 alias bst='git --git-dir=$HOME/dotfiles --work-tree=$HOME status'
-alias bfetch='git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo'
-alias breset='git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo'
-alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo'
+alias bfetch='git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo' alias breset='git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo' alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo'
 alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --'
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
-alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ ~/.config/tmux/ ~/.config/alacritty/ .zshrc'
+alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/awesome/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ .zshenv'
 alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
 
@@ -122,15 +125,17 @@ alias gdf="git diff"
 alias adog="log --all --decorate --oneline --graph"
 
 # advancade git aliases for my own repos
-alias gfetchmain="git fetch && git rebase"
+alias grebase="git fetch && git rebase"
 
+# Git rebase current branch
+# alias grebase="git fetch origin && git rebase origin/main"
 
 # more advanced Git aliases
-alias gfetchmaster="git fetch upstream && git rebase upstream/master"
-alias gfetchmain="git fetch upstream && git rebase upstream/main"
-alias gpushmn="git push origin main"
-alias gpushmt="git push origin master"
-alias gcom="git checkout main"
+alias grebasemaster="git fetch upstream && git rebase upstream/master"
+alias grebasemain="git fetch upstream && git rebase upstream/main"
+alias gpushmain="git push origin main"
+alias gpushmaster="git push origin master"
+alias gcomain="git checkout main"
 
 # Other aliases
 alias icat="kitten icat"  # Kitty terminal image preview
@@ -152,7 +157,8 @@ alias sudov="sudo -v"
 alias e="eza -F --all"
 alias e2="eza -F --all --long --sort=size --total-size --tree --level=2"
 alias e3="eza -F --all --long --sort=size --total-size --tree --level=3"
-alias ee="eza -F --all --long --sort=size --total-size --group"
+alias ee="eza -F --all --long --sort=size --total-size --smart-group"
+alias ez="eza -Tlahmo -L1 --sort=size --total-size --no-user --smart-group"
 alias duh="du -sh * | sort -h"
 alias duhdot="du -sh .[^.]* | sort -h"
 
