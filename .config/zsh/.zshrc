@@ -5,21 +5,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
 # # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-
 
 #### TMUX
 # Enable tmux all the time when zsh starts
 # if [ "$TMUX" = "" ]; then tmux; fi
 
-
-
 # This fixes colors on tmux but cause issue on zsh
 # shell echoing the commands as they executed
 # TERM=screen-256color
-
 
 #TERM=tmux-256color
 # TERM=tmux
@@ -27,7 +22,7 @@ fi
 #### ./TMUX
 
 # Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="$HOME/.config/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
@@ -45,7 +40,8 @@ autoload -U compinit && compinit
 # -------------------------------------------------------------------
 # Set history file path and limits.
 # HISTFILE="$HOME/.histfile" # This already in .zshenv
-HISTSIZE=10000
+HISTFILE="$HOME/.config/zsh/.zsh_history"
+HISTSIZE=20000
 SAVEHIST=10000
 
 # zsh options
@@ -66,7 +62,6 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate #ena
 plugins=(
     zsh-autosuggestions
     dirhistory
-    #TESTING:
     zsh-navigation-tools
     git
     vi-mode

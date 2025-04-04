@@ -1,7 +1,7 @@
 export ZDOTDIR=$HOME/.config/zsh
-export HISTFILE=$HOME/.config/zsh/zsh_history
+# export HISTFILE=$HOME/.config/zsh/.zsh_history
 
-typeset -U PATH path
+# typeset -U PATH path
 # export GTK_IM_MODULE='fcitx'
 # export QT_IM_MODULE='fcitx'
 # export SDL_IM_MODULE='fcitx'
@@ -28,7 +28,7 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export GRIM_DEFAULT_DIR=~/Pictures/Screenshots
 
 # Disable files
-export LESSHISTFILE=-
+# export LESSHISTFILE=-
 # export DIFFPROG="nvim -d"
 
 # Fixing Paths
