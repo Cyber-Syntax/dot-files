@@ -14,6 +14,7 @@ fi
 
 # This fixes colors on tmux but cause issue on zsh
 # shell echoing the commands as they executed
+#NOTE: this cause cursor to beam all the time even on normal and visual mode
 # TERM=screen-256color
 
 #TERM=tmux-256color
@@ -65,7 +66,7 @@ plugins=(
     dirhistory
     zsh-navigation-tools
     git
-    vi-mode
+    # vi-mode #FIXME: this cause issue with dirhistory
     ssh
     npm
     pip

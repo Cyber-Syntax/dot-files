@@ -4,6 +4,11 @@
 
 local map = vim.keymap.set
 
+--lets fix pasted from clipboard is not adding it below on the current line:
+vim.keymap.set("n", "gp", "put", { desc = "Paste after cursor from clipboard" })
+vim.keymap.set("n", "gP", "put!", { desc = "Paste before cursor from clipboard" })
+-- Adjust <leader>p / <leader>P to keys you prefer if they are taken.
+
 -- up down + ctrl to move more lines
 map("n", "<C-Down>", "5j", { desc = "Move down 5 lines" })
 map("n", "<C-Up>", "5k", { desc = "Move up 5 lines" })
@@ -31,7 +36,7 @@ map("n", "<leader>bN", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 
 map("n", "<leader>bq", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
 
--- Copy all lines in buffer
+local opt = vim.opt -- Copy all lines in buffer
 map("n", "<C-c>", ":%y<CR>", { desc = "Copy all lines in buffer" })
 
 -- Tab indetation, shift tab dedentation

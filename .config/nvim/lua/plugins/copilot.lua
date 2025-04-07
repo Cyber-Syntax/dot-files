@@ -1,5 +1,8 @@
 return {
   "zbirenbaum/copilot.lua",
+  -- lazy = true,
+  -- event = "InsertEnter",
+  -- enabled = true,
   opts = {
     suggestion = {
       enabled = not vim.g.ai_cmp,
@@ -12,7 +15,7 @@ return {
         prev = "<M-[>",
       },
     },
-    panel = { enabled = false },
+    panel = { enabled = false, auto_refresh = true },
     copilot_model = "gpt-4o-copilot", -- Current LSP default is gpt-35-turbo, supports gpt-4o-copilot
     filetypes = {
       yaml = false,
@@ -55,69 +58,39 @@ return {
         LazyVim.lualine.status(LazyVim.config.icons.kinds.Copilot, function()
           local clients = package.loaded["copilot"] and LazyVim.lsp.get_clients({ name = "copilot", bufnr = 0 }) or {}
           if #clients > 0 then
-            local status = require("copilot.api").status.data.status
-            return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
+            --HACK: Workaround fixes for current lazyvim error for copiloy lualine
+            -- It was returning nil value for status on lualine
+            local api_status = require("copilot.api").status
+            if api_status and api_status.data and api_status.data.status then
+              local status = api_status.data.status
+              return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
+            end
+            return "ok"
           end
         end)
       )
     end,
   },
 
-  vim.g.ai_cmp
-      and {
-        -- copilot cmp source
-        -- {
-        --   "hrsh7th/nvim-cmp",
-        --   optional = true,
-        --   dependencies = { -- this will only be evaluated if nvim-cmp is enabled
-        --     {
-        --       "zbirenbaum/copilot-cmp",
-        --       opts = {},
-        --       config = function(_, opts)
-        --         local copilot_cmp = require("copilot_cmp")
-        --         copilot_cmp.setup(opts)
-        --         -- attach cmp source whenever copilot attaches
-        --         -- fixes lazy-loading issues with the copilot cmp source
-        --         LazyVim.lsp.on_attach(function()
-        --           copilot_cmp._on_insert_enter({})
-        --         end, "copilot")
-        --       end,
-        --       specs = {
-        --         {
-        --           "hrsh7th/nvim-cmp",
-        --           optional = true,
-        --           ---@param opts cmp.ConfigSchema
-        --           opts = function(_, opts)
-        --             table.insert(opts.sources, 1, {
-        --               name = "copilot",
-        --               group_index = 1,
-        --               priority = 100,
-        --             })
-        --           end,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
-        {
-          "saghen/blink.cmp",
-          optional = true,
-          dependencies = { "giuxtaposition/blink-cmp-copilot" },
-          opts = {
-            sources = {
-              default = { "copilot" },
-              providers = {
-                copilot = {
-                  name = "copilot",
-                  module = "blink-cmp-copilot",
-                  kind = "Copilot",
-                  score_offset = 100,
-                  async = true,
-                },
-              },
+  vim.g.ai_cmp and {
+    {
+      "saghen/blink.cmp",
+      optional = true,
+      dependencies = { "giuxtaposition/blink-cmp-copilot" },
+      opts = {
+        sources = {
+          default = { "copilot" },
+          providers = {
+            copilot = {
+              name = "copilot",
+              module = "blink-cmp-copilot",
+              kind = "Copilot",
+              score_offset = 100,
+              async = true,
             },
           },
         },
-      }
-    or nil,
+      },
+    },
+  } or nil,
 }

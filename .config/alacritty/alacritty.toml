@@ -26,14 +26,10 @@ lines = 80
 
 [cursor]
 style.shape= "Beam"
-style.blinking = "On"
+# style.blinking = "On"
 vi_mode_style.shape = "Block"
-vi_mode_style.blinking = "On"
+# vi_mode_style.blinking = "On"
 
-# style:
-#   shape: Beam
-# vi_mode_style:
-#   shape: Block
 
 [colors]
 transparent_background_colors = false
