@@ -78,12 +78,20 @@ plugins=(
 # -------------------------------------------------------------------
 # Aliases
 # -------------------------------------------------------------------
+# Tmux
+alias t="tmux"
+alias tnew="tmux new -s"
+alias tls="tmux ls"
+alias tat="tmux attach -t"
 
 # Docusaurus deployment alias
 alias dinodeploy="yarn build & USE_SSH=true yarn deploy"
 
 # Fedora related aliases
-#TODO:
+alias dnfup="sudo dnf upgrade --refresh"
+alias dnfins="sudo dnf install"
+alias dnfrm="sudo dnf remove"
+alias dnfse="sudo dnf search"
 
 # # NixOS related aliases
 # alias stable-flu="sudo nix flake update home-manager nixvim nixpkgs firefox-addons nixos-hardware"
@@ -110,7 +118,7 @@ alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
 alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ .zshenv'
-alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -am'
+alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -a'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
 
 # Standard Git aliases

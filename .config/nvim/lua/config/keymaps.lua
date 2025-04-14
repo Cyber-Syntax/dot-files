@@ -1,42 +1,37 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
-
 local map = vim.keymap.set
 
 --lets fix pasted from clipboard is not adding it below on the current line:
-vim.keymap.set("n", "gp", "put", { desc = "Paste after cursor from clipboard" })
-vim.keymap.set("n", "gP", "put!", { desc = "Paste before cursor from clipboard" })
--- Adjust <leader>p / <leader>P to keys you prefer if they are taken.
-
--- up down + ctrl to move more lines
-map("n", "<C-Down>", "5j", { desc = "Move down 5 lines" })
-map("n", "<C-Up>", "5k", { desc = "Move up 5 lines" })
-map("n", "<C-Left>", "7h", { desc = "Move left 5 lines" })
-map("n", "<C-Right>", "7l", { desc = "Move right 5 lines" })
--- switching to ctrl-j-k-l for moving between windows, c-h to switch home end on
-map("n", "<C-j>", "5j", { desc = "Move to window below" })
-map("n", "<C-k>", "5k", { desc = "Move to window above" })
-map("n", "<C-l>", "5l", { desc = "Move to window right" })
-map("n", "<C-h>", "5h", { desc = "Move to window left" })
--- for also visual mode
-map("v", "<C-j>", "5j", { desc = "Move to window below" })
-map("v", "<C-k>", "5k", { desc = "Move to window above" })
-map("v", "<C-l>", "5l", { desc = "Move to window right" })
-map("v", "<C-h>", "5h", { desc = "Move to window left" })
+map("n", "gp", "<cmd>put<CR>", { silent = true, desc = "Paste after cursor from clipboard" })
+map("n", "gP", "<cmd>put!<CR>", { silent = true, desc = "Paste before cursor from clipboard" })
 
 -- alt+h , l to home end behavior
-map("n", "<A-h>", "^", { desc = "Move to start of line" })
 map("n", "<A-l>", "$", { desc = "Move to end of line" })
+map("n", "<A-h>", "^", { desc = "Move to start of line" })
+map("v", "<A-h>", "^", { desc = "Move to start of line" })
+map("v", "<A-l>", "$", { desc = "Move to end of line" })
+map("o", "<A-h>", "^", { desc = "Move to start of line" })
+map("o", "<A-l>", "$", { desc = "Move to end of line" })
+
+map("n", "<C-z>", "<nop>", { desc = "Disable suspend" })
+
+-- octo.nvim pr create keymap
+map("n", "<leader>gC", "<cmd>Octo pr create<cr>", { desc = "Create PR" })
+map("n", "<leader>gM", "<cmd>Octo pr merge<cr>", { desc = "Merge PR(Open PR before merge)" })
 
 -- Buffer
 map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+-- shift+tab bprevious
+map("n", "<S-tab>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bN", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 
 map("n", "<leader>bq", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
 
-local opt = vim.opt -- Copy all lines in buffer
+-- local opt = vim.opt
+-- Copy all lines in buffer
 map("n", "<C-c>", ":%y<CR>", { desc = "Copy all lines in buffer" })
 
 -- Tab indetation, shift tab dedentation
@@ -88,3 +83,41 @@ map("i", "<C-e>", "<End>", { desc = "End" })
 -- -- -- Obsidian.nvim
 map("n", "<leader>fo", ":ObsidianQuickSwitch<CR>", { desc = "Obsidian File Search", silent = true })
 map("n", "<leader>fO", ":ObsidianSearch<CR>", { desc = "Obsidian Search in Files", silent = true })
+
+-- codecompanion
+vim.keymap.set(
+  { "n", "v" },
+  "<leader>ac",
+  "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "CodeCompanion Actions" }
+)
+vim.keymap.set(
+  { "n", "v" },
+  "<leader>aC",
+  "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "CodeCompanion Chat Toggle" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>ae",
+  "<cmd>CodeCompanionChat Add<cr>",
+  { noremap = true, silent = true, desc = "CodeCompanion Chat Add" }
+)
+
+-- Expand 'cc' into 'CodeCompanion' in the command line
+-- vim.cmd([[cab cc CodeCompanion]])
+-- up down + ctrl to move more lines
+map("n", "<C-Down>", "5j", { desc = "Move down 5 lines" })
+map("n", "<C-Up>", "5k", { desc = "Move up 5 lines" })
+map("n", "<C-Left>", "7h", { desc = "Move left 5 lines" })
+map("n", "<C-Right>", "7l", { desc = "Move right 5 lines" })
+-- switching to ctrl-j-k-l for moving between windows, c-h to switch home end on
+map("n", "<C-j>", "5j", { desc = "Move to window below" })
+map("n", "<C-k>", "5k", { desc = "Move to window above" })
+map("n", "<C-l>", "5l", { desc = "Move to window right" })
+map("n", "<C-h>", "5h", { desc = "Move to window left" })
+-- for also visual mode
+map("v", "<C-j>", "5j", { desc = "Move to window below" })
+map("v", "<C-k>", "5k", { desc = "Move to window above" })
+map("v", "<C-l>", "5l", { desc = "Move to window right" })
+map("v", "<C-h>", "5h", { desc = "Move to window left" })

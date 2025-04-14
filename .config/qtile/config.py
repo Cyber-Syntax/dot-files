@@ -83,7 +83,13 @@ groups = [
         ],
         label="",
     ),
-    Group("2", screen_affinity=0, layout="monadtall", label=""),
+    Group(
+        "2",
+        screen_affinity=0,
+        layout="monadtall",
+        matches=[Match(wm_class=re.compile(r"^(code)$"))],
+        label="",
+    ),
     Group(
         "3",
         screen_affinity=0,

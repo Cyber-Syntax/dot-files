@@ -7,6 +7,7 @@
 vim.g.lazyvim_check_order = false
 
 vim.g.lazyvim_python_lsp = "basedpyright"
+vim.g.lazyvim_python_ruff = "ruff"
 
 -- Those already default
 -- local opt = vim.opt
