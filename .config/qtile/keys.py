@@ -28,7 +28,7 @@ keys = [
     Key([mod], "F12", lazy.group["scratchpad"].dropdown_toggle("chat")),
     ## APPS ##
     # terminal
-    #HACK: workaround fix for zsh not launching in the home directory
+    # HACK: workaround fix for zsh not launching in the home directory
     Key([mod], "Return", lazy.spawn("kitty -d ~"), desc="Launch terminal"),
     # brave browser
     # firefox
@@ -42,7 +42,8 @@ keys = [
     # siyuan
     # Key([mod], "s", lazy.spawn(os.path.expanduser("~/Documents/appimages/siyuan.AppImage")), desc="Launch siyuan"),
     # folder
-    Key([mod], "z", lazy.spawn("pcmanfm"), desc="Launch pcmanfm"),
+    # Key([mod], "z", lazy.spawn("pcmanfm"), desc="Launch pcmanfm"),
+    Key([mod], "z", lazy.spawn("nautilus"), desc="Launch pcmanfm"),
     # custom spotify via chromium `chromium --user-data-dir=.config/spotify --app=https://open.spotify.com/`
     # Key([mod], "v", lazy.spawn("chromium --user-data-dir=.config/spotify --app=https://open.spotify.com/"), desc="Launch spotify"),
     ## Custom Rofi Scripts ##
@@ -82,8 +83,17 @@ keys = [
     # lazy.screen.prev_group(skip_empty=True),
     # 1 monitor setup
     # cycle groups on 1 monitor setup
-    Key([mod], 49, lazy.screen.next_group(), desc="Move to next group"),
-    Key([mod, "shift"], 49, lazy.screen.prev_group(), desc="Move to previous group"),
+    # Key([mod], 49, lazy.screen.next_group(), desc="Move to next group"),
+    # Key([mod, "shift"], 49, lazy.screen.prev_group(), desc="Move to previous group"),
+    # Change window when it is max workspace
+    # TODO: find better shortcut for this
+    Key(
+        # [mod, "control"],
+        [mod],
+        49,
+        lazy.layout.next(),
+        desc="Move window focus to other window",
+    ),
     # Cycle only if there are window in the group (e.g skip empty groups)
     Key(
         [mod], "Tab", lazy.screen.next_group(skip_empty=True), desc="Move to next group"

@@ -77,7 +77,7 @@ groups = [
     Group(
         "1",
         screen_affinity=0,
-        layout="monadtall",
+        layout="max",
         matches=[
             Match(wm_class=re.compile(r"^(firefox|brave-browser|chromium-browser)$"))
         ],
@@ -86,14 +86,14 @@ groups = [
     Group(
         "2",
         screen_affinity=0,
-        layout="monadtall",
+        layout="max",
         matches=[Match(wm_class=re.compile(r"^(code)$"))],
         label="",
     ),
     Group(
         "3",
         screen_affinity=0,
-        layout="monadtall",
+        layout="max",
         matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))],
         label="",
     ),

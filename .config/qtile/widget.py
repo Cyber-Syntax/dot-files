@@ -10,6 +10,23 @@ from qtile_extras.popup.toolkit import (
     PopupSlider,
     PopupText,
 )
+import os
+import subprocess
+import gi
+
+# Add GTK dependencies
+try:
+    gi.require_version("Gtk", "3.0")
+    from gi.repository import Gtk
+    GTK_THEME = Gtk.Settings.get_default().get_property("gtk-icon-theme-name")
+    GTK_THEME_AVAILABLE = True
+except (ImportError, ValueError):
+    GTK_THEME = None
+    GTK_THEME_AVAILABLE = False
+    print("Warning: Could not load GTK, falling back to default icon theme")
+
+from libqtile import bar, qtile
+# Rest of your imports...
 
 import colors
 
@@ -90,9 +107,7 @@ decorations = {
     },
 }
 
-decoration = [
-    getattr(widget.decorations, widget_decoration)(**decorations[widget_decoration])
-]
+decoration = [getattr(widget.decorations, widget_decoration)(**decorations[widget_decoration])]
 
 widget_defaults = dict(
     font=bar_font,
@@ -110,8 +125,39 @@ right_offset = [widget.Spacer(length=widget_right_offset, decorations=[])]
 space = widget.Spacer(length=widget_gap, decorations=[])
 
 
-def no_text(text):
-    return ""
+# def no_text(text):
+#     return ""
+
+def smart_parse_text(text):
+    """
+    Display cleaned up text for applications without icons,
+    but hide text for applications with working icons.
+    """
+    # List of applications with working icons
+    apps_with_icons = ["firefox", "chromium", "chrome", "nemo", "nautilus", "kitty", "terminal"]
+    
+    # List of applications without working icons that need text
+    apps_without_icons = ["zed", "some-other-app"]
+    
+    # Clean up common suffixes
+    for suffix in [" - Firefox", " - Chromium", " - Mozilla Firefox", " — Mozilla Firefox"]:
+        text = text.replace(suffix, "")
+        
+    # Check if this window belongs to an app that has a working icon
+    for app in apps_with_icons:
+        if app.lower() in text.lower():
+            return ""  # Hide text, show only icon
+            
+    # Check if this is an app we know doesn't have a working icon
+    for app in apps_without_icons:
+        if app.lower() in text.lower():
+            return text  # Show text since icon doesn't work
+    
+    # Default: return shortened text (maybe limited to certain length)
+    if len(text) > 30:
+        return text[:27] + "..."
+    return text
+
 
 
 left = [
@@ -134,19 +180,23 @@ left = [
         txt_minimized="",
         txt_floating="",
         txt_maximized="",
-        parse_text=no_text,
-        text_minimized="",
-        text_maximized="",
-        text_floating="",
-        # parse_text=my_func,
+        parse_text=smart_parse_text,
         spacing=1,
         icon_size=20,
         border_width=0,
         fontsize=13,  # Do not change! Cause issue with specified widget_defaults
         stretch=False,
-        padding_x=5,
-        padding_y=5,
+        padding_x=1,
+        padding_y=1,
         hide_crash=True,
+        # theme_mode="preferred",
+        # theme_mode='fallback', #FIX: not work currently
+        theme_path=[
+            "~/.local/share/icons/"
+            "/usr/share/icons/",
+            "/usr/share/pixmaps/",
+            GTK_THEME
+        ],
         decorations=[
             getattr(widget.decorations, widget_decoration)(
                 **decorations[widget_decoration] | {"extrawidth": 4}
@@ -222,9 +272,7 @@ right = [
         update_interval=2,
         threshold=60,
         foreground_alert="ff6000",
-        mouse_callbacks={
-            "Button1": lambda: qtile.spawn(terminal + " watch -n 2 'nvidia-smi'")
-        },
+        mouse_callbacks={"Button1": lambda: qtile.spawn(terminal + " watch -n 2 'nvidia-smi'")},
     ),
     space,
     widget.DF(
@@ -246,15 +294,6 @@ right = [
         visible_on_warn=True,
     ),
     space,
-    # widget.DF(
-    #     update_interval=60,
-    #     partition="/nix",
-    #     format="({uf}{m}|{r:.0f}%)",
-    #     fmt=" {}",
-    #     warn_space=20,
-    #     visible_on_warn=True,
-    # ),
-    # space,
     widget.DF(
         update_interval=60,
         partition="/mnt/backups",
@@ -266,14 +305,13 @@ right = [
     space,
     # custom script caller widget
     widget.GenPollText(
-        # FIX: output shows like this b'Fedora: 39 | Flatpak: 12'
-        # NOTE: .strip() cause above, .decode("utf-8") cause fonts to aligned on upper side
         func=lambda: subprocess.check_output(
-            "/home/developer/.config/qtile/scripts/fedora-flatpak-status.sh"
-        ).strip(),
-        update_interval=60,
+            "/home/developer/.config/qtile/scripts/fedora-flatpak-status.sh", timeout=15, shell=True
+        )
+        .decode("utf-8")
+        .strip(),
+        update_interval=3600,  # Update every 60 minutes
         mouse_callbacks={
-            # shell with kitty
             "Button1": lambda: qtile.spawn(
                 'kitty -- bash -c "/home/developer/.config/qtile/scripts/update-dnf-flatpak.sh"'
             ),
@@ -282,7 +320,7 @@ right = [
     space,
     widget.Clock(
         format="%A %d %B %Y %H:%M",
-        # mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
     ),
     space,
     # widget.StatusNotifier(),
@@ -323,8 +361,7 @@ screens = [
         top=bar.Bar(
             widgets=left_offset + left + sep + middle + sep + right + right_offset,
             size=bar_size,
-            background=bar_background_color
-            + format(int(bar_background_opacity * 255), "02x"),
+            background=bar_background_color + format(int(bar_background_opacity * 255), "02x"),
             margin=[
                 bar_top_margin,
                 bar_right_margin,
