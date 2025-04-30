@@ -1,70 +1,152 @@
 #!/usr/bin/python3
-"""Check for updates using dnf"""
+"""
+System update status checker for Fedora.
+
+This script checks for available updates using DNF package manager
+and Flatpak, then displays the count of pending updates.
+"""
+
 import subprocess
-
-def dnf_update():
-    """Check for updates using dnf"""
-    # find how much update available for dnf
-    update = subprocess.check_output(["dnf", "updateinfo","-q", "--list"], stderr=subprocess.STDOUT)
-
-    # count
-    update_count_dnf = int(update.decode("utf-8").count("\n"))
-
-    return update_count_dnf
-
-def flatpak_update():
-    """Check for updates using flatpak"""
-    # find how much update available for flatpak
-    update_flatpak = subprocess.check_output(["flatpak", "remote-ls",
-                                                "--updates", "--user", "flathub"]).decode("utf-8")
-    # split the output into lines
-    lines = update_flatpak.split("\n")
-
-    # count the number of lines
-    update_count_flatpak = len(lines) - 1 # Subtract 1 because the last line is empty
-
-    return update_count_flatpak
-
-def print_update_flatpak(update_count_flatpak):
-    """Print the update count for flatpak"""
-    if update_count_flatpak > 0:
-        print(f"Flatpak: {update_count_flatpak}")
-    else:
-        print("Flatpak: Up to date")
+import sys
+from abc import ABC, abstractmethod
+from typing import Optional
 
 
-def print_update(update_count_dnf, update_count_flatpak):
-    """Print the update count"""
-    # Check if both are up to date
-    if update_count_dnf == 0 and update_count_flatpak == 0:
-        print("Up to Date ")
-        # return: exit the function, so rest of the code won't execute
-        return
+class UpdateChecker(ABC):
+    """Abstract base class for system update checkers."""
 
-    # dnf check
-    if update_count_dnf > 0:
-        print(f" {update_count_dnf}")
+    @abstractmethod
+    def check_updates(self) -> Optional[int]:
+        """
+        Check for available updates.
 
-    # flatpak check
-    if update_count_flatpak > 0:
-        print(f"Flatpak: {update_count_flatpak}")
+        Returns:
+            Optional[int]: Number of available updates or None on error
+        """
+        pass
+
+
+class DNFUpdateChecker(UpdateChecker):
+    """Class for checking DNF package updates."""
+
+    def check_updates(self) -> Optional[int]:
+        """
+        Check for available DNF package updates.
+
+        Returns:
+            Optional[int]: Number of available updates or None on error
+        """
+        try:
+            # Use check-update instead of updateinfo for broader compatibility
+            result = subprocess.run(
+                ["dnf", "check-update", "--quiet"],
+                capture_output=True,
+                text=True,
+                check=False,  # don't raise exception on non-zero return code
+            )
+
+            # DNF returns code 100 when updates are available
+            if result.returncode not in [0, 100]:
+                return None
+
+            # Count non-empty lines in the output
+            lines = [line for line in result.stdout.split("\n") if line.strip()]
+            return len(lines)
+        except Exception as e:
+            print(f"DNF error: {e}", file=sys.stderr)
+            return None
+
+
+class FlatpakUpdateChecker(UpdateChecker):
+    """Class for checking Flatpak updates."""
+
+    def check_updates(self) -> Optional[int]:
+        """
+        Check for available Flatpak updates.
+
+        Returns:
+            Optional[int]: Number of available updates or None on error
+        """
+        try:
+            result = subprocess.run(
+                ["flatpak", "remote-ls", "--updates"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+
+            # Count non-empty lines in the output
+            lines = [line for line in result.stdout.split("\n") if line.strip()]
+            return len(lines)
+        except Exception as e:
+            print(f"Flatpak error: {e}", file=sys.stderr)
+            return None
+
+
+class UpdateStatusFormatter:
+    """Class for formatting update status messages."""
+
+    def format_status(
+        self, dnf_count: Optional[int], flatpak_count: Optional[int]
+    ) -> str:
+        """
+        Format the update status message based on update counts.
+
+        Args:
+            dnf_count: Number of DNF updates available or None on error
+            flatpak_count: Number of Flatpak updates available or None on error
+
+        Returns:
+            str: Formatted status message
+        """
+        if dnf_count is None and flatpak_count is None:
+            return "Could not check for updates. Please verify DNF and Flatpak are installed."
+
+        if dnf_count is None:
+            dnf_count = 0
+        if flatpak_count is None:
+            flatpak_count = 0
+
+        if dnf_count == 0 and flatpak_count == 0:
+            return "Up to Date"
+
+        messages = []
+        if dnf_count > 0:
+            messages.append(f"DNF: {dnf_count}")
+
+        if flatpak_count > 0:
+            messages.append(f"Flatpak: {flatpak_count}")
+
+        return "\n".join(messages)
+
+
+class UpdateManager:
+    """Class for managing the update checking process."""
+
+    def __init__(self):
+        """Initialize update checkers and formatter."""
+        self.dnf_checker = DNFUpdateChecker()
+        self.flatpak_checker = FlatpakUpdateChecker()
+        self.formatter = UpdateStatusFormatter()
+
+    def check_and_format(self) -> str:
+        """
+        Check for updates and return a formatted status message.
+
+        Returns:
+            str: Formatted status message
+        """
+        dnf_count = self.dnf_checker.check_updates()
+        flatpak_count = self.flatpak_checker.check_updates()
+        return self.formatter.format_status(dnf_count, flatpak_count)
 
 
 def main():
-    """Main function"""
-    try:
-        # find how much update available for dnf
-        dnf_count = dnf_update()
+    """Main function - check for updates and display results."""
+    manager = UpdateManager()
+    status = manager.check_and_format()
+    print(status)
 
-        # find how much update available for flatpak
-        flatpak_count = flatpak_update()
-
-        # print the update count
-        print_update(dnf_count, flatpak_count)
-    except subprocess.CalledProcessError:
-        print("Error: DNF or Flatpak is not installed.")
-    except Exception as exception:
-        print("Error:", exception)
 
 if __name__ == "__main__":
     main()

@@ -330,10 +330,14 @@ export CHROME_BIN="/usr/bin/brave-browser-stable"
 # # Add the user's local bin directory (as defined by xdg-user-dir) to PATH.
 # export PATH="$PATH:$(xdg-user-dir USER)/.local/bin"
 
+
 # Initialize zoxide for fast directory navigation.
 if command -v zoxide > /dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
+
+# uv auto completions
+eval "$(uv generate-shell-completion zsh)"
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)

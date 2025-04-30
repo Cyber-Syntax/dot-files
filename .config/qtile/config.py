@@ -177,6 +177,7 @@ layout_theme = {
 
 
 layouts = [
+    # layout.TreeTab(),
     layout.MonadTall(**layout_theme),
     layout.Max(
         border_width=0,

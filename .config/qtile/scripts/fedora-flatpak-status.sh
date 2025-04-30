@@ -9,41 +9,54 @@ timeout_cmd="timeout 10"
 # ------------- DNF (Fedora) Update Info -------------
 # Use dnf check-update which is the proper way to check for available updates
 # Exit code 100 means updates are available, 0 means no updates
-dnf_output=$($timeout_cmd dnf check-update 2>/dev/null)
+dnf_output=$($timeout_cmd dnf check-update --refresh 2>/dev/null)
 dnf_exit=$?
 
 if [ $dnf_exit -eq 0 ]; then
     # No updates available
     fedora_count="0"
 elif [ $dnf_exit -eq 100 ]; then
-    # Updates available - count non-empty lines after the header
-    fedora_count=$(echo "$dnf_output" | sed '1,/^$/d' | grep -v '^$' | wc -l | tr -d ' ')
+    # Updates available - count actual package lines (excluding headers and empty lines)
+    fedora_count=$(echo "$dnf_output" | grep -v "^Last metadata" | grep -v "^$" | grep -v "^Upgrade" | wc -l | tr -d ' ')
 else
     # Any other exit code indicates an error
     fedora_count="?"
 fi
 
 # ------------- Flatpak Update Info -------------
-# Use flatpak update --no-deploy to show available updates without installing
-flatpak_output=$($timeout_cmd flatpak update --no-deploy 2>/dev/null || echo "Error")
+# First try with remote-ls --updates which is more reliable
+flatpak_output=$($timeout_cmd flatpak remote-ls --updates 2>/dev/null)
+flatpak_exit=$?
 
-if [ "$flatpak_output" = "Error" ]; then
-    flatpak_count="?"
-elif echo "$flatpak_output" | grep -q "Nothing to do."; then
-    flatpak_count="0"
+if [ $flatpak_exit -eq 0 ]; then
+    if [ -z "$flatpak_output" ]; then
+        flatpak_count="0"
+    else
+        # Count lines in the output for available updates
+        flatpak_count=$(echo "$flatpak_output" | grep -v "^$" | wc -l | tr -d ' ')
+    fi
 else
-    # Count lines that start with a number and dot pattern (actual updates)
-    flatpak_count=$(echo "$flatpak_output" | grep -E '^[[:space:]]*[0-9]+\.' | wc -l | tr -d ' ')
-    if [ "$flatpak_count" = "0" ] && ! echo "$flatpak_output" | grep -q "Nothing to do."; then
+    # Fallback to the original method if remote-ls fails
+    flatpak_output=$($timeout_cmd flatpak update --no-deploy 2>/dev/null || echo "Error")
+
+    if [ "$flatpak_output" = "Error" ]; then
         flatpak_count="?"
+    elif echo "$flatpak_output" | grep -q "Nothing to do."; then
+        flatpak_count="0"
+    else
+        # Count update lines with a more flexible pattern
+        flatpak_count=$(echo "$flatpak_output" | grep -E '^\s*[0-9]+\.\s+' | wc -l | tr -d ' ')
+        if [ "$flatpak_count" = "0" ] && ! echo "$flatpak_output" | grep -q "Nothing to do."; then
+            flatpak_count="?"
+        fi
     fi
 fi
 
 # ------------- Combined Output -------------
-# Show "None" instead of "0" for better readability
+# Show checkmark instead of "0" for better readability
 [ "$fedora_count" = "0" ] && fedora_count="✅"
 [ "$flatpak_count" = "0" ] && flatpak_count="✅"
 
-FEDORA_ICON=$'\uf30a'  # FontAwesome Fedora logo
+FEDORA_ICON=$'\uf30a' # FontAwesome Fedora logo
 
 echo "$FEDORA_ICON : $fedora_count | 📦: $flatpak_count"

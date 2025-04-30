@@ -18,6 +18,7 @@ import gi
 try:
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
+
     GTK_THEME = Gtk.Settings.get_default().get_property("gtk-icon-theme-name")
     GTK_THEME_AVAILABLE = True
 except (ImportError, ValueError):
@@ -107,7 +108,9 @@ decorations = {
     },
 }
 
-decoration = [getattr(widget.decorations, widget_decoration)(**decorations[widget_decoration])]
+decoration = [
+    getattr(widget.decorations, widget_decoration)(**decorations[widget_decoration])
+]
 
 widget_defaults = dict(
     font=bar_font,
@@ -125,39 +128,67 @@ right_offset = [widget.Spacer(length=widget_right_offset, decorations=[])]
 space = widget.Spacer(length=widget_gap, decorations=[])
 
 
-# def no_text(text):
-#     return ""
-
 def smart_parse_text(text):
     """
-    Display cleaned up text for applications without icons,
-    but hide text for applications with working icons.
+    Display shortened text for applications with icons,
+    and full text for applications without icons.
     """
     # List of applications with working icons
-    apps_with_icons = ["firefox", "chromium", "chrome", "nemo", "nautilus", "kitty", "terminal"]
-    
+    apps_with_icons = [
+        "firefox",
+        "chromium",
+        "chrome",
+        "nemo",
+        "nautilus",
+        "kitty",
+        "terminal",
+        "brave",
+        "librewolf",
+    ]
+
     # List of applications without working icons that need text
     apps_without_icons = ["zed", "some-other-app"]
-    
+
     # Clean up common suffixes
-    for suffix in [" - Firefox", " - Chromium", " - Mozilla Firefox", " — Mozilla Firefox"]:
+    for suffix in [
+        " - Firefox",
+        " - Chromium",
+        " - Mozilla Firefox",
+        " — Mozilla Firefox",
+    ]:
         text = text.replace(suffix, "")
-        
+
+    original_text = text
+
     # Check if this window belongs to an app that has a working icon
     for app in apps_with_icons:
         if app.lower() in text.lower():
-            return ""  # Hide text, show only icon
-            
+            # Shorten text instead of hiding it completely
+            app_name = app.capitalize()
+
+            # Extract the page title or document name
+            if ":" in text:
+                # For titles with format "App: Document"
+                title = text.split(":", 1)[1].strip()
+            else:
+                title = text.replace(app, "").replace(app.capitalize(), "").strip()
+
+            # Create a shortened version
+            if title:
+                short_title = title[:12] + "..." if len(title) > 15 else title
+                return short_title
+            else:
+                return app_name
+
     # Check if this is an app we know doesn't have a working icon
     for app in apps_without_icons:
         if app.lower() in text.lower():
-            return text  # Show text since icon doesn't work
-    
-    # Default: return shortened text (maybe limited to certain length)
+            return original_text  # Show full text since icon doesn't work
+
+    # Default: return shortened text for other applications
     if len(text) > 30:
         return text[:27] + "..."
     return text
-
 
 
 left = [
@@ -182,7 +213,7 @@ left = [
         txt_maximized="",
         parse_text=smart_parse_text,
         spacing=1,
-        icon_size=20,
+        icon_size=25,
         border_width=0,
         fontsize=13,  # Do not change! Cause issue with specified widget_defaults
         stretch=False,
@@ -192,10 +223,9 @@ left = [
         # theme_mode="preferred",
         # theme_mode='fallback', #FIX: not work currently
         theme_path=[
-            "~/.local/share/icons/"
-            "/usr/share/icons/",
-            "/usr/share/pixmaps/",
-            GTK_THEME
+            "~/.local/share/icons/",
+            "~/.local/share/flatpak/exports/share/icons/",  # Flatpak user icons
+            "/var/lib/flatpak/exports/share/icons/",  # Flatpak system icons
         ],
         decorations=[
             getattr(widget.decorations, widget_decoration)(
@@ -272,7 +302,9 @@ right = [
         update_interval=2,
         threshold=60,
         foreground_alert="ff6000",
-        mouse_callbacks={"Button1": lambda: qtile.spawn(terminal + " watch -n 2 'nvidia-smi'")},
+        mouse_callbacks={
+            "Button1": lambda: qtile.spawn(terminal + " watch -n 2 'nvidia-smi'")
+        },
     ),
     space,
     widget.DF(
@@ -306,7 +338,9 @@ right = [
     # custom script caller widget
     widget.GenPollText(
         func=lambda: subprocess.check_output(
-            "/home/developer/.config/qtile/scripts/fedora-flatpak-status.sh", timeout=15, shell=True
+            "/home/developer/.config/qtile/scripts/fedora-flatpak-status.sh",
+            timeout=15,
+            shell=True,
         )
         .decode("utf-8")
         .strip(),
@@ -320,7 +354,7 @@ right = [
     space,
     widget.Clock(
         format="%A %d %B %Y %H:%M",
-        mouse_callbacks = {'Button1': lambda: qtile.spawn('gnome-calendar')},
+        mouse_callbacks={"Button1": lambda: qtile.spawn("gnome-calendar")},
     ),
     space,
     # widget.StatusNotifier(),
@@ -361,7 +395,8 @@ screens = [
         top=bar.Bar(
             widgets=left_offset + left + sep + middle + sep + right + right_offset,
             size=bar_size,
-            background=bar_background_color + format(int(bar_background_opacity * 255), "02x"),
+            background=bar_background_color
+            + format(int(bar_background_opacity * 255), "02x"),
             margin=[
                 bar_top_margin,
                 bar_right_margin,
