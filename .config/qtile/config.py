@@ -79,7 +79,11 @@ groups = [
         screen_affinity=0,
         layout="max",
         matches=[
-            Match(wm_class=re.compile(r"^(firefox|brave-browser|chromium-browser)$"))
+            Match(
+                wm_class=re.compile(
+                    r"^(firefox|brave-browser|chromium-browser|librewolf)$"
+                )
+            )
         ],
         label="",
     ),
@@ -87,14 +91,14 @@ groups = [
         "2",
         screen_affinity=0,
         layout="max",
-        matches=[Match(wm_class=re.compile(r"^(code)$"))],
+        matches=[Match(wm_class=re.compile(r"^(code|zed)$"))],
         label="",
     ),
     Group(
         "3",
         screen_affinity=0,
         layout="max",
-        matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian)$"))],
+        matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian|freetube)$"))],
         label="",
     ),
     Group(

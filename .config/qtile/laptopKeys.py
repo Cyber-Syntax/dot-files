@@ -69,10 +69,28 @@ keys = [
     # lazy.screen.prev_group(skip_empty=True),
     # 1 monitor setup
     # cycle groups on 1 monitor setup
-    Key([mod], "Tab", lazy.screen.next_group(), desc="Move to next group"),
-    Key([mod, "shift"], "Tab", lazy.screen.prev_group(), desc="Move to previous group"),
+    # Key([mod], "Tab", lazy.screen.next_group(), desc="Move to next group"),
+    # Key([mod, "shift"], "Tab", lazy.screen.prev_group(), desc="Move to previous group"),
     # Cycle only if there are window in the group (e.g skip empty groups)
-    Key([mod], 49, lazy.screen.next_group(skip_empty=True), desc="Move to next group"),
+    # TODO: find better shortcut for this
+    Key(
+        # [mod, "control"],
+        [mod],
+        49,
+        lazy.layout.next(),
+        desc="Move window focus to other window",
+    ),
+    # Cycle only if there are window in the group (e.g skip empty groups)
+    Key(
+        [mod], "Tab", lazy.screen.next_group(skip_empty=True), desc="Move to next group"
+    ),
+    Key(
+        [mod, "shift"],
+        "Tab",
+        lazy.screen.prev_group(skip_empty=True),
+        desc="Move to next group",
+    ),
+    # Key([mod], 49, lazy.screen.next_group(skip_empty=True), desc="Move to next group"),
     # Key([mod, "shift"], "Tab", lazy.screen.prev_group(skip_empty=True), desc="Move to previous group"),
     # Change focus of windows when layout is Max
     Key(

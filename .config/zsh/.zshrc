@@ -339,5 +339,6 @@ fi
 # uv auto completions
 eval "$(uv generate-shell-completion zsh)"
 
+
 # Load Angular CLI autocompletion.
 source <(ng completion script)

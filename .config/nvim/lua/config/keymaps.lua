@@ -3,6 +3,10 @@
 -- Add any additional keymaps here
 local map = vim.keymap.set
 
+vim.keymap.set("n", "<leader>aP", function()
+  require("codecompanion").prompt("copilot")
+end, { noremap = true, silent = true })
+
 --lets fix pasted from clipboard is not adding it below on the current line:
 map("n", "gp", "<cmd>put<CR>", { silent = true, desc = "Paste after cursor from clipboard" })
 map("n", "gP", "<cmd>put!<CR>", { silent = true, desc = "Paste before cursor from clipboard" })
