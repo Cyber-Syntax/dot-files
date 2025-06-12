@@ -86,6 +86,7 @@ alias tat="tmux attach -t"
 
 # Docusaurus deployment alias
 alias dinodeploy="yarn build & USE_SSH=true yarn deploy"
+alias dinolocal="npm run start"
 
 # Fedora related aliases
 alias dnfup="sudo dnf upgrade --refresh"
@@ -143,6 +144,7 @@ alias grebasemaster="git fetch upstream && git rebase upstream/master"
 alias grebasemain="git fetch upstream && git rebase upstream/main"
 alias gpushmain="git push origin main"
 alias gpushmaster="git push origin master"
+alias gpush_master_force_no_verify="git push origin master --no-verify --force"
 alias gcomain="git checkout main"
 
 # Other aliases
@@ -341,4 +343,4 @@ eval "$(uv generate-shell-completion zsh)"
 
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+# source <(ng completion script)

@@ -2,15 +2,14 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "solarized-osaka",
+      colorscheme = "github_dark",
     },
   },
-  {
-    "craftzdog/solarized-osaka.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-  },
+  -- { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
+  -- -- base16
+  -- {
+  --   "RRethy/base16-nvim",
+  -- },
   -- {
   --   "AlexvZyl/nordic.nvim",
   --   lazy = false,
@@ -19,18 +18,16 @@ return {
   --     require("nordic").load()
   --   end,
   -- },
-  -- { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
-  -- {
-  --   "projekt0n/github-nvim-theme",
-  --   name = "github-theme",
-  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --   config = function()
-  --     require("github-theme").setup({
-  --       -- ...
-  --     })
-  --
-  --     vim.cmd("colorscheme github_dark")
-  --   end,
-  -- },
+  {
+    "projekt0n/github-nvim-theme",
+    name = "github-theme",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require("github-theme").setup({
+        -- ...
+      })
+      vim.cmd("colorscheme github_dark")
+    end,
+  },
 }

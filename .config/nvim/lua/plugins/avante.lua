@@ -9,16 +9,20 @@ return {
       behaviour = {
         enable_cursor_planning_mode = true, -- enable cursor planning mode!
       },
-      copilot = {
-        endpoint = "https://api.githubcopilot.com",
-        model = "claude-3.7-sonnet",
-        proxy = nil, -- [protocol://]host[:port] Use this proxy
-        allow_insecure = false, -- Allow insecure server connections
-        timeout = 30000, -- Timeout in milliseconds
-        temperature = 0,
-        max_tokens = 90480,
-        max_completion_tokens = 1000000,
-        reasoning_effort = "high",
+      providers = {
+        copilot = {
+          endpoint = "https://api.githubcopilot.com",
+          model = "claude-3.7-sonnet",
+          extra_request_body = {
+            proxy = nil, -- [protocol://]host[:port] Use this proxy
+            allow_insecure = false, -- Allow insecure server connections
+            timeout = 30000, -- Timeout in milliseconds
+            temperature = 0,
+            max_tokens = 90480,
+            max_completion_tokens = 1000000,
+            reasoning_effort = "high",
+          },
+        },
       },
       hints = { enabled = false },
       file_selector = {

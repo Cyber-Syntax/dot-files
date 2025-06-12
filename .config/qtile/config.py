@@ -28,10 +28,11 @@ import re  # this fixes the Match error on group
 import subprocess
 
 from libqtile import hook, layout
-from libqtile.config import Drag, DropDown, Group, Key, Match, ScratchPad
+from libqtile.config import DropDown, Group, Key, Match, ScratchPad
 from libqtile.lazy import lazy
 
 from functions import *
+from global_keys import mod  # Import mod from global_keys
 from variables import *
 
 """
@@ -53,25 +54,16 @@ def get_hostname():
 hostname = get_hostname()
 
 if hostname == "fedora":
-    from keys import *
+    from keys import keys
     from widget import *
 elif hostname == "fedora-laptop":
-    from laptopKeys import *
+    from laptopKeys import keys
     from laptopWidget import *
 else:
     print("No hostname found")
-
-mouse = [
-    Drag(
-        [mod],
-        "Button1",
-        lazy.window.set_position_floating(),
-        start=lazy.window.get_position(),
-    ),
-    Drag(
-        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
-    ),
-]
+    # Fallback to global keys if hostname not recognized
+    from global_keys import global_keys as keys
+    from global_keys import mod
 
 groups = [
     Group(
@@ -85,37 +77,43 @@ groups = [
                 )
             )
         ],
-        label="",
+        label=" ",
     ),
     Group(
         "2",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^(code|zed)$"))],
-        label="",
+        label="",
     ),
     Group(
         "3",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^(siyuan|obsidian|freetube)$"))],
-        label="",
+        label=" ",
     ),
     Group(
         "4",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^superproductivity$"))],
-        label="",
+        label=" ",
     ),
     Group(
         "5",
         screen_affinity=0,
         layout="max",
         matches=[Match(wm_class=re.compile(r"^(spotify|Spotify)$"))],
-        label="",
+        label=" ",
     ),
-    Group("6", screen_affinity=0, layout="monadtall", label=""),
+    Group(
+        "6",
+        screen_affinity=0,
+        layout="monadtall",
+        matches=[Match(wm_class=re.compile(r"^(pcmanfm)$"))],
+        label=" ",
+    ),
 ]
 for i in groups:
     keys.extend(
@@ -128,12 +126,22 @@ for i in groups:
             Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
         ]
     )
-
+# TODO: use variables module
+# add all of the variables withou wildcard imports
+terminal_hold = "kitty -d --hold"  # Default terminal
 # Scratchpad
 groups.append(
     ScratchPad(
         "scratchpad",
         [
+            DropDown(
+                "khal",
+                terminal_hold + "khal calendar",
+                x=0.6785,
+                width=0.32,
+                height=0.997,
+                opacity=1,
+            ),
             # define a drop down terminal.
             # it is placed in the upper third of screen by default.
             DropDown(  # F10

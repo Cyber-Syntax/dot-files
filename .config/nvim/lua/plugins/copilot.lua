@@ -1,8 +1,8 @@
 return {
   "zbirenbaum/copilot.lua",
-  -- lazy = true,
-  -- event = "InsertEnter",
-  -- enabled = true,
+  cmd = "Copilot",
+  build = ":Copilot auth",
+  event = "BufReadPost",
   opts = {
     suggestion = {
       enabled = not vim.g.ai_cmp,
@@ -21,7 +21,7 @@ return {
       yaml = false,
       markdown = false,
       help = false,
-      gitcommit = false,
+      gitcommit = true,
       gitrebase = false,
       hgcommit = false,
       svn = false,
@@ -58,14 +58,8 @@ return {
         LazyVim.lualine.status(LazyVim.config.icons.kinds.Copilot, function()
           local clients = package.loaded["copilot"] and LazyVim.lsp.get_clients({ name = "copilot", bufnr = 0 }) or {}
           if #clients > 0 then
-            --HACK: Workaround fixes for current lazyvim error for copiloy lualine
-            -- It was returning nil value for status on lualine
-            local api_status = require("copilot.api").status
-            if api_status and api_status.data and api_status.data.status then
-              local status = api_status.data.status
-              return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
-            end
-            return "ok"
+            local status = require("copilot.api").status.data.status
+            return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
           end
         end)
       )
