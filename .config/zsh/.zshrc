@@ -114,13 +114,33 @@ alias va='source .venv/bin/activate'
 # Git bare repo aliases
 alias bare='git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 alias bst='git --git-dir=$HOME/dotfiles --work-tree=$HOME status'
-alias bfetch='git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo' alias breset='git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo' alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo'
+alias bfetch='git --git-dir=$HOME/dotfiles --work-tree=$HOME fetch origin bare-repo'
+alias breset='git --git-dir=$HOME/dotfiles --work-tree=$HOME reset --hard origin/bare-repo'
+alias bpull='git --git-dir=$HOME/dotfiles --work-tree=$HOME pull origin bare-repo'
 alias bsingle-log='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --follow -p --'
 alias badog='git --git-dir=$HOME/dotfiles --work-tree=$HOME log --all --decorate --oneline --graph'
 alias badd='git --git-dir=$HOME/dotfiles --work-tree=$HOME add'
-alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ .zshenv'
+# alias badd-all='git --git-dir=$HOME/dotfiles --work-tree=$HOME add ~/Documents/scripts ~/.config/nvim ~/.config/qtile/ ~/.config/kitty/ ~/.config/dunst/ ~/.config/hypr/ ~/.config/waybar/ ~/.config/tmux/ ~/.config/alacritty/ ~/.config/zsh/ ~/.config/mimeapps.list .zshenv .gitignore'
 alias bcmt='git --git-dir=$HOME/dotfiles --work-tree=$HOME commit -a'
 alias bpush='git --git-dir=$HOME/dotfiles --work-tree=$HOME push -u origin bare-repo'
+
+# bare repo functions:
+badd-all() {
+  git --git-dir="$HOME/dotfiles" --work-tree="$HOME" add \
+    "$HOME/Documents/scripts" \
+    "$HOME/.config/nvim"     \
+    "$HOME/.config/qtile"    \
+    "$HOME/.config/kitty"    \
+    "$HOME/.config/dunst"    \
+    "$HOME/.config/hypr" \
+    "$HOME/.config/waybar" \
+    "$HOME/.config/tmux" \
+    "$HOME/.config/alacritty" \
+    "$HOME/.config/zsh" \
+    "$HOME/.config/mimeapps.list" \
+    "$HOME/.zshenv" \
+    "$HOME/.gitignore"
+}
 
 # Standard Git aliases
 alias gst="git status"

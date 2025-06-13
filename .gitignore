@@ -1,6 +1,13 @@
 ### GIT BARE-REPO IGNORE FILES ###
-# PATH: $HOME (e.g ~/home/<user_name>/.gitignore) # Last version is there
-# Path can be changed if user --work-tree(bare repo) location is different
+#WARN: This file is used for git bare repositoriy global ignore files.
+# Example ignored files: .stversion .stfolder for syncthing
+# BARE REPO ALIAS: `alias bare='git --git-dir=$HOME/dotfiles --work-tree=$HOME'`
+# File location: `$HOME/.gitignore` (e.g ~/home/<user_name>/.gitignore)
+# Also this need to be added like this:
+#
+#    bare config --global core.excludefile /home/<username>/.gitignore
+#    bare config --global core.excludefile /home/developer/.gitignore
+#
 
 # nordic-tmux, my fork
 nordic-tmux
