@@ -73,7 +73,7 @@ groups = [
         matches=[
             Match(
                 wm_class=re.compile(
-                    r"^(firefox|brave-browser|chromium-browser|librewolf|zen)$"
+                    r"^(firefox|brave-browser|chromium-browser|librewolf)$"
                 )
             )
         ],
@@ -83,7 +83,7 @@ groups = [
         "2",
         screen_affinity=0,
         layout="max",
-        matches=[Match(wm_class=re.compile(r"^(code|dev.zed.Zed)$"))],
+        matches=[Match(wm_class=re.compile(r"^(code|zed)$"))],
         label="",
     ),
     Group(
